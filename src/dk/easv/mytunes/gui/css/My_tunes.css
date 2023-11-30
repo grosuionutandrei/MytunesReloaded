@@ -1,0 +1,17 @@
+.playButton{
+    -fx-background-color: "#d7bbf5";
+}
+.playButton:hover{
+    -fx-background-color: 000;
+}
+.longDescription{
+    -fx-text-fill:  dfbbf5;
+}
+.label{
+}
+.songLabel:focused{
+    -fx-background-color:  a076f9 ;
+}
+.songLabel:selected{
+    -fx-background-color:  a076f9;
+}
