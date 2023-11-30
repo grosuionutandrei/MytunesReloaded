@@ -60,7 +60,7 @@ public class SongsTable extends TableView<Song> {
             TableRow<Song> row = new TableRow<>();
             row.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 if (!row.isEmpty() && event.getClickCount() == 2) {
-                 songSelectionListener.onSongSelect(row.getIndex(),this.getId());
+                 songSelectionListener.onSongSelect(row.getIndex(),this.getId(),true);
                 }else if(!row.isEmpty()&& event.getClickCount()==1){
                    // songSelectionListener.onSongSelect(row.getIndex(),this.getId());
 

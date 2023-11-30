@@ -3,6 +3,8 @@ package dk.easv.mytunes.bll;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.dal.*;
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.utility.PlayingLocation;
+import javafx.collections.ObservableList;
 import javafx.scene.media.Media;
 
 import java.util.List;
@@ -27,15 +29,51 @@ public class MyTunesLogic {
     }
 
     public Media getMediaToBePlayed(int index, List<Song>songs) throws MyTunesException {
-//        Song song= songs.stream().filter(elem->elem.getSongId()==index).findFirst().orElse(null);
-//        return this.songReader.getMedia(song.getSongPath());
         String path = songs.get(index).getSongPath();
         return this.songReader.getMedia(path);
     }
 
+    /**
+     * get the next index to be played in the list,if reach the end off the list goes back to 0
+     **/
+    public int processIndexUpp(int indexToCheck, int songsSize) {
+        if (indexToCheck < songsSize - 1) {
+            return indexToCheck + 1;
+        }
+        return 0;
+    }
+
+    /**
+     * get the previous index to be played if it reaches the beginning off the list goes to the end off the list
+     **/
+    public int processIndexDown(int indexToCheck, int songsSize) {
+        if (indexToCheck >= 1) {
+            return indexToCheck - 1;
+        }
+        return songsSize - 1;
+    }
+
+    public List<Song> changeCurrentPlayingSongsList(String currentNameLocation, List<Song> playlist,List<Song> allSongs) {
+        System.out.println(currentNameLocation + "cu" + allSongs.size());
+        if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
+            return allSongs;
+        }
+        return playlist;
+    }
+
+    public Song getCurrentSongToBePlayed(int index,List<Song> songs){
+    return songs.get(index);
+    }
 
     public List<Song> getAllSongs() throws MyTunesException {
         return this.songsDao.getAllSongsFromCache();
+    }
+
+    /**
+     * returns the name off the current playing song
+     */
+    public String getCurrentSongName(int index, List<Song> songs) {
+        return songs.get(index).getTitle();
     }
 
 

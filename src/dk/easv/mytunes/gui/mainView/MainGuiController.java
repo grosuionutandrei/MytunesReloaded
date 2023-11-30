@@ -9,13 +9,19 @@ import dk.easv.mytunes.gui.listeners.VolumeBinder;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,23 +31,46 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private Player player;
     private VolumeControl volumeControl;
 
+
     private Alert alert;
     @FXML
     private VBox allSongsContainer;
     @FXML
     private HBox volumeControlContainer;
+    @FXML
+    private Button playButton;
+    @FXML
+    private Label currentPlayingSongName;
+    @FXML
+    private Label time;
 
 
 
 
 
     public void playPreviousSong(ActionEvent event) {
+        player.playNextSong(this.getPreviousSong(),this.isPlaying());
     }
 
     public void playMusic(ActionEvent event) {
+        this.model.setPlayMusic(true);
+        if (this.player.getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING) {
+            this.playButton.setText("||");
+            //this.model.setCurrentTime(this.player.getMediaPlayer().getCurrentTime());
+            this.player.getMediaPlayer().pause();
+        } else {
+            this.playButton.setText(">");
+            if (this.player.getMediaPlayer() != null) {
+//                if (this.model.getCurrentTime() != null) {
+//                    this.player.getMediaPlayer().seek(this.model.getCurrentTime());
+//                }
+                this.player.getMediaPlayer().play();
+            }
+        }
     }
 
     public void playNextSong(ActionEvent event) {
+        player.playNextSong(this.getNextSong(),this.isPlaying());
     }
 
 
@@ -64,6 +93,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
             initiateTableSong();
             this.player=Player.useMediaPlayer(this);
+            this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
         }
 
     }
@@ -77,11 +107,12 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
 
     @Override
-    public void onSongSelect(int index,String tableId) {
+    public void onSongSelect(int index,String tableId,boolean play) {
         model.currentIndexOffTheSongProperty().set(index);
         model.setCurrentTablePlaying(tableId);
+        model.setPlayMusic(play);
         try{
-            player.setSong(model.getCurrentSongToBePlayed(),100,true);
+            player.setSong(model.getCurrentSongToBePlayed(), model.isPlayMusic());
         }catch (MyTunesException e){
             this.alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(e.getMessage());
@@ -98,7 +129,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
 
-
+/** provides the media that needs to be played by the player*/
     @Override
     public Media getMedia() {
         Media media = null;
@@ -111,36 +142,81 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         }
    return media;
     }
+    /** provides the player the next song that needs to be played*/
+    @Override
+    public Media getNextSong() {
+        Media media = null;
+        try{
+            media=model.getNextSong();
+        }catch (MyTunesException e){
+            this.alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(e.getMessage());
+            alert.show();
+        }
+        return media;
+    }
+/** provides the player with the previous song that needs to be played*/
+    @Override
+    public Media getPreviousSong() {
+        Media media = null;
+        try{
+            media=model.getPreviousSong();
+        }catch (MyTunesException e){
+            this.alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(e.getMessage());
+            alert.show();
+        }
+        return media;
+    }
+    /** binds view label with the current time off the song*/
+    @Override
+    public void bindMediaTimeToScreen(StringProperty binder) {
+        this.time.textProperty().bind(binder);
+    }
 
 
 
+
+    /**controls iff the song can be played or not */
     @Override
     public boolean isPlaying() {
         return this.model.isPlayMusic();
     }
 
+    /** sets the  model volume property according to the current slider value */
     @Override
     public void setVolumeLevel(Double volumeLevel) {
         System.out.println(this.player);
         this.model.volumeLevelProperty().set(volumeLevel/100);
     }
+
+    /**sets the value off the slider back to the previous value*/
     @Override
     public Double getVolumeLevel(){
         return this.model.volumeLevelProperty().getValue();
     }
 
+    /** sets the model isMute boolean propriety when the mute/unmute button is pressed*/
     @Override
     public void setIsMuteValue(boolean value) {
         this.model.isMuteProperty().setValue(value);
     }
 
+
+
+
+    /** binds the volume off the player with the volume level stored in the model */
     @Override
     public DoubleProperty getVolumeObservable() {
         return this.model.volumeLevelProperty();
     }
 
+
+/** supplies data to the player when the volume is mute*/
     @Override
     public BooleanProperty isMute() {
         return this.model.isMuteProperty();
     }
+
+
 }

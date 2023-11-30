@@ -1,7 +1,9 @@
 package dk.easv.mytunes.gui.components.player;
+
 import dk.easv.mytunes.gui.listeners.DataSupplier;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Label;
 import javafx.scene.media.Media;
@@ -13,14 +15,14 @@ public class Player {
     private static Player instance;
     private Media song;
     private DataSupplier dataSupplier;
+    private final StringProperty time = new SimpleStringProperty();
 
 
     private Player(DataSupplier dataSupplier) {
-        this.dataSupplier=dataSupplier;
+        this.dataSupplier = dataSupplier;
         this.song = dataSupplier.getMedia();
         playTrack(dataSupplier.isPlaying());
     }
-
 
 
     public static Player useMediaPlayer(DataSupplier dataSupplier) {
@@ -35,18 +37,20 @@ public class Player {
         return mediaPlayer;
     }
 
-    public void playNextSong( boolean play) {
-        playNextTrack( play);
+    public void playNextSong(Media media, boolean play) {
+        setSong(media);
+        playNextTrack(play);
     }
 
-    public void playPreviousSong( boolean play) {
-        playPreviousTrack( play);
+    public void playPreviousSong(Media media, boolean play) {
+        setSong(media);
+        playPreviousTrack(play);
     }
 
     /**
      * controls the play functionality if the app just started , music will not play
      **/
-    private MediaPlayer playTrack( boolean play) {
+    private MediaPlayer playTrack(boolean play) {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.dispose();
@@ -57,37 +61,44 @@ public class Player {
         mediaPlayer.volumeProperty().bind(Bindings.when(dataSupplier.isMute())
                 .then(0.0)
                 .otherwise(dataSupplier.getVolumeObservable()));
-        System.out.println(mediaPlayer.getVolume());
 
-      //  mediaPlayer.setOnEndOfMedia(() -> playContinuous(media,volume,play));
+        bindDurationToLabel(time);
+        dataSupplier.bindMediaTimeToScreen(time);
+
+        mediaPlayer.setOnEndOfMedia(this::playContinuous);
         if (play) {
             mediaPlayer.play();
         }
         return mediaPlayer;
     }
 
-    private void playNextTrack( boolean play) {
-        this.mediaPlayer = playTrack( play);
+    private void playNextTrack(boolean play) {
+        this.mediaPlayer = playTrack(play);
     }
 
-    private void playPreviousTrack( boolean play) {
-        this.mediaPlayer = playTrack( play);
+    private void playPreviousTrack(boolean play) {
+        this.mediaPlayer = playTrack(play);
     }
 
-    private void playContinuous(Media media,double volume,boolean play){
-       this.setSong(media,volume,play);
-     //  bindDurationToLabel(model.timePassedProperty());
-      // bindVolumeToModel(model);
+    private void playContinuous() {
+        this.setSong(dataSupplier.getNextSong(), dataSupplier.isPlaying());
 
     }
 
-    public void bindViewWithTimeDuration(Label label, StringProperty binder) {
-        label.textProperty().bind(binder);
-    }
+//    public void bindViewWithTimeDuration(Label label, StringProperty binder) {
+//        label.textProperty().bind(binder);
+//    }
 
-    public void bindDurationToLabel(StringProperty stringToBind) {
+    private void bindDurationToLabel(StringProperty stringToBind) {
         StringBinding currentTimeStringBinding = Bindings.createStringBinding(() -> formatDuration(mediaPlayer.getCurrentTime()), mediaPlayer.currentTimeProperty());
         stringToBind.bind(currentTimeStringBinding);
+    }
+
+    private String formatDuration(Duration duration) {
+        int hours = (int) duration.toHours();
+        int minutes = (int) (duration.toMinutes() % 60);
+        int seconds = (int) (duration.toSeconds() % 60);
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
 //    public void bindVolumeToModel(Model model) {
@@ -97,23 +108,15 @@ public class Player {
 //    }
 
 
-    private String formatDuration(Duration duration) {
-        int hours = (int) duration.toHours();
-        int minutes = (int) (duration.toMinutes() % 60);
-        int seconds = (int) (duration.toSeconds() % 60);
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    public void setSong(Media media) {
+        this.song = media;
     }
 
-    public Media getSong() {
-        return song;
-    }
-
-
-
-    public void setSong(Media song, double volume, boolean play) {
-        this.song = song;
+    public void setSong(Media media, boolean play) {
+        this.song = media;
         playTrack(play);
     }
+
     public void setDataSupplier(DataSupplier dataSupplier) {
         this.dataSupplier = dataSupplier;
     }

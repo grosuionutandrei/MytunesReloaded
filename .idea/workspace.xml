@@ -4,45 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/mssql_jdbc_12_4_2_jre11.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MyTunesReloaded.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/be/PlayList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/be/Song.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/ConnectionManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/IPlaylistDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/ISongReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/ISongsDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/SongReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/SongsDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/exceptions/MyTunesException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/TableCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/addToPlaylist/AddToPlaylist.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/addToPlaylist/CustomAlert.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/Player.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/volume/VolumeControl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/volume/VolumeGraphic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/volume/VolumeOffGraphic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/volume/VolumeOnGraphic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/css/My_tunes.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/DataSupplier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/SongSelectionListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/VolumeBinder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/PlayingLocation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/Utility.java" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="volume slider and ontroll fixed">
+      <change afterPath="$PROJECT_DIR$/data/arabic-trap-131647.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/display-159542.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/dragonfly-15128.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/entropy-15944.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/euphoria-121294.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/euphoric-electric-groove-160306.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/first-147443.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/inspiring-emotional-uplifting-piano-112623.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/intro-music-black-box-roughly-made-bass-house-13217.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/modern-hip-hop-upbeat-18388.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/rock-it-21275.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/the-best-jazz-club-in-new-orleans-164472.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/the-late-night-clubbing-21760.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/trailer-sport-stylish-16073.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/twisted-138700.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/upbeat-summer-pop-113447.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/DataSupplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/DataSupplier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/SongSelectionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/SongSelectionListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,8 +62,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
+    "extract.method.default.visibility": "private",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/computer_science/sco/MediPlayer/MyTunesReloaded/src/dk/easv/mytunes/gui/components/volume",
+    "last_opened_file_path": "D:/computer_science/sco/MediPlayer/MyTunesReloaded/data",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -93,6 +80,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\data" />
       <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\src\dk\easv\mytunes\gui\components\volume" />
       <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\src\dk\easv\mytunes\dal" />
       <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\src\dk\easv\gui\components\mainView" />
@@ -139,12 +127,25 @@
       <workItem from="1701164008079" duration="202000" />
       <workItem from="1701172565761" duration="18960000" />
       <workItem from="1701244676179" duration="5384000" />
-      <workItem from="1701256393882" duration="7276000" />
+      <workItem from="1701256393882" duration="17806000" />
     </task>
+    <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
+      <option name="closed" value="true" />
+      <created>1701321055509</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1701321055509</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="volume slider and ontroll fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="volume slider and ontroll fixed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
