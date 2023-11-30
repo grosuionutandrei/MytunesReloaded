@@ -7,7 +7,8 @@ import dk.easv.mytunes.utility.PlayingLocation;
 import javafx.collections.ObservableList;
 import javafx.scene.media.Media;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MyTunesLogic {
     private ISongReader songReader;
@@ -28,7 +29,7 @@ public class MyTunesLogic {
         return instance;
     }
 
-    public Media getMediaToBePlayed(int index, List<Song>songs) throws MyTunesException {
+    public Media getMediaToBePlayed(int index, List<Song> songs) throws MyTunesException {
         String path = songs.get(index).getSongPath();
         return this.songReader.getMedia(path);
     }
@@ -53,7 +54,7 @@ public class MyTunesLogic {
         return songsSize - 1;
     }
 
-    public List<Song> changeCurrentPlayingSongsList(String currentNameLocation, List<Song> playlist,List<Song> allSongs) {
+    public List<Song> changeCurrentPlayingSongsList(String currentNameLocation, List<Song> playlist, List<Song> allSongs) {
         System.out.println(currentNameLocation + "cu" + allSongs.size());
         if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
             return allSongs;
@@ -61,8 +62,8 @@ public class MyTunesLogic {
         return playlist;
     }
 
-    public Song getCurrentSongToBePlayed(int index,List<Song> songs){
-    return songs.get(index);
+    public Song getCurrentSongToBePlayed(int index, List<Song> songs) {
+        return songs.get(index);
     }
 
     public List<Song> getAllSongs() throws MyTunesException {
@@ -75,6 +76,23 @@ public class MyTunesLogic {
     public String getCurrentSongName(int index, List<Song> songs) {
         return songs.get(index).getTitle();
     }
+
+
+    public List<Song> applyFilter(String filter, List<Song> toFilter) {
+        if (filter == null || filter.isEmpty()) {
+            return new ArrayList<>(toFilter);
+        }
+
+        String filterLower = filter.toLowerCase();
+
+        return toFilter.stream()
+                .filter(song -> (song.getTitle() != null && song.getTitle().toLowerCase().contains(filterLower)) ||
+                        (song.getArtist() != null && song.getArtist().toLowerCase().contains(filterLower)) ||
+                        (song.getGenre() != null && song.getGenre().toLowerCase().contains(filterLower)))
+                .collect(Collectors.toList());
+    }
+
+
 
 
 }

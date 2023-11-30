@@ -17,11 +17,8 @@ public class Model {
     private static Model instance;
     private boolean playMusic = false;
 
+    /** holds the name off the current playing songs */
     private StringProperty  currentSongPlayingName = new SimpleStringProperty();
-
-
-
-
 
     private StringProperty  currentSongTimePlaying = new SimpleStringProperty("00:00:00");
 
@@ -47,10 +44,13 @@ public class Model {
     /**
      * Holds all songs off the application , it is used to display songs in the all songs view table
      */
-    private ObservableList<Song> allSongsObjects;
+    private ObservableList<Song> allSongsObjectsToDisplay;
+    /**used when the filter action is performed*/
+    private ObservableList<Song> allSongsObjectsToFilter;
     /**
      * holds the current selected playlist Songs
      */
+
     private ObservableList<Song> playListSongs;
 /** holds the value off the current playing song*/
     private Media currentPlayingMedia;
@@ -60,12 +60,14 @@ public class Model {
 
     private Model() throws MyTunesException {
         myTunesLogic = MyTunesLogic.getMyTuneLogic();
-        allSongsObjects = FXCollections.observableArrayList();
-        populateAllSongsList();
+        allSongsObjectsToDisplay = FXCollections.observableArrayList();
+        populateAllSongsList(allSongsObjectsToDisplay);
         currentPlayingList=FXCollections.observableArrayList();
         playListSongs=FXCollections.observableArrayList();
+        allSongsObjectsToFilter=FXCollections.observableArrayList();
+        populateAllSongsList(allSongsObjectsToFilter);
         currentTablePlaying = PlayingLocation.ALL_SONGS.getValue();
-        currentPlayingList.setAll(allSongsObjects);
+        currentPlayingList.setAll(allSongsObjectsToDisplay);
         volumeLevel.setValue(100);
         isMute.setValue(false);
     }
@@ -78,16 +80,16 @@ public class Model {
     }
 
 
-    private void populateAllSongsList() throws MyTunesException {
-        this.allSongsObjects.addAll(myTunesLogic.getAllSongs());
+    private void populateAllSongsList(ObservableList<Song> songs) throws MyTunesException {
+        songs.addAll(myTunesLogic.getAllSongs());
     }
 
     /**
      * gets the current song that needs to be played
      */
     public Media getCurrentSongToBePlayed() throws MyTunesException {
-        System.out.println(allSongsObjects.size());
-        List<Song> songs = myTunesLogic.changeCurrentPlayingSongsList(this.currentTablePlaying,this.playListSongs,this.allSongsObjects);
+        System.out.println(allSongsObjectsToDisplay.size());
+        List<Song> songs = myTunesLogic.changeCurrentPlayingSongsList(this.currentTablePlaying,this.playListSongs,this.allSongsObjectsToDisplay);
         System.out.println(songs.size());
         this.currentPlayingList.setAll(songs);
         System.out.println(this.currentPlayingList.size());
@@ -135,6 +137,11 @@ public class Model {
         this.currentIndexOffTheSong.set(myTunesLogic.processIndexDown(indexToCheck, songsSize));
     }
 
+    public void applyFilter(String filter){
+        this.allSongsObjectsToDisplay.setAll(myTunesLogic.applyFilter(filter, allSongsObjectsToFilter));
+        System.out.println(this.allSongsObjectsToDisplay);
+    }
+
 
 
 
@@ -144,8 +151,8 @@ public class Model {
     /**
      * return  ObservableList off songs
      */
-    public ObservableList<Song> getAllSongsObjects() {
-        return allSongsObjects;
+    public ObservableList<Song> getAllSongsObjectsToDisplay() {
+        return allSongsObjectsToDisplay;
     }
 
     /**
@@ -196,6 +203,7 @@ public class Model {
 
     public void setCurrentTime(Duration currentTime) {
         this.currentTime = currentTime;
+        System.out.println(this.currentTime);
     }
 
     /** */

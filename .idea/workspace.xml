@@ -4,29 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="volume slider and ontroll fixed">
-      <change afterPath="$PROJECT_DIR$/data/arabic-trap-131647.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/display-159542.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/dragonfly-15128.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/entropy-15944.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/euphoria-121294.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/euphoric-electric-groove-160306.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/first-147443.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/inspiring-emotional-uplifting-piano-112623.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/intro-music-black-box-roughly-made-bass-house-13217.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/modern-hip-hop-upbeat-18388.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/rock-it-21275.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/the-best-jazz-club-in-new-orleans-164472.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/the-late-night-clubbing-21760.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/trailer-sport-stylish-16073.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/twisted-138700.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/upbeat-summer-pop-113447.mp3" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="play next, previous, title label binder,timeLabel binder implemented">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/DataSupplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/DataSupplier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/SongSelectionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/SongSelectionListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" afterDir="false" />
     </list>
@@ -127,7 +108,7 @@
       <workItem from="1701164008079" duration="202000" />
       <workItem from="1701172565761" duration="18960000" />
       <workItem from="1701244676179" duration="5384000" />
-      <workItem from="1701256393882" duration="17806000" />
+      <workItem from="1701256393882" duration="23582000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -137,7 +118,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701321055509</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="play next, previous, title label binder,timeLabel binder implemented">
+      <option name="closed" value="true" />
+      <created>1701348438036</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1701348438036</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,7 +134,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="volume slider and ontroll fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="volume slider and ontroll fixed" />
+    <MESSAGE value="play next, previous, title label binder,timeLabel binder implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="play next, previous, title label binder,timeLabel binder implemented" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
