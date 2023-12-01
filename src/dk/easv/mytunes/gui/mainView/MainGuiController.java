@@ -85,7 +85,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
                 searchButton.setGraphic(searchGraphic.getGraphic());
                 this.searchValue.setText("");
                 this.searchValue.setEditable(false);
-                System.out.println(searchButton.getGraphic().getId());
             }else{
                 infoLabel.setVisible(true);
             }

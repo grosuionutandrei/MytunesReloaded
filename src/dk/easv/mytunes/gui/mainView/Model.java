@@ -137,15 +137,25 @@ public class Model {
         this.currentIndexOffTheSong.set(myTunesLogic.processIndexDown(indexToCheck, songsSize));
     }
    /**apply the search filter to the displayed observable list,
-    * it will filter the objectsToFilter list and set the result to the allSongsObjectsToDisplay */
+    * it will filter the objectsToFilter list and set the result to the allSongsObjectsToDisplay
+    * will continue to play music from the initial list
+    * it will change to the resulted list only if the list is not empty*/
     public void applyFilter(String filter){
         this.allSongsObjectsToDisplay.setAll(myTunesLogic.applyFilter(filter, allSongsObjectsToFilter));
-        System.out.println(this.allSongsObjectsToDisplay);
+        if(!allSongsObjectsToDisplay.isEmpty()){
+            this.currentIndexOffTheSongProperty().set(0);
+            this.currentPlayingList.setAll(allSongsObjectsToDisplay);
+        }
     }
 
-    /** reset the  displayed songs back to the full one*/
+    /** reset the  displayed songs back to the full one
+     *resets  current index off the Song being played to zero
+     * like so the music will continue playing
+     * resets also the playing list back to the original */
     public void resetFilter(){
         this.allSongsObjectsToDisplay.setAll(allSongsObjectsToFilter);
+        this.currentIndexOffTheSongProperty().set(0);
+        this.currentPlayingList.setAll(allSongsObjectsToDisplay);
     }
 
 
