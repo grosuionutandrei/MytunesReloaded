@@ -2,11 +2,15 @@ package dk.easv.mytunes.gui.mainView;
 
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.player.Player;
+import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
+import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
+import dk.easv.mytunes.gui.components.searchButton.UndoGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
 import dk.easv.mytunes.gui.listeners.DataSupplier;
 import dk.easv.mytunes.gui.listeners.SongSelectionListener;
 import dk.easv.mytunes.gui.listeners.VolumeBinder;
+import dk.easv.mytunes.utility.GraphicIdValues;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -14,10 +18,7 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -29,9 +30,10 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private final int FIRST_INDEX = 0;
     private Model model;
     private Player player;
+    private ISearchGraphic searchGraphic;
     private VolumeControl volumeControl;
-
-
+    @FXML
+    private Label infoLabel;
     private Alert alert;
     @FXML
     private VBox allSongsContainer;
@@ -45,6 +47,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private Label time;
     @FXML
     private TextField searchValue;
+    @FXML
+    private Button searchButton;
 
 
     public void playPreviousSong(ActionEvent event) {
@@ -73,15 +77,39 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     public void applyFilter(ActionEvent event) {
         String filter = this.searchValue.getText();
-        if (!filter.isEmpty()) {
-            model.applyFilter(filter);
+        if(searchButton.getGraphic().getId().equals(GraphicIdValues.SEARCH.getValue())){
+            if (!filter.isEmpty()) {
+                searchGraphic=new UndoGraphic();
+                model.applyFilter(filter);
+                infoLabel.setVisible(false);
+                searchButton.setGraphic(searchGraphic.getGraphic());
+                this.searchValue.setText("");
+                this.searchValue.setEditable(false);
+                System.out.println(searchButton.getGraphic().getId());
+            }else{
+                infoLabel.setVisible(true);
+            }
         }
+        else{
+            searchGraphic=new SearchGraphic();
+            searchButton.setGraphic(searchGraphic.getGraphic());
+            searchValue.setEditable(true);
+            model.resetFilter();
+
+        }
+
+
+
+
+
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         alert = new Alert(Alert.AlertType.ERROR);
+        searchGraphic= new SearchGraphic();
+        searchButton.setGraphic(searchGraphic.getGraphic());
         try {
             this.model = Model.getModel();
         } catch (MyTunesException e) {
@@ -96,6 +124,11 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             volumeControlContainer.getChildren().add(FIRST_INDEX, volumeControl.getButton());
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
             initiateTableSong();
+            searchValue.textProperty().addListener((obs,oldValue,newValue)->{
+                if(infoLabel.isVisible()){
+                    infoLabel.setVisible(false);
+                }
+            });
             this.player = Player.useMediaPlayer(this);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
         }
@@ -109,7 +142,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         allSongsContainer.getChildren().add(allSongsTable);
     }
 
-
+/** controls the media player when is double-clicked on a song*/
     @Override
     public void onSongSelect(int index, String tableId, boolean play) {
         model.currentIndexOffTheSongProperty().set(index);
@@ -117,10 +150,14 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         model.setPlayMusic(play);
         try {
             player.setSong(model.getCurrentSongToBePlayed(), model.isPlayMusic());
+
         } catch (MyTunesException e) {
             this.alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(e.getMessage());
             alert.show();
+        }
+        if(this.playButton.getText().equals(">")){
+            this.playButton.setText("||");
         }
 
 

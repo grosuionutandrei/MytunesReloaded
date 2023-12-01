@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="play next, previous, title label binder,timeLabel binder implemented">
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="implemented the filter functionality">
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/searchButton/ISearchGraphic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/searchButton/SearchGraphic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/searchButton/UndoGraphic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/GraphicIdValues.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" afterDir="false" />
@@ -22,6 +25,7 @@
         <option value="CSS File" />
         <option value="Class" />
         <option value="Interface" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -108,7 +112,7 @@
       <workItem from="1701164008079" duration="202000" />
       <workItem from="1701172565761" duration="18960000" />
       <workItem from="1701244676179" duration="5384000" />
-      <workItem from="1701256393882" duration="23582000" />
+      <workItem from="1701256393882" duration="29315000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -126,7 +130,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701348438036</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="implemented the filter functionality">
+      <option name="closed" value="true" />
+      <created>1701386903574</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1701386903574</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -135,7 +147,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="volume slider and ontroll fixed" />
     <MESSAGE value="play next, previous, title label binder,timeLabel binder implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="play next, previous, title label binder,timeLabel binder implemented" />
+    <MESSAGE value="implemented the filter functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented the filter functionality" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

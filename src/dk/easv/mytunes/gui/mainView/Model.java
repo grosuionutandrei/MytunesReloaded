@@ -136,10 +136,16 @@ public class Model {
     private void generatePreviousIndex(int indexToCheck, int songsSize) {
         this.currentIndexOffTheSong.set(myTunesLogic.processIndexDown(indexToCheck, songsSize));
     }
-
+   /**apply the search filter to the displayed observable list,
+    * it will filter the objectsToFilter list and set the result to the allSongsObjectsToDisplay */
     public void applyFilter(String filter){
         this.allSongsObjectsToDisplay.setAll(myTunesLogic.applyFilter(filter, allSongsObjectsToFilter));
         System.out.println(this.allSongsObjectsToDisplay);
+    }
+
+    /** reset the  displayed songs back to the full one*/
+    public void resetFilter(){
+        this.allSongsObjectsToDisplay.setAll(allSongsObjectsToFilter);
     }
 
 
