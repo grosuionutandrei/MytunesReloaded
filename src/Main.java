@@ -38,6 +38,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/mytunes/gui/mainView/AppGui.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
+        primaryStage.setX(100);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

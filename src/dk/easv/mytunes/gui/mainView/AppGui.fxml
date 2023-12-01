@@ -6,7 +6,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="800.0" style="-fx-background-color: f1eaff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.gui.mainView.MainGuiController">
@@ -202,7 +201,7 @@
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" prefWidth="50.0" style="-fx-background-color: dfbbf5;" text="New">
+                              <Button mnemonicParsing="false" onAction="#openNewSongWindow" prefWidth="50.0" style="-fx-background-color: dfbbf5;" text="New">
                                  <HBox.margin>
                                     <Insets right="5.0" />
                                  </HBox.margin>

@@ -17,12 +17,19 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -49,6 +56,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private TextField searchValue;
     @FXML
     private Button searchButton;
+
 
 
     public void playPreviousSong(ActionEvent event) {
@@ -279,5 +287,22 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         return this.model.isMuteProperty();
     }
 
+
+    public void openNewSongWindow(ActionEvent event) throws IOException {
+        Stage mainStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../editView/editView.fxml"));
+        Parent parent = loader.load();
+        Scene scene = new Scene(parent);
+        Popup popup = new Popup();
+        popup.setX(422);
+        popup.setY(250);
+        popup.getContent().add(parent);
+        popup.show(mainStage);
+        searchButton.setDisable(true);
+
+
+
+
+    }
 
 }
