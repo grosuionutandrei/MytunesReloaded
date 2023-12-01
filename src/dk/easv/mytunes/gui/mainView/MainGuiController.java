@@ -7,10 +7,12 @@ import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
 import dk.easv.mytunes.gui.components.searchButton.UndoGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
+import dk.easv.mytunes.gui.editView.NewSongController;
 import dk.easv.mytunes.gui.listeners.DataSupplier;
 import dk.easv.mytunes.gui.listeners.SongSelectionListener;
 import dk.easv.mytunes.gui.listeners.VolumeBinder;
 import dk.easv.mytunes.utility.GraphicIdValues;
+import dk.easv.mytunes.utility.Utility;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -26,19 +28,23 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder {
     private final int FIRST_INDEX = 0;
+    private final int new_editWindowWidth =420;
     private Model model;
     private Player player;
     private ISearchGraphic searchGraphic;
     private VolumeControl volumeControl;
+    private Utility utility ;
+
+
     @FXML
     private Label infoLabel;
     private Alert alert;
@@ -138,6 +144,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             });
             this.player = Player.useMediaPlayer(this);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
+            this.utility=new Utility();
+
         }
 
     }
@@ -292,17 +300,18 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         Stage mainStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../editView/editView.fxml"));
         Parent parent = loader.load();
-        Scene scene = new Scene(parent);
-        Popup popup = new Popup();
-        popup.setX(422);
-        popup.setY(250);
-        popup.getContent().add(parent);
-        popup.show(mainStage);
-        searchButton.setDisable(true);
-
-
-
-
+        NewSongController news = loader.getController();
+        Scene scene =  new Scene(parent);
+        Stage newSongStage =  new Stage();
+        newSongStage.setX(utility.calculateMidPoint(mainStage.getX(),mainStage.getWidth(),this.new_editWindowWidth));
+        newSongStage.setY(mainStage.getHeight()/2);
+        newSongStage.setTitle("Add new song");
+        newSongStage.setScene(scene);
+        newSongStage.initModality(Modality.WINDOW_MODAL);
+        newSongStage.initOwner(mainStage);
+        newSongStage.show();
     }
+
+
 
 }

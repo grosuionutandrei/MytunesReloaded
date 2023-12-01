@@ -16,6 +16,10 @@ public class Utility {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
+    public double calculateMidPoint(double mainX,double mainW,double popW){
+     return mainX+(mainW/2)-(popW/2);
+    }
+
 
 
 
