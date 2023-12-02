@@ -2,6 +2,9 @@
   <library name="mssql-jdbc-12.4.2.jre11">
     <CLASSES>
       <root url="jar://C:/Program Files/JetBrains/External Libraries/sqljdbc_12.4/enu/jars/mssql-jdbc-12.4.2.jre11.jar!/" />
+      <root url="jar://C:/Program Files/JetBrains/External Libraries/tAudioFile/tritonus-share-0.3.7.4.jar!/" />
+      <root url="jar://C:/Program Files/JetBrains/External Libraries/mp3spi/mp3spi-1.9.4.1.jar!/" />
+      <root url="jar://C:/Program Files/JetBrains/External Libraries/javaZoom/jlayer-1.0.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

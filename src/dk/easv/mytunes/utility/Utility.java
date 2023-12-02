@@ -6,7 +6,7 @@ public class Utility {
 
 
 
-    public static String convertSecondsToStringRepresentation(long length) {
+    public static String convertSecondsToStringRepresentation(double length) {
         if (length == 0.0) {
             return String.format("%02d:%02d:%02d", 0, 0, 0);
         }

@@ -32,7 +32,7 @@ public class SongsDao implements ISongsDao {
             pstmt.setString(2, s.getTitle());
             pstmt.setString(3, s.getArtist());
             pstmt.setString(4, s.getGenre());
-            pstmt.setLong(5, s.getLength());
+            pstmt.setDouble(5, s.getLength());
             pstmt.execute();
         } catch (SQLServerException e) {
             throw new MyTunesException("Database error when tried to create the song", e.getCause());

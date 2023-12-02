@@ -8,9 +8,9 @@ public class Song {
     private String title;
     private String artist;
     private String genre;
-    private long length;
+    private double length;
 
-    public Song(String songPath, String title, String artist, String genre, long length) {
+    public Song(String songPath, String title, String artist, String genre, double length) {
         this.songPath = songPath;
         this.title = title;
         this.artist = artist;
@@ -18,7 +18,7 @@ public class Song {
         this.length = length;
     }
 
-    public Song(int songId, String songPath, String title, String artist, String genre, long length) {
+    public Song(int songId, String songPath, String title, String artist, String genre, double length) {
         this.songId = songId;
         this.songPath = songPath;
         this.title = title;
@@ -67,7 +67,7 @@ public class Song {
         this.genre = genre;
     }
 
-    public long getLength() {
+    public double getLength() {
         return length;
     }
 

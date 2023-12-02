@@ -44,7 +44,7 @@ public class PlayList {
         return id;
     }
 
-    public long getTotalTime() {
-        return this.getPlayListSongs().stream().mapToLong(Song::getLength).sum();
+    public double getTotalTime() {
+        return this.getPlayListSongs().stream().mapToDouble(Song::getLength).sum();
     }
 }
