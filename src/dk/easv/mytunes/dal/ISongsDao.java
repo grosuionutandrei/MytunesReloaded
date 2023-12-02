@@ -13,4 +13,5 @@ public interface ISongsDao {
     public boolean updateSong(Song song);
     public List<Song> getAllSongsFromCache() throws MyTunesException;
     public List<Song> getPlayListSongs(int playListId);
+    public void reloadSongsFromDB() throws MyTunesException;
 }

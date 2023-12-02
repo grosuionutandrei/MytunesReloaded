@@ -1,5 +1,7 @@
 package dk.easv.mytunes.gui.editView;
+
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.gui.mainView.MainGuiController;
 import dk.easv.mytunes.utility.Genre;
 import dk.easv.mytunes.utility.SongFormat;
 import javafx.application.Platform;
@@ -12,6 +14,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,6 +24,8 @@ public class NewSongController implements Initializable {
 
     private Alert error;
     private Alert info;
+    private MainGuiController parentController;
+
     private NewEditModel editModel;
     @FXML
     private ComboBox<String> genreDropDown;
@@ -56,8 +61,10 @@ public class NewSongController implements Initializable {
             }
         }
     }
+
     @FXML
     private void addNewSong(ActionEvent event) {
+        boolean songCreated = false;
         Stage newSongStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         String title = songTitle.getText();
         String artist = songArtist.getText();
@@ -69,11 +76,14 @@ public class NewSongController implements Initializable {
             initiateInfoAlert(newSongStage);
         } else {
             try {
-                editModel.createNewSong(path, title, artist, genre,time);
+                songCreated = editModel.createNewSong(path, title, artist, genre, time);
             } catch (MyTunesException e) {
                 setErrorLocation(e, newSongStage);
                 error.showAndWait();
             }
+        }
+        if (songCreated) {
+            parentController.reloadSongsFromDB();
         }
         newSongStage.close();
     }
@@ -117,6 +127,10 @@ public class NewSongController implements Initializable {
         info.setY(newSongStage.getY());
         info.setContentText("Title and Location can not be empty");
         info.showAndWait();
+    }
+
+    public void setParentController(MainGuiController parent) {
+        this.parentController = parent;
     }
 
 }

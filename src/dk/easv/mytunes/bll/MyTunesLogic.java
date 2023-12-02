@@ -54,13 +54,20 @@ public class MyTunesLogic {
         return songsSize - 1;
     }
 
-    public List<Song> changeCurrentPlayingSongsList(String currentNameLocation, List<Song> playlist, List<Song> allSongs) {
-        System.out.println(currentNameLocation + "cu" + allSongs.size());
-        if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
-            return allSongs;
-        }
-        return playlist;
+//    public List<Song> changeCurrentPlayingSongsList(String currentNameLocation, List<Song> playlist, List<Song> allSongs) {
+//        System.out.println(currentNameLocation + "cu" + allSongs.size());
+//        if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
+//            return allSongs;
+//        }
+//        return playlist;
+//    }
+public ObservableList<Song> changeCurrentPlayingSongsList(String currentNameLocation, ObservableList<Song> playlist, ObservableList<Song> allSongs) {
+    System.out.println(currentNameLocation + "cu" + allSongs.size());
+    if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
+        return allSongs;
     }
+    return playlist;
+}
 
     public Song getCurrentSongToBePlayed(int index, List<Song> songs) {
         return songs.get(index);
@@ -93,7 +100,8 @@ public class MyTunesLogic {
     }
 
 
-
-
+    public void reloadSongsFromDB() throws MyTunesException {
+        songsDao.reloadSongsFromDB();
+    }
 }
 

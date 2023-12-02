@@ -31,18 +31,19 @@ import javafx.scene.media.Media;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder {
     private final int FIRST_INDEX = 0;
-    private final int new_editWindowWidth =420;
+    private final int new_editWindowWidth = 420;
     private Model model;
     private Player player;
     private ISearchGraphic searchGraphic;
     private VolumeControl volumeControl;
-    private Utility utility ;
+    private Utility utility;
 
 
     @FXML
@@ -62,7 +63,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private TextField searchValue;
     @FXML
     private Button searchButton;
-
 
 
     public void playPreviousSong(ActionEvent event) {
@@ -91,28 +91,24 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     public void applyFilter(ActionEvent event) {
         String filter = this.searchValue.getText();
-        if(searchButton.getGraphic().getId().equals(GraphicIdValues.SEARCH.getValue())){
+        if (searchButton.getGraphic().getId().equals(GraphicIdValues.SEARCH.getValue())) {
             if (!filter.isEmpty()) {
-                searchGraphic=new UndoGraphic();
+                searchGraphic = new UndoGraphic();
                 model.applyFilter(filter);
                 infoLabel.setVisible(false);
                 searchButton.setGraphic(searchGraphic.getGraphic());
                 this.searchValue.setText("");
                 this.searchValue.setEditable(false);
-            }else{
+            } else {
                 infoLabel.setVisible(true);
             }
-        }
-        else{
-            searchGraphic=new SearchGraphic();
+        } else {
+            searchGraphic = new SearchGraphic();
             searchButton.setGraphic(searchGraphic.getGraphic());
             searchValue.setEditable(true);
             model.resetFilter();
 
         }
-
-
-
 
 
     }
@@ -121,7 +117,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         alert = new Alert(Alert.AlertType.ERROR);
-        searchGraphic= new SearchGraphic();
+        searchGraphic = new SearchGraphic();
         searchButton.setGraphic(searchGraphic.getGraphic());
         try {
             this.model = Model.getModel();
@@ -137,14 +133,14 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             volumeControlContainer.getChildren().add(FIRST_INDEX, volumeControl.getButton());
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
             initiateTableSong();
-            searchValue.textProperty().addListener((obs,oldValue,newValue)->{
-                if(infoLabel.isVisible()){
+            searchValue.textProperty().addListener((obs, oldValue, newValue) -> {
+                if (infoLabel.isVisible()) {
                     infoLabel.setVisible(false);
                 }
             });
             this.player = Player.useMediaPlayer(this);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
-            this.utility=new Utility();
+            this.utility = new Utility();
 
         }
 
@@ -157,7 +153,9 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         allSongsContainer.getChildren().add(allSongsTable);
     }
 
-/** controls the media player when is double-clicked on a song*/
+    /**
+     * controls the media player when is double-clicked on a song
+     */
     @Override
     public void onSongSelect(int index, String tableId, boolean play) {
         model.currentIndexOffTheSongProperty().set(index);
@@ -171,7 +169,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             alert.setContentText(e.getMessage());
             alert.show();
         }
-        if(this.playButton.getText().equals(">")){
+        if (this.playButton.getText().equals(">")) {
             this.playButton.setText("||");
         }
 
@@ -296,22 +294,32 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
 
-    public void openNewSongWindow(ActionEvent event) throws IOException {
-        Stage mainStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+    public void reloadSongsFromDB() {
+        try {
+            model.reloadSongsFromDB();
+        } catch (MyTunesException e) {
+            alert.setContentText(e.getMessage()+ "\n" + "Check your internet connection");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void openNewSongWindow(ActionEvent event) throws IOException {
+        Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../editView/editView.fxml"));
         Parent parent = loader.load();
         NewSongController news = loader.getController();
-        Scene scene =  new Scene(parent);
-        Stage newSongStage =  new Stage();
-        newSongStage.setX(utility.calculateMidPoint(mainStage.getX(),mainStage.getWidth(),this.new_editWindowWidth));
-        newSongStage.setY(mainStage.getHeight()/2);
+        news.setParentController(this);
+        Scene scene = new Scene(parent);
+        Stage newSongStage = new Stage();
+        newSongStage.setX(utility.calculateMidPoint(mainStage.getX(), mainStage.getWidth(), this.new_editWindowWidth));
+        newSongStage.setY(mainStage.getHeight() / 2);
         newSongStage.setTitle("Add new song");
         newSongStage.setScene(scene);
         newSongStage.initModality(Modality.WINDOW_MODAL);
         newSongStage.initOwner(mainStage);
         newSongStage.show();
     }
-
 
 
 }

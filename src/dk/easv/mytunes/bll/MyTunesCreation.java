@@ -36,33 +36,38 @@ public class MyTunesCreation {
     }
 
 
-    public void createNewSong(String path, String title, String artist, String genre,String songDuration) throws MyTunesException {
-
-        Song song = new Song(path,title,artist,genre,Double.parseDouble(songDuration));
+    public boolean createNewSong(String path, String title, String artist, String genre, String songDuration) throws MyTunesException {
+        Song song = new Song(path, title, artist, genre, Double.parseDouble(songDuration));
         System.out.println(song);
-        songsDao.createSong(song);
+        return songsDao.createSong(song);
     }
-/** extract format off the song, in order to know the file format  */
+
+    /**
+     * extract format off the song, in order to know the file format
+     */
     public SongFormat extractFormat(String name) throws MyTunesException {
-       SongFormat songFormat = null;
+        SongFormat songFormat = null;
         int index = name.lastIndexOf('.');
-       String format = "";
-       if(index>0 && index<name.length()-1){
-           format=name.substring(index+1);
-       }
+        String format = "";
+        if (index > 0 && index < name.length() - 1) {
+            format = name.substring(index + 1);
+        }
         System.out.println(format);
-       SongFormat[] songFormats = SongFormat.values();
-       for(SongFormat elem:songFormats){
-           if(elem.getValue().equalsIgnoreCase(format)){
-               songFormat=elem;
-           }
-       }
-       if(songFormat==null){
-           throw  new MyTunesException("Format not supported.Supported files:MP3,WAV!");
-       }
-       return songFormat;
+        SongFormat[] songFormats = SongFormat.values();
+        for (SongFormat elem : songFormats) {
+            if (elem.getValue().equalsIgnoreCase(format)) {
+                songFormat = elem;
+            }
+        }
+        if (songFormat == null) {
+            throw new MyTunesException("Format not supported.Supported files:MP3,WAV!");
+        }
+        return songFormat;
     }
-/** get the time duration in seconds for the WAV files*/
+
+    /**
+     * get the time duration in seconds for the WAV files
+     */
     private float getDurationWav(File file) throws MyTunesException {
         AudioInputStream audioInputStream = null;
         try {
@@ -76,8 +81,11 @@ public class MyTunesCreation {
         float frameRate = format.getFrameRate();
         return ((audioFileLength / (frameSize * frameRate)));
     }
-    /**get time duration for the mp3 file*/
-    private double getDurationMp3(File file) throws MyTunesException{
+
+    /**
+     * get time duration for the mp3 file
+     */
+    private double getDurationMp3(File file) throws MyTunesException {
         double time = 0.0;
         AudioFileFormat fileFormat = null;
         try {
@@ -87,25 +95,26 @@ public class MyTunesCreation {
                 String key = "duration";
                 Long microseconds = (Long) properties.get(key);
 
-                double  durationInSeconds = microseconds / 1_000_000.0;
+                double durationInSeconds = microseconds / 1_000_000.0;
 
                 System.out.println(durationInSeconds);
-                time=durationInSeconds;
+                time = durationInSeconds;
             } else {
-              throw new  UnsupportedOperationException() ;
+                throw new UnsupportedOperationException();
             }
         } catch (UnsupportedAudioFileException e) {
             throw new MyTunesException("File not supported");
         } catch (IOException e) {
             throw new MyTunesException("Can not read file");
         }
-       return time;
+        return time;
     }
-    public double getSongDuration(File file,SongFormat format) throws MyTunesException {
-        if(format==SongFormat.WAV){
-           return getDurationWav(file);
+
+    public double getSongDuration(File file, SongFormat format) throws MyTunesException {
+        if (format == SongFormat.WAV) {
+            return getDurationWav(file);
         }
-       return getDurationMp3(file);
+        return getDurationMp3(file);
     }
 
 

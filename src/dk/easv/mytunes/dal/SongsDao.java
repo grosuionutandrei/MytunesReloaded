@@ -25,6 +25,7 @@ public class SongsDao implements ISongsDao {
 
     @Override
     public boolean createSong(Song s) throws MyTunesException {
+       boolean executed =false;
         try (Connection conn = CONNECTION_MANAGER.getConnection()) {
             String sql = "INSERT INTO SONGS values (?,?,?,?,?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -34,12 +35,13 @@ public class SongsDao implements ISongsDao {
             pstmt.setString(4, s.getGenre());
             pstmt.setDouble(5, s.getLength());
             pstmt.execute();
+            executed=true;
         } catch (SQLServerException e) {
             throw new MyTunesException("Database error when tried to create the song", e.getCause());
         } catch (SQLException es) {
             throw new MyTunesException("Database error when tried to create the song", es.getCause());
         }
-        return false;
+        return executed;
     }
 
     @Override
@@ -58,7 +60,7 @@ public class SongsDao implements ISongsDao {
     }
 
 
-    public void loadAllSongsFromDB() throws MyTunesException {
+    private void loadAllSongsFromDB() throws MyTunesException {
 
         List<Song> songs = new ArrayList<>();
         try (Connection conn = CONNECTION_MANAGER.getConnection()) {
@@ -90,5 +92,10 @@ public class SongsDao implements ISongsDao {
     @Override
     public List<Song> getPlayListSongs(int playListId) {
         return null;
+    }
+
+    @Override
+    public void reloadSongsFromDB() throws MyTunesException {
+        loadAllSongsFromDB();
     }
 }

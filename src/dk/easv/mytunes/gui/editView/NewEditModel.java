@@ -20,8 +20,8 @@ public class NewEditModel {
         return instance;
     }
 
-    public void createNewSong(String path, String title , String artist ,String genre,String songDuration ) throws MyTunesException {
-        myTunesCreation.createNewSong(path,title,artist,genre,songDuration);
+    public boolean createNewSong(String path, String title , String artist ,String genre,String songDuration ) throws MyTunesException {
+        return myTunesCreation.createNewSong(path,title,artist,genre,songDuration);
     }
 
 
