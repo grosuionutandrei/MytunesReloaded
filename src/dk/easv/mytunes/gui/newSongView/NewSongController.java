@@ -85,7 +85,6 @@ public class NewSongController extends NewEditController implements Initializabl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         try {
             this.editModel = NewEditModel.getInstance();
         } catch (MyTunesException e) {

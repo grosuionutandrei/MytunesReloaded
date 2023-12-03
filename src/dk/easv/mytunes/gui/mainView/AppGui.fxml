@@ -211,7 +211,7 @@
                                     <Insets right="5.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefWidth="50.0" style="-fx-background-color: dfbbf5;" text="Delete">
+                              <Button mnemonicParsing="false" onAction="#deleteSong" prefWidth="50.0" style="-fx-background-color: dfbbf5;" text="Delete">
                                  <HBox.margin>
                                     <Insets right="5.0" />
                                  </HBox.margin>

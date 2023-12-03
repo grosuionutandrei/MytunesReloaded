@@ -8,7 +8,9 @@ import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
 import dk.easv.mytunes.gui.components.searchButton.UndoGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
+import dk.easv.mytunes.gui.deleteView.ConfirmationWindow;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
+import dk.easv.mytunes.gui.listeners.ConfirmationController;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
 import dk.easv.mytunes.gui.listeners.DataSupplier;
 import dk.easv.mytunes.gui.listeners.SongSelectionListener;
@@ -38,7 +40,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder {
+public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, ConfirmationController {
     private final int FIRST_INDEX = 0;
     private final int new_editWindowWidth = 420;
     private Model model;
@@ -342,6 +344,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         Stage newSongStage = popupStage(mainStage, scene, stageName);
         newSongStage.show();
 
+
+
     }
 
     private Stage popupStage(Stage mainStage, Scene scene, String name) {
@@ -356,4 +360,27 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
 
+    public void deleteSong(ActionEvent event) {
+        ConfirmationWindow confirmationWindow =  new ConfirmationWindow();
+        initializeConfirmationWindow(confirmationWindow);
+        Stage mainStage = getCurrentStage(event);
+        Scene scene = new Scene(confirmationWindow.getConfirmationWindow());
+        Stage confirmation = popupStage(mainStage,scene,"Delete Song");
+        confirmation.show();
+    }
+
+    private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow) {
+        confirmationWindow.setConfirmationController(this);
+        confirmationWindow.setOperationTitle("Delete operation");
+        confirmationWindow.setOperationInformation("Are you sure that you want to delete this file?");
+    }
+
+    private Stage getCurrentStage(ActionEvent event) {
+        return (Stage) ((Node) event.getSource()).getScene().getWindow();
+    }
+
+    @Override
+    public void confirmationEventHandler(boolean confirmation) {
+        System.out.println(confirmation);
+    }
 }
