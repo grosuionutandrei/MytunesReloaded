@@ -3,7 +3,6 @@ package dk.easv.mytunes.gui.listeners;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 
 /**

@@ -1,7 +1,8 @@
-package dk.easv.mytunes.gui.editView;
+package dk.easv.mytunes.gui.newSongView;
 import dk.easv.mytunes.bll.MyTunesCreation;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.utility.SongFormat;
+import javafx.stage.Stage;
 
 import java.io.File;
 
@@ -30,6 +31,12 @@ public class NewEditModel {
     }
     public double getDuration(File file, SongFormat songFormat) throws MyTunesException {
         return myTunesCreation.getSongDuration(file,songFormat);
+    }
+    public boolean checkIfFileExists(String filePath){
+     return myTunesCreation.checkFilePath(filePath);
+    }
+    public boolean areTitleOrPathEmpty(String title, String path) {
+        return myTunesCreation.areTitleOrPathEmpty(title,path);
     }
 
 

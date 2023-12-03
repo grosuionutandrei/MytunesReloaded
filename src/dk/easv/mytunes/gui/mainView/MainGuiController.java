@@ -1,5 +1,6 @@
 package dk.easv.mytunes.gui.mainView;
 
+import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.player.Player;
 import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
@@ -7,7 +8,8 @@ import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
 import dk.easv.mytunes.gui.components.searchButton.UndoGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
-import dk.easv.mytunes.gui.editView.NewSongController;
+import dk.easv.mytunes.gui.editSongView.EditSongController;
+import dk.easv.mytunes.gui.newSongView.NewSongController;
 import dk.easv.mytunes.gui.listeners.DataSupplier;
 import dk.easv.mytunes.gui.listeners.SongSelectionListener;
 import dk.easv.mytunes.gui.listeners.VolumeBinder;
@@ -29,8 +31,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -63,6 +65,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private TextField searchValue;
     @FXML
     private Button searchButton;
+    @FXML
+    private SongsTable allSongsTable;
 
 
     public void playPreviousSong(ActionEvent event) {
@@ -148,7 +152,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
 
     private void initiateTableSong() {
-        SongsTable allSongsTable = new SongsTable(this);
+        allSongsTable = new SongsTable(this);
         allSongsTable.setSongs(model.getAllSongsObjectsToDisplay());
         allSongsContainer.getChildren().add(allSongsTable);
     }
@@ -298,7 +302,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             model.reloadSongsFromDB();
         } catch (MyTunesException e) {
-            alert.setContentText(e.getMessage()+ "\n" + "Check your internet connection");
+            alert.setContentText(e.getMessage() + "\n" + "Check your internet connection");
             alert.showAndWait();
         }
     }
@@ -306,19 +310,49 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     @FXML
     private void openNewSongWindow(ActionEvent event) throws IOException {
         Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../editView/editView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../newSongView/NewSongView.fxml"));
         Parent parent = loader.load();
         NewSongController news = loader.getController();
         news.setParentController(this);
         Scene scene = new Scene(parent);
+        String stageName = "Add new Song";
+        Stage newSongStage = popupStage(mainStage, scene, stageName);
+        newSongStage.show();
+    }
+
+    @FXML
+    private void openEditWindow(ActionEvent event) throws IOException {
+
+        if (this.allSongsTable.getSelectionModel().getSelectedItem() == null) {
+            alert.setAlertType(Alert.AlertType.INFORMATION);
+            alert.setContentText("No song selected , please select a song. ");
+            alert.showAndWait();
+            return;
+        }
+        Song songToUpdate = this.allSongsTable.getSelectionModel().getSelectedItem();
+        System.out.println(songToUpdate + "asdadadfwe");
+        Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../editSongView/EditSongView.fxml"));
+        Parent parent = loader.load();
+        EditSongController esc = loader.getController();
+        esc.initializeEditView(songToUpdate);
+        esc.setParentController(this);
+        Scene scene = new Scene(parent);
+        String stageName = "Edit Song";
+        Stage newSongStage = popupStage(mainStage, scene, stageName);
+        newSongStage.show();
+
+    }
+
+    private Stage popupStage(Stage mainStage, Scene scene, String name) {
         Stage newSongStage = new Stage();
         newSongStage.setX(utility.calculateMidPoint(mainStage.getX(), mainStage.getWidth(), this.new_editWindowWidth));
         newSongStage.setY(mainStage.getHeight() / 2);
-        newSongStage.setTitle("Add new song");
+        newSongStage.setTitle(name);
         newSongStage.setScene(scene);
         newSongStage.initModality(Modality.WINDOW_MODAL);
         newSongStage.initOwner(mainStage);
-        newSongStage.show();
+        return newSongStage;
     }
 
 

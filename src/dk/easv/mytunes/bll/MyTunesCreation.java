@@ -118,4 +118,20 @@ public class MyTunesCreation {
     }
 
 
+    public boolean checkFilePath(String filePath) {
+            File file = new File(filePath);
+            return file.exists() && !file.isDirectory();
+    }
+
+    public boolean areTitleOrPathEmpty(String title, String path) {
+        return title.isEmpty() || path.isEmpty();
+    }
+
+    public boolean checkIfEqual(Song initialSong, Song updatedSong) {
+        return initialSong.equals(updatedSong);
+    }
+
+    public boolean updateSong(Song updatedSong) throws MyTunesException {
+        return songsDao.updateSong(updatedSong);
+    }
 }

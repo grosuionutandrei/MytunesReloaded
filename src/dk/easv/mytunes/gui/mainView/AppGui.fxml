@@ -206,7 +206,7 @@
                                     <Insets right="5.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefWidth="50.0" style="-fx-background-color: dfbbf5;" text="Edit">
+                              <Button mnemonicParsing="false" onAction="#openEditWindow" prefWidth="50.0" style="-fx-background-color: dfbbf5;" text="Edit">
                                  <HBox.margin>
                                     <Insets right="5.0" />
                                  </HBox.margin>

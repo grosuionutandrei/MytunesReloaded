@@ -1,7 +1,9 @@
 package dk.easv.mytunes.dal;
+
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ public class SongsDao implements ISongsDao {
 
     @Override
     public boolean createSong(Song s) throws MyTunesException {
-       boolean executed =false;
+        boolean executed = false;
         try (Connection conn = CONNECTION_MANAGER.getConnection()) {
             String sql = "INSERT INTO SONGS values (?,?,?,?,?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -35,7 +37,7 @@ public class SongsDao implements ISongsDao {
             pstmt.setString(4, s.getGenre());
             pstmt.setDouble(5, s.getLength());
             pstmt.execute();
-            executed=true;
+            executed = true;
         } catch (SQLServerException e) {
             throw new MyTunesException("Database error when tried to create the song", e.getCause());
         } catch (SQLException es) {
@@ -50,8 +52,23 @@ public class SongsDao implements ISongsDao {
     }
 
     @Override
-    public boolean updateSong(Song song) {
-        return false;
+    public boolean updateSong(Song song) throws MyTunesException {
+        boolean executed = false;
+        String sql = "UPDATE Songs SET SongPath=?, Title=?, Artist=?,Genre=?,Length=? WHERE SongId=?";
+        try (Connection conn = CONNECTION_MANAGER.getConnection()) {
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setString(1, song.getSongPath());
+            psmt.setString(2, song.getTitle());
+            psmt.setString(3, song.getArtist());
+            psmt.setString(4, song.getGenre());
+            psmt.setDouble(5, song.getLength());
+            psmt.setInt(6, song.getSongId());
+            psmt.execute();
+            executed = true;
+        } catch (SQLException | MyTunesException e) {
+            throw new MyTunesException("Database error when tried to update the song", e.getCause());
+        }
+        return executed;
     }
 
     @Override
@@ -85,8 +102,6 @@ public class SongsDao implements ISongsDao {
         }
         this.objectSongs = songs;
     }
-
-
 
 
     @Override
