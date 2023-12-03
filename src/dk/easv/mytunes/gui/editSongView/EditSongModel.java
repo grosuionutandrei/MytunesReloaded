@@ -1,20 +1,17 @@
 package dk.easv.mytunes.gui.editSongView;
-
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.bll.MyTunesCreation;
 import dk.easv.mytunes.exceptions.MyTunesException;
-import dk.easv.mytunes.utility.SongFormat;
+import dk.easv.mytunes.gui.newSongView.NewEditCommon;
 
-import java.io.File;
-
-public class EditSongModel {
+public class EditSongModel extends NewEditCommon {
     private static EditSongModel instance;
-    private MyTunesCreation myTunesCreation;
+
     private Song initialSong;
 
 
     private EditSongModel() throws MyTunesException {
-        myTunesCreation = MyTunesCreation.getInstance();
+        setMyTunesCreation( MyTunesCreation.getInstance());
     }
 
     public static EditSongModel getInstance() throws MyTunesException {
@@ -32,23 +29,13 @@ public class EditSongModel {
         this.initialSong = initialSong;
     }
 
-    public boolean checkIfFileExists(String filePath) {
-        return myTunesCreation.checkFilePath(filePath);
-    }
 
-    public boolean areTitleOrPathEmpty(String title, String path) {
-        return myTunesCreation.areTitleOrPathEmpty(title, path);
-    }
-    public SongFormat getFormat(String name) throws MyTunesException {
-        return myTunesCreation.extractFormat(name);
-    }
-    public double getDuration(File file, SongFormat songFormat) throws MyTunesException {
-        return myTunesCreation.getSongDuration(file,songFormat);
-    }
-
+/**
+ * Check if the  updated song is different and if it is performing the update operation
+ * @param updatedSong the song that will be updated */
     public boolean updateSong(Song updatedSong)throws MyTunesException {
-        if(!myTunesCreation.checkIfEqual(initialSong,updatedSong)){
-         if (myTunesCreation.updateSong(updatedSong)){
+        if(!getMyTunesCreation().checkIfEqual(initialSong,updatedSong)){
+         if (getMyTunesCreation().updateSong(updatedSong)){
              return true;
          };
 

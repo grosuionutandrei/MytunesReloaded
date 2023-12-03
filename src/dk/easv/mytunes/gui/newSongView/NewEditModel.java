@@ -1,18 +1,15 @@
 package dk.easv.mytunes.gui.newSongView;
 import dk.easv.mytunes.bll.MyTunesCreation;
 import dk.easv.mytunes.exceptions.MyTunesException;
-import dk.easv.mytunes.utility.SongFormat;
-import javafx.stage.Stage;
-
-import java.io.File;
 
 
-public class NewEditModel {
+
+public class NewEditModel extends NewEditCommon {
     private static NewEditModel instance;
-    private MyTunesCreation myTunesCreation;
+
 
     private NewEditModel() throws  MyTunesException{
-        myTunesCreation=MyTunesCreation.getInstance();
+        setMyTunesCreation(MyTunesCreation.getInstance());
     }
     public static  NewEditModel getInstance()throws MyTunesException {
         if(instance==null){
@@ -22,22 +19,11 @@ public class NewEditModel {
     }
 
     public boolean createNewSong(String path, String title , String artist ,String genre,String songDuration ) throws MyTunesException {
-        return myTunesCreation.createNewSong(path,title,artist,genre,songDuration);
+        return getMyTunesCreation().createNewSong(path,title,artist,genre,songDuration);
     }
 
 
-    public SongFormat getFormat(String name) throws MyTunesException {
-        return myTunesCreation.extractFormat(name);
-    }
-    public double getDuration(File file, SongFormat songFormat) throws MyTunesException {
-        return myTunesCreation.getSongDuration(file,songFormat);
-    }
-    public boolean checkIfFileExists(String filePath){
-     return myTunesCreation.checkFilePath(filePath);
-    }
-    public boolean areTitleOrPathEmpty(String title, String path) {
-        return myTunesCreation.areTitleOrPathEmpty(title,path);
-    }
+
 
 
 
