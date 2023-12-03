@@ -27,6 +27,14 @@ public class EditSongController extends NewEditController implements Initializab
     private EditSongModel editModel;
 
 
+    /**
+     * Initializes the controller class. This method is automatically called
+     * after the FXML file has been loaded. It initializes the edit model
+     * and sets up the items in the genre dropdown.
+     *
+     * @param location The location used to resolve relative paths for the root object, or null if unknown.
+     * @param resources The resources used to localize the root object, or null if not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -41,7 +49,12 @@ public class EditSongController extends NewEditController implements Initializab
         }
         setItems(genreDropDown);
     }
-
+    /**
+     * Initializes the view with the details of the song to be updated.
+     * Sets the text fields and dropdown with the song's current information.
+     *
+     * @param songToUpdate The song object whose details are to be loaded into the view for editing.
+     */
     private void initializeView(Song songToUpdate) {
         songTitle.setText(songToUpdate.getTitle());
         songArtist.setText(songToUpdate.getArtist());
@@ -49,6 +62,13 @@ public class EditSongController extends NewEditController implements Initializab
         genreDropDown.setValue(songToUpdate.getGenre());
         fileLocation.setText(songToUpdate.getSongPath());
     }
+
+    /**
+     * Handles the action of opening a file chooser to select a new file for the song.
+     * Updates the song details if a different file is selected.
+     *
+     * @param event The event that triggered this method.
+     */
 
     @FXML
     private void openFileChoser(ActionEvent event) {
@@ -61,6 +81,12 @@ public class EditSongController extends NewEditController implements Initializab
         }
 
     }
+    /**
+     * Updates the song information with the new details entered by the user.
+     * Validates the inputs and updates the song in the model. Closes the edit stage upon completion.
+     *
+     * @param event The event that triggered this method.
+     */
      @FXML
     private void updateSong(ActionEvent event) {
         Stage editSongStage = getCurrentStage(event);
@@ -75,6 +101,8 @@ public class EditSongController extends NewEditController implements Initializab
             editSongStage.close();
         }
     }
+
+
 
     private Stage getCurrentStage(ActionEvent event) {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -114,6 +142,11 @@ public class EditSongController extends NewEditController implements Initializab
         initiateErrorAlert(e, stage);
     }
 
+    /**
+     * Closes the edit song stage without saving changes.
+     *
+     * @param event The event that triggered this method.
+     */
     public void cancelEditSong(ActionEvent event) {
         Stage editStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         editStage.close();
