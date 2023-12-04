@@ -9,6 +9,7 @@ import dk.easv.mytunes.gui.components.searchButton.UndoGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
 import dk.easv.mytunes.gui.deleteView.ConfirmationWindow;
+import dk.easv.mytunes.gui.deleteView.DeleteController;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
@@ -40,7 +41,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, ConfirmationController {
+public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder{
     private final int FIRST_INDEX = 0;
     private final int new_editWindowWidth = 420;
     private Model model;
@@ -324,7 +325,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     @FXML
     private void openEditWindow(ActionEvent event) throws IOException {
-
         if (this.allSongsTable.getSelectionModel().getSelectedItem() == null) {
             alert.setAlertType(Alert.AlertType.INFORMATION);
             alert.setContentText("No song selected , please select a song. ");
@@ -332,7 +332,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             return;
         }
         Song songToUpdate = this.allSongsTable.getSelectionModel().getSelectedItem();
-        System.out.println(songToUpdate + "asdadadfwe");
         Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../editSongView/EditSongView.fxml"));
         Parent parent = loader.load();
@@ -343,9 +342,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         String stageName = "Edit Song";
         Stage newSongStage = popupStage(mainStage, scene, stageName);
         newSongStage.show();
-
-
-
     }
 
     private Stage popupStage(Stage mainStage, Scene scene, String name) {
@@ -360,27 +356,22 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
 
-    public void deleteSong(ActionEvent event) {
-        ConfirmationWindow confirmationWindow =  new ConfirmationWindow();
-        initializeConfirmationWindow(confirmationWindow);
+    public void deleteSong(ActionEvent event) throws IOException {
+        DeleteController del =  new DeleteController();
+      del.initialize(null,null);
+
+        System.out.println(del.getConfirmationWindow());
         Stage mainStage = getCurrentStage(event);
-        Scene scene = new Scene(confirmationWindow.getConfirmationWindow());
+        Scene scene = new Scene(del.getConfirmationWindow());
         Stage confirmation = popupStage(mainStage,scene,"Delete Song");
         confirmation.show();
     }
 
-    private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow) {
-        confirmationWindow.setConfirmationController(this);
-        confirmationWindow.setOperationTitle("Delete operation");
-        confirmationWindow.setOperationInformation("Are you sure that you want to delete this file?");
-    }
+
 
     private Stage getCurrentStage(ActionEvent event) {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
 
-    @Override
-    public void confirmationEventHandler(boolean confirmation) {
-        System.out.println(confirmation);
-    }
+
 }

@@ -47,8 +47,18 @@ public class SongsDao implements ISongsDao {
     }
 
     @Override
-    public boolean deleteSong(int songId) {
-        return false;
+    public boolean deleteSong(int songId) throws MyTunesException {
+        boolean executed =  false;
+     String sql = "DELETE FROM Songs were SongId=?";
+        try (Connection conn = CONNECTION_MANAGER.getConnection()){
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setInt(1,songId);
+            psmt.execute();
+            executed= true;
+        } catch (SQLException e) {
+            throw new MyTunesException("Error when trying to delete from data base");
+        }
+        return executed;
     }
 
     @Override

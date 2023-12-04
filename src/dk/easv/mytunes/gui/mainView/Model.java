@@ -265,8 +265,12 @@ public class Model {
         return currentSongTimePlaying;
     }
 
+    /**
+     * when thi smetho di scalled it will reload all the songs from the data base*/
+
     public void reloadSongsFromDB() throws MyTunesException {
         myTunesLogic.reloadSongsFromDB();
         this.allSongsObjectsToDisplay.setAll(myTunesLogic.getAllSongs());
     }
+
 }

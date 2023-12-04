@@ -1,10 +1,7 @@
 package dk.easv.mytunes.bll;
 
 import dk.easv.mytunes.be.Song;
-import dk.easv.mytunes.dal.ISongReader;
-import dk.easv.mytunes.dal.ISongsDao;
-import dk.easv.mytunes.dal.SongReader;
-import dk.easv.mytunes.dal.SongsDao;
+import dk.easv.mytunes.dal.*;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.utility.SongFormat;
 import javafx.util.Duration;
@@ -21,11 +18,13 @@ public class MyTunesCreation {
     private static MyTunesCreation instance;
     private ISongsDao songsDao;
     private ISongReader songReader;
+    private FileHandler fileHandler;
 
 
     private MyTunesCreation() throws MyTunesException {
         songsDao = SongsDao.getSongsDao();
         songReader = SongReader.getSongReader();
+        fileHandler = FileHandler.getInstance();
     }
 
     public static MyTunesCreation getInstance() throws MyTunesException {
@@ -133,5 +132,18 @@ public class MyTunesCreation {
 
     public boolean updateSong(Song updatedSong) throws MyTunesException {
         return songsDao.updateSong(updatedSong);
+    }
+
+    /**
+     * delete a song from the data base
+     * @param songId the id off the song that need s to be deleted */
+    public boolean deleteSong(int songId,String songPath) throws MyTunesException {
+        boolean deletedFromDb = songsDao.deleteSong(songId);
+        boolean deletedFromLocal = false;
+        if(deletedFromDb){
+            deletedFromLocal =fileHandler.deleteSongLocal(songPath);
+        }
+
+        return (deletedFromDb && deletedFromLocal);
     }
 }

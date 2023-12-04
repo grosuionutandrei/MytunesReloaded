@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ISongsDao {
     public boolean createSong(Song s) throws MyTunesException;
-    public boolean deleteSong(int songId);
+    public boolean deleteSong(int songId) throws MyTunesException;
     public boolean updateSong(Song song) throws MyTunesException;
     public List<Song> getAllSongsFromCache() throws MyTunesException;
     public List<Song> getPlayListSongs(int playListId);

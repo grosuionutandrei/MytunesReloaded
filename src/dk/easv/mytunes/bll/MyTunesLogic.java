@@ -13,13 +13,16 @@ import java.util.stream.Collectors;
 public class MyTunesLogic {
     private ISongReader songReader;
     private ISongsDao songsDao;
+    private FileHandler fileHandler;
     private IPlaylistDao playlistDao;
     private static MyTunesLogic instance;
+
 
     private MyTunesLogic() throws MyTunesException {
         this.songReader = SongReader.getSongReader();
         this.songsDao = SongsDao.getSongsDao();
         this.playlistDao = PlaylistDao.getPlaylistDao();
+        this.fileHandler=FileHandler.getInstance();
     }
 
     public static MyTunesLogic getMyTuneLogic() throws MyTunesException {
@@ -99,9 +102,11 @@ public ObservableList<Song> changeCurrentPlayingSongsList(String currentNameLoca
                 .collect(Collectors.toList());
     }
 
-
+/** reload all the songs from the data base*/
     public void reloadSongsFromDB() throws MyTunesException {
         songsDao.reloadSongsFromDB();
     }
+
+
 }
 
