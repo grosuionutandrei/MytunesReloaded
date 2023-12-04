@@ -1,5 +1,6 @@
 package dk.easv.mytunes.bll;
 
+import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.dal.*;
 import dk.easv.mytunes.exceptions.MyTunesException;
@@ -105,6 +106,14 @@ public ObservableList<Song> changeCurrentPlayingSongsList(String currentNameLoca
 /** reload all the songs from the data base*/
     public void reloadSongsFromDB() throws MyTunesException {
         songsDao.reloadSongsFromDB();
+    }
+
+
+    public List<PlayList> getAllPlaylists() throws MyTunesException {
+        return this.playlistDao.getAllPlaylistsFromCache();
+    }
+    public PlayList getSelectedPlayList(int index) throws MyTunesException {
+        return this.playlistDao.getAllPlaylistsFromCache().get(index);
     }
 
 

@@ -1,4 +1,4 @@
-package dk.easv.mytunes.gui.components;
+package dk.easv.mytunes.gui.components.songsTable;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;

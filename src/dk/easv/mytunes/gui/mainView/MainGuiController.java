@@ -2,6 +2,8 @@ package dk.easv.mytunes.gui.mainView;
 
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.gui.components.playListSongView.PlaylistSongsView;
+import dk.easv.mytunes.gui.components.playListTable.PlaylistTable;
 import dk.easv.mytunes.gui.components.player.Player;
 import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
 import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
@@ -10,11 +12,8 @@ import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
 import dk.easv.mytunes.gui.deleteView.DeleteController;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
-import dk.easv.mytunes.gui.listeners.Reloadable;
+import dk.easv.mytunes.gui.listeners.*;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
-import dk.easv.mytunes.gui.listeners.DataSupplier;
-import dk.easv.mytunes.gui.listeners.SongSelectionListener;
-import dk.easv.mytunes.gui.listeners.VolumeBinder;
 import dk.easv.mytunes.utility.GraphicIdValues;
 import dk.easv.mytunes.utility.Utility;
 import javafx.application.Platform;
@@ -30,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.stage.Modality;
@@ -40,9 +40,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, Reloadable {
+public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, Reloadable, PlayListSelectionListener {
     private final int FIRST_INDEX = 0;
     private final int new_editWindowWidth = 420;
+
     private Model model;
     private Player player;
     private ISearchGraphic searchGraphic;
@@ -69,6 +70,11 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private Button searchButton;
     @FXML
     private SongsTable allSongsTable;
+    @FXML
+    private VBox playlistContainer;
+    @FXML
+    private VBox playListSongsContainer;
+
 
 
     public void playPreviousSong(ActionEvent event) {
@@ -139,6 +145,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             volumeControlContainer.getChildren().add(FIRST_INDEX, volumeControl.getButton());
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
             initiateTableSong();
+            initiatePlaylistTable();
+            initiateSongListView();
             searchValue.textProperty().addListener((obs, oldValue, newValue) -> {
                 if (infoLabel.isVisible()) {
                     infoLabel.setVisible(false);
@@ -147,7 +155,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             this.player = Player.useMediaPlayer(this);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
             this.utility = new Utility();
-
         }
 
     }
@@ -157,6 +164,39 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         allSongsTable = new SongsTable(this);
         allSongsTable.setSongs(model.getAllSongsObjectsToDisplay());
         allSongsContainer.getChildren().add(allSongsTable);
+    }
+
+
+    /**
+     * initiate the tableview of the playlist */
+    private void initiatePlaylistTable() {
+        PlaylistTable allPlaylists = new PlaylistTable(this);
+        try {
+            allPlaylists.setSongs(model.getAllPlaylists());
+        } catch (MyTunesException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.show();
+        }
+        playlistContainer.getChildren().add(allPlaylists);
+    }
+    private void initiateSongListView(){
+        PlaylistSongsView playlistSongsView = new PlaylistSongsView();
+        playlistSongsView.setSongs(this.model.getCurrentPlayListSongs());
+        playListSongsContainer.getChildren().add(playlistSongsView);
+       // playlistSongsView.bindModelToPlayListSongs(this.model,this.player,this.playButton);
+        VBox.setVgrow(playlistSongsView, Priority.ALWAYS);
+    }
+    /**
+     * listen to the playlist table click events  */
+    @Override
+    public void onPlayListSelect(int selectedId) {
+        System.out.println(selectedId + " " + "i am listening ");
+        try {
+            model.setPlayingPlayList(selectedId);
+            System.out.println(model.getCurrentPlayingPlayListId());
+        } catch (MyTunesException e) {
+            displayAlert(Alert.AlertType.ERROR,e.getMessage());
+        }
     }
 
     /**
@@ -178,8 +218,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         if (this.playButton.getText().equals(">")) {
             this.playButton.setText("||");
         }
-
-
     }
 
     /**
@@ -389,6 +427,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private Stage getCurrentStage(ActionEvent event) {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
+
 
 
 }

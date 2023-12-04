@@ -1,7 +1,5 @@
 package dk.easv.mytunes.gui.components.songsTable;
 import dk.easv.mytunes.be.Song;
-import dk.easv.mytunes.exceptions.MyTunesException;
-import dk.easv.mytunes.gui.components.TableCell;
 import dk.easv.mytunes.gui.listeners.SongSelectionListener;
 import dk.easv.mytunes.utility.PlayingLocation;
 import dk.easv.mytunes.utility.Utility;

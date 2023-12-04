@@ -1,5 +1,6 @@
 package dk.easv.mytunes.gui.mainView;
 
+import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.bll.MyTunesLogic;
 import dk.easv.mytunes.exceptions.MyTunesException;
@@ -9,8 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.media.Media;
 import javafx.util.Duration;
-
-import java.util.List;
 
 public class Model {
     private final MyTunesLogic myTunesLogic;
@@ -59,7 +58,12 @@ public class Model {
      * holds the current selected playlist Songs
      */
 
-    private ObservableList<Song> playListSongs;
+     /**
+      * holds all the playlists */
+    private final ObservableList<PlayList> allPlaylists;
+
+    private ObservableList<Song> currentPlayListSongs;
+
     /**
      * holds the value off the current playing song
      */
@@ -70,12 +74,20 @@ public class Model {
     private ObservableList<Song> currentPlayingList;
 
 
+
+    /**
+     * store the current playing list it is used to know to delete it or not */
+    private int currentPlayingPlayListId;
+
+
     private Model() throws MyTunesException {
         myTunesLogic = MyTunesLogic.getMyTuneLogic();
         allSongsObjectsToDisplay = FXCollections.observableArrayList();
         populateAllSongsList(allSongsObjectsToDisplay);
         currentPlayingList = FXCollections.observableArrayList();
-        playListSongs = FXCollections.observableArrayList();
+        this.allPlaylists = FXCollections.observableArrayList();
+        populateAllPlayLists();
+        currentPlayListSongs = FXCollections.observableArrayList();
         allSongsObjectsToFilter = FXCollections.observableArrayList();
         populateAllSongsList(allSongsObjectsToFilter);
         currentTablePlaying = PlayingLocation.ALL_SONGS.getValue();
@@ -105,7 +117,7 @@ public class Model {
         //List<Song> songs = myTunesLogic.changeCurrentPlayingSongsList(this.currentTablePlaying,this.playListSongs,this.allSongsObjectsToDisplay);
         //  System.out.println(songs.size());
         //this.currentPlayingList.setAll(songs);
-        this.currentPlayingList = myTunesLogic.changeCurrentPlayingSongsList(this.currentTablePlaying, this.playListSongs, this.allSongsObjectsToDisplay);
+        this.currentPlayingList = myTunesLogic.changeCurrentPlayingSongsList(this.currentTablePlaying, this.currentPlayListSongs, this.allSongsObjectsToDisplay);
         System.out.println(this.currentPlayingList.size());
         this.currentPlayingMedia = myTunesLogic.getMediaToBePlayed(this.currentIndexOffTheSong.getValue(), currentPlayingList);
         this.currentSongPlayingName.set(myTunesLogic.getCurrentSongName(this.currentIndexOffTheSong.getValue(), this.currentPlayingList));
@@ -266,11 +278,34 @@ public class Model {
     }
 
     /**
-     * when thi smetho di scalled it will reload all the songs from the data base*/
+     * when this method is called it will reload all the songs from the database*/
 
     public void reloadSongsFromDB() throws MyTunesException {
         myTunesLogic.reloadSongsFromDB();
         this.allSongsObjectsToDisplay.setAll(myTunesLogic.getAllSongs());
     }
+
+    /**
+     * Call the bll to return the list off playlists*/
+    public ObservableList<PlayList> getAllPlaylists() throws MyTunesException {
+        return allPlaylists;
+    }
+    private void populateAllPlayLists() throws MyTunesException {
+        this.allPlaylists.setAll(myTunesLogic.getAllPlaylists());
+    }
+    public void  setPlayingPlayList(int index) throws MyTunesException {
+        PlayList selected =this. myTunesLogic.getSelectedPlayList(index);
+        this.currentPlayListSongs.setAll(selected.getPlayListSongs());
+        this.currentPlayingPlayListId =selected.getId();
+    }
+    public ObservableList<Song> getCurrentPlayListSongs(){
+        return this.currentPlayListSongs;
+    }
+
+    public int getCurrentPlayingPlayListId() {
+        return currentPlayingPlayListId;
+    }
+
+
 
 }
