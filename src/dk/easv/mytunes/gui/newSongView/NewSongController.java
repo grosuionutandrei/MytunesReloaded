@@ -69,7 +69,7 @@ public class NewSongController extends NewEditController implements Initializabl
             newSongStage.close();
             return;
         }
-        getParentController().reloadSongsFromDB();
+        getReloadableController().reloadSongsFromDB();
         newSongStage.close();
     }
 

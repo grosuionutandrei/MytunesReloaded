@@ -1,4 +1,4 @@
-package dk.easv.mytunes.gui.deleteView;
+package dk.easv.mytunes.gui.components.confirmationWindow;
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

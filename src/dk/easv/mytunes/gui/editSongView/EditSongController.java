@@ -79,7 +79,6 @@ public class EditSongController extends NewEditController implements Initializab
                 updateSongDetails(selectedFile);
             }
         }
-
     }
     /**
      * Updates the song information with the new details entered by the user.
@@ -132,10 +131,9 @@ public class EditSongController extends NewEditController implements Initializab
         String genre = genreDropDown.getSelectionModel().getSelectedItem();
         String path = fileLocation.getText();
         int initialId = editModel.getInitialSong().getSongId();
-
         Song updatedSong = new Song(initialId, path, title, artist, genre, Double.parseDouble(duration));
         editModel.updateSong(updatedSong);
-        getParentController().reloadSongsFromDB();
+        getReloadableController().reloadSongsFromDB();
     }
 
     private void handleUpdateError(MyTunesException e, Stage stage) {

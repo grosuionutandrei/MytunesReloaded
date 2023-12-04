@@ -48,8 +48,9 @@ public class SongsDao implements ISongsDao {
 
     @Override
     public boolean deleteSong(int songId) throws MyTunesException {
+        System.out.println(songId);
         boolean executed =  false;
-     String sql = "DELETE FROM Songs were SongId=?";
+     String sql = "DELETE FROM Songs WHERE SongId=?";
         try (Connection conn = CONNECTION_MANAGER.getConnection()){
             PreparedStatement psmt = conn.prepareStatement(sql);
             psmt.setInt(1,songId);

@@ -8,10 +8,9 @@ import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
 import dk.easv.mytunes.gui.components.searchButton.UndoGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
-import dk.easv.mytunes.gui.deleteView.ConfirmationWindow;
 import dk.easv.mytunes.gui.deleteView.DeleteController;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
-import dk.easv.mytunes.gui.listeners.ConfirmationController;
+import dk.easv.mytunes.gui.listeners.Reloadable;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
 import dk.easv.mytunes.gui.listeners.DataSupplier;
 import dk.easv.mytunes.gui.listeners.SongSelectionListener;
@@ -41,7 +40,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder{
+public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, Reloadable {
     private final int FIRST_INDEX = 0;
     private final int new_editWindowWidth = 420;
     private Model model;
@@ -300,7 +299,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         return this.model.isMuteProperty();
     }
 
-
+    @Override
     public void reloadSongsFromDB() {
         try {
             model.reloadSongsFromDB();
@@ -316,7 +315,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../newSongView/NewSongView.fxml"));
         Parent parent = loader.load();
         NewSongController news = loader.getController();
-        news.setParentController(this);
+        news.setReloadableController(this);
         Scene scene = new Scene(parent);
         String stageName = "Add new Song";
         Stage newSongStage = popupStage(mainStage, scene, stageName);
@@ -325,25 +324,37 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     @FXML
     private void openEditWindow(ActionEvent event) throws IOException {
-        if (this.allSongsTable.getSelectionModel().getSelectedItem() == null) {
-            alert.setAlertType(Alert.AlertType.INFORMATION);
-            alert.setContentText("No song selected , please select a song. ");
-            alert.showAndWait();
+        Song songToUpdate = getSelectedSong(this.allSongsTable);
+        if (songToUpdate == null) {
+            displayAlert(Alert.AlertType.INFORMATION, "No song selected");
             return;
         }
-        Song songToUpdate = this.allSongsTable.getSelectionModel().getSelectedItem();
+
         Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../editSongView/EditSongView.fxml"));
         Parent parent = loader.load();
         EditSongController esc = loader.getController();
         esc.initializeEditView(songToUpdate);
-        esc.setParentController(this);
+        esc.setReloadableController(this);
         Scene scene = new Scene(parent);
         String stageName = "Edit Song";
         Stage newSongStage = popupStage(mainStage, scene, stageName);
         newSongStage.show();
     }
 
+    private void displayAlert(Alert.AlertType type, String message) {
+        alert.setAlertType(type);
+        alert.setContentText(message);
+        alert.show();
+    }
+
+    private Song getSelectedSong(TableView<Song> table) {
+        return table.getSelectionModel().getSelectedItem();
+    }
+
+    /**
+     * initiate a  new stage that will block all the events, besides the current window
+     */
     private Stage popupStage(Stage mainStage, Scene scene, String name) {
         Stage newSongStage = new Stage();
         newSongStage.setX(utility.calculateMidPoint(mainStage.getX(), mainStage.getWidth(), this.new_editWindowWidth));
@@ -355,18 +366,24 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         return newSongStage;
     }
 
-
+    /**
+     * Deletes the selected song from the table
+     */
     public void deleteSong(ActionEvent event) throws IOException {
-        DeleteController del =  new DeleteController();
-      del.initialize(null,null);
-
-        System.out.println(del.getConfirmationWindow());
+        Song songToDelete = getSelectedSong(this.allSongsTable);
+        if (songToDelete == null) {
+            displayAlert(Alert.AlertType.INFORMATION, "No song selected");
+            return;
+        }
+        DeleteController del = new DeleteController();
+        del.initialize(null, null);
+        del.setSongToDelete(songToDelete);
+        del.setReloadable(this);
         Stage mainStage = getCurrentStage(event);
         Scene scene = new Scene(del.getConfirmationWindow());
-        Stage confirmation = popupStage(mainStage,scene,"Delete Song");
+        Stage confirmation = popupStage(mainStage, scene, "Delete Song");
         confirmation.show();
     }
-
 
 
     private Stage getCurrentStage(ActionEvent event) {

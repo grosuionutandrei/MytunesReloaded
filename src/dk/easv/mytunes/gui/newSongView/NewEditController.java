@@ -1,6 +1,7 @@
 package dk.easv.mytunes.gui.newSongView;
 
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.gui.listeners.Reloadable;
 import dk.easv.mytunes.gui.mainView.MainGuiController;
 import dk.easv.mytunes.utility.Genre;
 import javafx.scene.control.Alert;
@@ -12,7 +13,7 @@ import javafx.stage.Stage;
 public abstract class NewEditController {
     private final Alert alertWindowOperation = new Alert(Alert.AlertType.NONE);
     private Alert info;
-    private MainGuiController parentController;
+    private Reloadable reloadable;
     private final FileChooser fileChooser = new FileChooser();
 
     public FileChooser getFileChooser() {
@@ -43,12 +44,12 @@ public abstract class NewEditController {
         }
     }
 
-    public void setParentController(MainGuiController parent) {
-        this.parentController = parent;
+    public void setReloadableController(Reloadable reloadable) {
+        this.reloadable = reloadable;
     }
 
-    public MainGuiController getParentController() {
-        return parentController;
+    public Reloadable getReloadableController() {
+        return reloadable;
     }
 
     public void initiateInfoAlert(Stage newSongStage, String message) {
