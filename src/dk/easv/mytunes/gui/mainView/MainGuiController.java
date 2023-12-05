@@ -357,7 +357,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         news.setReloadableController(this);
         Scene scene = new Scene(parent);
         String stageName = "Add new Song";
-        Stage newSongStage = popupStage(mainStage, scene, stageName);
+        Stage newSongStage = createPopupStage(mainStage, scene, stageName);
         newSongStage.show();
     }
 
@@ -377,7 +377,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         esc.setReloadableController(this);
         Scene scene = new Scene(parent);
         String stageName = "Edit Song";
-        Stage newSongStage = popupStage(mainStage, scene, stageName);
+        Stage newSongStage = createPopupStage(mainStage, scene, stageName);
         newSongStage.show();
     }
 
@@ -394,7 +394,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     /**
      * initiate a  new stage that will block all the events, besides the current window
      */
-    private Stage popupStage(Stage mainStage, Scene scene, String name) {
+    private Stage createPopupStage(Stage mainStage, Scene scene, String name) {
         Stage newSongStage = new Stage();
         newSongStage.setX(utility.calculateMidPoint(mainStage.getX(), mainStage.getWidth(), this.new_editWindowWidth));
         newSongStage.setY(mainStage.getHeight() / 2);
@@ -420,7 +420,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         del.setReloadable(this);
         Stage mainStage = getCurrentStage(event);
         Scene scene = new Scene(del.getConfirmationWindow());
-        Stage confirmation = popupStage(mainStage, scene, "Delete Song");
+        Stage confirmation = createPopupStage(mainStage, scene, "Delete Song");
         confirmation.show();
     }
 
@@ -430,5 +430,12 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
 
-
+    public void openNewPlaylistWindow(ActionEvent event) throws IOException {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("../newPlaylistView/NewPlaylistView.fxml"));
+      Parent root = loader.load();
+      Scene scene = new Scene(root);
+      Stage mainStage= getCurrentStage(event);
+      Stage newPlayListStage = createPopupStage(mainStage,scene,"Create playlist");
+      newPlayListStage.show();
+    }
 }

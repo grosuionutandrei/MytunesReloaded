@@ -1,11 +1,10 @@
 package dk.easv.mytunes.dal;
+
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,26 +13,30 @@ import java.util.Map;
 public class PlaylistDao implements IPlaylistDao {
     private final ConnectionManager CONNECTION_MANAGER = new ConnectionManager();
     private List<PlayList> allPlaylists;
-    private static PlaylistDao  instance;
+    private static PlaylistDao instance;
 
     private PlaylistDao() throws MyTunesException {
         loadPlayListsFromDB();
     }
 
     public static PlaylistDao getPlaylistDao() throws MyTunesException {
-        if(instance==null){
-            instance=new PlaylistDao();
+        if (instance == null) {
+            instance = new PlaylistDao();
         }
         return instance;
     }
 
-
-
-
-
     @Override
     public boolean createPlayList(PlayList playlist) throws MyTunesException {
-        return false;
+        String sql = "INSERT INTO PLAYLISTS VALUES (?) ";
+        try (Connection conn = CONNECTION_MANAGER.getConnection()) {
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setString(1,playlist.getName());
+            int rowsAffected = psmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+         throw  new MyTunesException("Error when connecting to database",e);
+        }
     }
 
     @Override
@@ -58,7 +61,7 @@ public class PlaylistDao implements IPlaylistDao {
 
     public void loadPlayListsFromDB() throws MyTunesException {
         Map<Integer, PlayList> playlistMap = new HashMap<>();
-        List<PlayList>  playLists = new ArrayList<>();
+        List<PlayList> playLists = new ArrayList<>();
         PlayList playlist;
         Song song;
         try (Connection conn = CONNECTION_MANAGER.getConnection()) {
@@ -90,10 +93,10 @@ public class PlaylistDao implements IPlaylistDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new MyTunesException("Error when trying to read from database");
         }
-        playlistMap.keySet().forEach(elem->playLists.add(playlistMap.get(elem)));
-      this.allPlaylists=playLists;
+        playlistMap.keySet().forEach(elem -> playLists.add(playlistMap.get(elem)));
+        this.allPlaylists = playLists;
     }
 
 }
