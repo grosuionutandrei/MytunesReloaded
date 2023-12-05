@@ -13,4 +13,5 @@ public interface IPlaylistDao {
     public PlayList getPlayList(int id) throws MyTunesException;
     public List<PlayList> getAllPlaylistsFromCache() throws  MyTunesException;
 
+    List<PlayList> reloadPlaylistsFromDb() throws MyTunesException;
 }

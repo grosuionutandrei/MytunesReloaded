@@ -117,5 +117,8 @@ public ObservableList<Song> changeCurrentPlayingSongsList(String currentNameLoca
     }
 
 
+    public List<PlayList> reloadPlaylistsFromDB() throws MyTunesException {
+       return this.playlistDao.reloadPlaylistsFromDb();
+    }
 }
 

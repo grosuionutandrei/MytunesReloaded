@@ -7,14 +7,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity"   maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="420.0" style="-fx-background-color: f1eaff;" stylesheets="@../css/My_tunes.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.gui.newPlaylistView.PlaylistController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="420.0" style="-fx-background-color: f1eaff;" stylesheets="@../css/My_tunes.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.gui.newPlaylistView.PlaylistController">
    <children>
-      <Label text="New Playlist">
-         <VBox.margin>
-            <Insets top="5.0" />
-         </VBox.margin>
-      </Label>
       <Line endX="420.0" layoutX="420.0">
          <VBox.margin>
             <Insets bottom="10.0" top="5.0" />
@@ -34,9 +30,17 @@
             </TextField>
          </children>
          <VBox.margin>
-            <Insets bottom="41.0" top="41.0" />
+            <Insets top="34.0" />
          </VBox.margin>
       </HBox>
+      <Label fx:id="information" textFill="#df0c0c">
+         <VBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </VBox.margin>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="29.0" prefHeight="35.0" prefWidth="200.0">
          <children>
             <Button alignment="CENTER" mnemonicParsing="false" onAction="#savePlaylist" prefWidth="60.0" style="-fx-background-color: a076f9;" text="Save">
@@ -47,7 +51,7 @@
             <Button alignment="CENTER" layoutX="194.0" layoutY="15.0" mnemonicParsing="false" onAction="#cancelPlaylist" prefWidth="60.0" style="-fx-background-color: a076f9;" text="Cancel" />
          </children>
          <VBox.margin>
-            <Insets />
+            <Insets top="20.0" />
          </VBox.margin>
       </HBox>
       <Line endX="420.0" layoutX="10.0" layoutY="207.0">

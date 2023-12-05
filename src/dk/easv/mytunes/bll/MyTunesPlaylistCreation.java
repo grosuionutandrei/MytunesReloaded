@@ -19,6 +19,10 @@ public class MyTunesPlaylistCreation {
         return instance;
     }
 
+    public static boolean checkTitle(String title) {
+        return title.isEmpty();
+    }
+
     public boolean createPlayList(PlayList playList) throws MyTunesException {
         return this.playlistDao.createPlayList(playList);
     }

@@ -24,5 +24,8 @@ public class PlayListModel {
         PlayList playListCreated = new PlayList(playListTitle);
         return playlistCreation.createPlayList(playListCreated);
     }
+    public boolean checkTitle(String title){
+        return MyTunesPlaylistCreation.checkTitle(title);
+    }
 
 }

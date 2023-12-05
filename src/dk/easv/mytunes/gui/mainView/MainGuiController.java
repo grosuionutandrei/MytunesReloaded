@@ -13,6 +13,7 @@ import dk.easv.mytunes.gui.components.volume.VolumeControl;
 import dk.easv.mytunes.gui.deleteView.DeleteController;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
 import dk.easv.mytunes.gui.listeners.*;
+import dk.easv.mytunes.gui.newPlaylistView.PlaylistController;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
 import dk.easv.mytunes.utility.GraphicIdValues;
 import dk.easv.mytunes.utility.Utility;
@@ -40,7 +41,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, Reloadable, PlayListSelectionListener {
+public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, Reloadable, PlayListSelectionListener, PlaylistReloadable {
     private final int FIRST_INDEX = 0;
     private final int new_editWindowWidth = 420;
 
@@ -74,7 +75,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private VBox playlistContainer;
     @FXML
     private VBox playListSongsContainer;
-
 
 
     public void playPreviousSong(ActionEvent event) {
@@ -168,7 +168,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
 
     /**
-     * initiate the tableview of the playlist */
+     * initiate the tableview of the playlist
+     */
     private void initiatePlaylistTable() {
         PlaylistTable allPlaylists = new PlaylistTable(this);
         try {
@@ -179,16 +180,19 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         }
         playlistContainer.getChildren().add(allPlaylists);
     }
-    private void initiateSongListView(){
+
+    private void initiateSongListView() {
         PlaylistSongsView playlistSongsView = new PlaylistSongsView();
         playlistSongsView.setSongs(this.model.getCurrentPlayListSongs());
         playlistSongsView.setSongSelectionListener(this);
         playListSongsContainer.getChildren().add(playlistSongsView);
-       // playlistSongsView.bindModelToPlayListSongs(this.model,this.player,this.playButton);
+        // playlistSongsView.bindModelToPlayListSongs(this.model,this.player,this.playButton);
         VBox.setVgrow(playlistSongsView, Priority.ALWAYS);
     }
+
     /**
-     * listen to the playlist table click events  */
+     * listen to the playlist table click events
+     */
     @Override
     public void onPlayListSelect(int selectedId) {
         System.out.println(selectedId + " " + "i am listening ");
@@ -196,7 +200,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             model.setPlayingPlayList(selectedId);
             System.out.println(model.getCurrentPlayingPlayListId());
         } catch (MyTunesException e) {
-            displayAlert(Alert.AlertType.ERROR,e.getMessage());
+            displayAlert(Alert.AlertType.ERROR, e.getMessage());
         }
     }
 
@@ -431,11 +435,22 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
 
     public void openNewPlaylistWindow(ActionEvent event) throws IOException {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("../newPlaylistView/NewPlaylistView.fxml"));
-      Parent root = loader.load();
-      Scene scene = new Scene(root);
-      Stage mainStage= getCurrentStage(event);
-      Stage newPlayListStage = createPopupStage(mainStage,scene,"Create playlist");
-      newPlayListStage.show();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../newPlaylistView/NewPlaylistView.fxml"));
+        Parent root = loader.load();
+        PlaylistController pc = loader.getController();
+        pc.setReloadable(this);
+        Scene scene = new Scene(root);
+        Stage mainStage = getCurrentStage(event);
+        Stage newPlayListStage = createPopupStage(mainStage, scene, "Create playlist");
+        newPlayListStage.show();
+    }
+
+    @Override
+    public void reloadPlaylistsFromDb() {
+        try {
+            this.model.reloadPlayListsFromDB();
+        } catch (MyTunesException e) {
+            displayAlert(Alert.AlertType.ERROR, e.getMessage());
+        }
     }
 }

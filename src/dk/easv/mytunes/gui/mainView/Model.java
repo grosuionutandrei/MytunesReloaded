@@ -307,5 +307,7 @@ public class Model {
     }
 
 
-
+    public void reloadPlayListsFromDB() throws MyTunesException {
+    this.allPlaylists.setAll(this.myTunesLogic.reloadPlaylistsFromDB());
+    }
 }
