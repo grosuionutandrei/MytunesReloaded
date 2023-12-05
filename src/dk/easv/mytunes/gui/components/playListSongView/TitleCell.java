@@ -2,9 +2,11 @@ package dk.easv.mytunes.gui.components.playListSongView;
 
 
 import dk.easv.mytunes.be.Song;
+import dk.easv.mytunes.gui.listeners.SongSelectionListener;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 public class TitleCell<T extends Song> extends ListCell<T> {
@@ -52,6 +54,19 @@ public class TitleCell<T extends Song> extends ListCell<T> {
         label.setOnMouseExited(event -> Tooltip.uninstall(this,longDescription));
     }
 
+    public void setOnMouseClick(SongSelectionListener listener,String tableId){
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if (!this.isEmpty() && event.getClickCount() == 2) {
+                listener.onSongSelect(this.getIndex(),tableId,true);
+            }else if(!this.isEmpty()&& event.getClickCount()==1){
+                System.out.println();
+
+            }
+        });
+
+    };
+    }
 
 
-}
+
+

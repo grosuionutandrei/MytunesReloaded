@@ -182,6 +182,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private void initiateSongListView(){
         PlaylistSongsView playlistSongsView = new PlaylistSongsView();
         playlistSongsView.setSongs(this.model.getCurrentPlayListSongs());
+        playlistSongsView.setSongSelectionListener(this);
         playListSongsContainer.getChildren().add(playlistSongsView);
        // playlistSongsView.bindModelToPlayListSongs(this.model,this.player,this.playButton);
         VBox.setVgrow(playlistSongsView, Priority.ALWAYS);

@@ -1,7 +1,5 @@
 package dk.easv.mytunes.gui.components.playListTable;
-
 import dk.easv.mytunes.be.PlayList;
-
 import dk.easv.mytunes.gui.listeners.PlayListSelectionListener;
 import dk.easv.mytunes.utility.PlayingLocation;
 import dk.easv.mytunes.utility.Utility;
@@ -16,8 +14,6 @@ import javafx.scene.input.MouseEvent;
 
 public class PlaylistTable extends TableView<PlayList> {
     private PlayListSelectionListener playListSelectionListener;
-
-
 
     private int selectedPlaylistId;
 
