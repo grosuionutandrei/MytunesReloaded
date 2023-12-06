@@ -1,5 +1,6 @@
 package dk.easv.mytunes.gui.mainView;
 
+import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.playListSongView.PlaylistSongsView;
@@ -13,7 +14,8 @@ import dk.easv.mytunes.gui.components.volume.VolumeControl;
 import dk.easv.mytunes.gui.deleteView.DeleteController;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
 import dk.easv.mytunes.gui.listeners.*;
-import dk.easv.mytunes.gui.newPlaylistView.PlaylistController;
+import dk.easv.mytunes.gui.newEditDeletePlaylist.EditPlaylistController;
+import dk.easv.mytunes.gui.newEditDeletePlaylist.NewPlaylistController;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
 import dk.easv.mytunes.utility.GraphicIdValues;
 import dk.easv.mytunes.utility.Utility;
@@ -71,6 +73,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private Button searchButton;
     @FXML
     private SongsTable allSongsTable;
+    @FXML
+    private PlaylistTable allPlaylistTable;
     @FXML
     private VBox playlistContainer;
     @FXML
@@ -171,14 +175,14 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
      * initiate the tableview of the playlist
      */
     private void initiatePlaylistTable() {
-        PlaylistTable allPlaylists = new PlaylistTable(this);
+        this.allPlaylistTable = new PlaylistTable(this);
         try {
-            allPlaylists.setSongs(model.getAllPlaylists());
+            this.allPlaylistTable.setSongs(model.getAllPlaylists());
         } catch (MyTunesException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.show();
         }
-        playlistContainer.getChildren().add(allPlaylists);
+        playlistContainer.getChildren().add(this.allPlaylistTable);
     }
 
     private void initiateSongListView() {
@@ -433,15 +437,45 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
 
-
+    /**
+     * Opens a new playlist creation window.
+     *
+     * @param event The ActionEvent that triggered the opening of the window.
+     * @throws IOException If there is an issue with loading the FXML file.
+     */
     public void openNewPlaylistWindow(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../newPlaylistView/NewPlaylistView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../newEditDeletePlaylist/NewPlaylistView.fxml"));
+        NewPlaylistController pc = new NewPlaylistController();
+        loader.setController(pc);
         Parent root = loader.load();
-        PlaylistController pc = loader.getController();
         pc.setReloadable(this);
         Scene scene = new Scene(root);
         Stage mainStage = getCurrentStage(event);
         Stage newPlayListStage = createPopupStage(mainStage, scene, "Create playlist");
+        newPlayListStage.show();
+    }
+
+    /**
+     * Opens a playlist editing window for a selected playlist.
+     *
+     * @param event The ActionEvent that triggered the opening of the window.
+     * @throws IOException If there is an issue with loading the FXML file.
+     */
+    public void openEditPlaylistWindow(ActionEvent event) throws IOException {
+        PlayList playListToUpdate = this.allPlaylistTable.getSelectionModel().getSelectedItem();
+        if (playListToUpdate == null) {
+            displayAlert(Alert.AlertType.ERROR, "No playlist has been selected");
+            return;
+        }
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../newEditDeletePlaylist/NewPlaylistView.fxml"));
+        EditPlaylistController editController = new EditPlaylistController();
+        loader.setController(editController);
+        Parent root = loader.load();
+        editController.setReloadable(this);
+        editController.setPlaylistToEdit(playListToUpdate);
+        Scene scene = new Scene(root);
+        Stage mainStage = getCurrentStage(event);
+        Stage newPlayListStage = createPopupStage(mainStage, scene, "Edit playlist");
         newPlayListStage.show();
     }
 
@@ -453,4 +487,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             displayAlert(Alert.AlertType.ERROR, e.getMessage());
         }
     }
+
+
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="420.0" style="-fx-background-color: f1eaff;" stylesheets="@../css/My_tunes.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.mytunes.gui.newPlaylistView.PlaylistController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="420.0" style="-fx-background-color: f1eaff;" stylesheets="@../css/My_tunes.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Line endX="420.0" layoutX="420.0">
          <VBox.margin>
@@ -43,7 +43,7 @@
       </Label>
       <HBox alignment="CENTER" layoutX="10.0" layoutY="29.0" prefHeight="35.0" prefWidth="200.0">
          <children>
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#savePlaylist" prefWidth="60.0" style="-fx-background-color: a076f9;" text="Save">
+            <Button fx:id="saveUpdateButton" alignment="CENTER" mnemonicParsing="false" onAction="#savePlaylist" prefWidth="60.0" style="-fx-background-color: a076f9;" text="Save">
                <HBox.margin>
                   <Insets left="134.0" right="5.0" />
                </HBox.margin>

@@ -28,12 +28,12 @@ public class PlaylistDao implements IPlaylistDao {
 
     @Override
     public boolean createPlayList(PlayList playList) throws MyTunesException {
-        boolean playListCreated =false;
+        boolean playListCreated = false;
         long playListId = insertPlayList(playList);
-         if(playListId>0){
-             playListCreated=addPlayListToJoinTable(playListId);
-         }
-         return playListCreated;
+        if (playListId > 0) {
+            playListCreated = addPlayListToJoinTable(playListId);
+        }
+        return playListCreated;
     }
 
     private long insertPlayList(PlayList playlist) throws MyTunesException {
@@ -52,21 +52,22 @@ public class PlaylistDao implements IPlaylistDao {
                 }
             }
         } catch (SQLException | MyTunesException e) {
-         throw  new MyTunesException(e.getMessage());
+            throw new MyTunesException(e.getMessage());
         }
         return playListId;
     }
+
     private boolean addPlayListToJoinTable(long playListId) throws MyTunesException {
-        boolean executed=false;
-     String sql = "INSERT INTO PlaylistSongs (PlayListId) values(?)";
-            try (Connection conn = CONNECTION_MANAGER.getConnection()) {
-                PreparedStatement psmt = conn.prepareStatement(sql);
-                psmt.setLong(1,playListId );
-                int rowsAffected = psmt.executeUpdate();
-              return rowsAffected>0;
-            } catch (SQLException | MyTunesException e) {
-                throw  new MyTunesException(e.getMessage(),e);
-            }
+
+        String sql = "INSERT INTO PlaylistSongs (PlayListId) values(?)";
+        try (Connection conn = CONNECTION_MANAGER.getConnection()) {
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setLong(1, playListId);
+            int rowsAffected = psmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException | MyTunesException e) {
+            throw new MyTunesException(e.getMessage(), e);
+        }
 
 
     }
@@ -77,8 +78,20 @@ public class PlaylistDao implements IPlaylistDao {
     }
 
     @Override
-    public boolean updatePlayList(PlayList playlist) {
-        return false;
+    public boolean updatePlayList(int playListId, String newTitle) throws MyTunesException {
+        String sql = "UPDATE Playlists SET PlaylistName=? WHERE PlaylistId=?";
+        try (Connection connection = CONNECTION_MANAGER.getConnection()) {
+            PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setString(1, newTitle);
+            psmt.setInt(2, playListId);
+            int rowsAffected = psmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            throw new MyTunesException(e.getMessage());
+        }
+
+
     }
 
     @Override

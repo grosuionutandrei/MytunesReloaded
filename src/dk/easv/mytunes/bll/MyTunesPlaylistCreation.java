@@ -27,4 +27,10 @@ public class MyTunesPlaylistCreation {
         return this.playlistDao.createPlayList(playList);
     }
 
+    public boolean updatePlayList(PlayList playlistToUpdate,String newTitle) throws MyTunesException {
+        if(playlistToUpdate.getName().equals(newTitle)){
+            return false;
+        }
+        return this.playlistDao.updatePlayList(playlistToUpdate.getId(),newTitle);
+    }
 }

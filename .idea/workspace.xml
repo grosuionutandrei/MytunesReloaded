@@ -4,18 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="implemented view for new playlist creation">
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/PlaylistReloadable.java" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="implemented add new PlayList functionality">
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/EditPlaylistController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/NewEditController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/NewPlaylistController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/be/PlayList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/be/PlayList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/IPlaylistDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/IPlaylistDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newPlaylistView/NewPlaylistView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newPlaylistView/NewPlaylistView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newPlaylistView/PlayListModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newPlaylistView/PlayListModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newPlaylistView/PlaylistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newPlaylistView/PlaylistController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newPlaylistView/NewPlaylistView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/NewPlaylistView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newPlaylistView/PlayListModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/PlayListModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newPlaylistView/PlaylistController.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,28 +47,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/computer_science/sco/MediPlayer/MyTunesReloaded/src/dk/easv/mytunes/gui/components",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "D:/computer_science/sco/MediPlayer/MyTunesReloaded/src/Main.java",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/computer_science/sco/MediPlayer/MyTunesReloaded/src/dk/easv/mytunes/gui/components&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;D:/computer_science/sco/MediPlayer/MyTunesReloaded/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\src\dk\easv\mytunes\gui\components" />
@@ -120,7 +123,9 @@
       <workItem from="1701256393882" duration="46000000" />
       <workItem from="1701519685696" duration="20117000" />
       <workItem from="1701549013227" duration="32692000" />
-      <workItem from="1701687927622" duration="35999000" />
+      <workItem from="1701687927622" duration="36564000" />
+      <workItem from="1701816014906" duration="223000" />
+      <workItem from="1701893482775" duration="6412000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -266,7 +271,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701805476425</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="implemented add new PlayList functionality">
+      <option name="closed" value="true" />
+      <created>1701815576754</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1701815576754</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -297,7 +310,8 @@
     <MESSAGE value="PlayList view and songs view implemented" />
     <MESSAGE value="playing from the selected plaulist implemented" />
     <MESSAGE value="implemented view for new playlist creation" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented view for new playlist creation" />
+    <MESSAGE value="implemented add new PlayList functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented add new PlayList functionality" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
