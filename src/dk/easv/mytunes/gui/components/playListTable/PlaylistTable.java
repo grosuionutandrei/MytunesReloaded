@@ -1,4 +1,5 @@
 package dk.easv.mytunes.gui.components.playListTable;
+
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.gui.listeners.PlayListSelectionListener;
 import dk.easv.mytunes.utility.PlayingLocation;
@@ -19,7 +20,7 @@ public class PlaylistTable extends TableView<PlayList> {
 
     public PlaylistTable(PlayListSelectionListener playListSelectionListener) {
         super();
-        this.playListSelectionListener=playListSelectionListener;
+        this.playListSelectionListener = playListSelectionListener;
         setupColumns();
         setRowFactory();
     }
@@ -33,7 +34,8 @@ public class PlaylistTable extends TableView<PlayList> {
 
 
         TableColumn<PlayList, String> totalSongs = new TableColumn<>("Songs");
-        totalSongs.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getPlayListSongs().size())));
+
+        totalSongs.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().totalSongs())));
         totalSongs.setPrefWidth(38);
         totalSongs.setCellFactory(column ->
                 new TableCell<>(38, null));
@@ -53,14 +55,14 @@ public class PlaylistTable extends TableView<PlayList> {
         this.setItems(observableList);
     }
 
-    private void setRowFactory(){
+    private void setRowFactory() {
         this.setRowFactory(tv -> {
             TableRow<PlayList> row = new TableRow<>();
             row.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 if (!row.isEmpty() && event.getClickCount() == 2) {
                     playListSelectionListener.onPlayListSelect(row.getIndex());
 
-                }else if(!row.isEmpty()&& event.getClickCount()==1){
+                } else if (!row.isEmpty() && event.getClickCount() == 1) {
                     System.out.println(this.getSelectionModel().getSelectedItem());
 
                 }
@@ -70,8 +72,9 @@ public class PlaylistTable extends TableView<PlayList> {
     }
 
 
-
-/** controls the current index and the playList from where song will be played */
+    /**
+     * controls the current index and the playList from where song will be played
+     */
 //    public void bindModelToPlayList(Model model ) {
 //        this.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 //            model.setCurrentPlayListId(newSelection.getId());
@@ -81,8 +84,8 @@ public class PlaylistTable extends TableView<PlayList> {
 //        });
 //
 //    }
+    public void setPlayListSelectionListener(PlayListSelectionListener playListSelectionListener) {
+        this.playListSelectionListener = playListSelectionListener;
+    }
 
-public void setPlayListSelectionListener(PlayListSelectionListener playListSelectionListener) {
-    this.playListSelectionListener = playListSelectionListener;
-}
 }

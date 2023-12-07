@@ -4,4 +4,5 @@ import dk.easv.mytunes.exceptions.MyTunesException;
 
 public interface PlaylistReloadable {
     public void reloadPlaylistsFromDb();
+
 }

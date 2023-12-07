@@ -34,7 +34,6 @@ public class DeletePlayListController implements ConfirmationController, Initial
                     displayInfoMessage(message, Alert.AlertType.INFORMATION);
                 });
                 playlistReloadable.reloadPlaylistsFromDb();
-
             }
         }
 

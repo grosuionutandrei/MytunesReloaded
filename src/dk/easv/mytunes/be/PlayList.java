@@ -45,6 +45,13 @@ public class PlayList {
     public int getId() {
         return id;
     }
+    public int totalSongs(){
+
+     if(this.getPlayListSongs().getFirst().getSongId()==0){
+         return 0;
+     }
+     return this.getPlayListSongs().size();
+    }
 
     public double getTotalTime() {
         return this.getPlayListSongs().stream().mapToDouble(Song::getLength).sum();

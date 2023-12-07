@@ -4,17 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="implemented edit PlayList functionality">
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/DeletePlayListController.java" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="implemented delete PlayList functionality">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/be/PlayList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/be/PlayList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListTable/PlaylistTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListTable/PlaylistTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/PlaylistReloadable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/PlaylistReloadable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/EditPlaylistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/EditPlaylistController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/PlayListModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/PlayListModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/DeletePlayListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/DeletePlayListController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +120,7 @@
       <workItem from="1701687927622" duration="36564000" />
       <workItem from="1701816014906" duration="223000" />
       <workItem from="1701893482775" duration="6827000" />
-      <workItem from="1701967217024" duration="4389000" />
+      <workItem from="1701967217024" duration="6186000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -285,7 +282,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701900208001</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="implemented delete PlayList functionality">
+      <option name="closed" value="true" />
+      <created>1701971971879</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1701971971879</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -318,7 +323,8 @@
     <MESSAGE value="implemented view for new playlist creation" />
     <MESSAGE value="implemented add new PlayList functionality" />
     <MESSAGE value="implemented edit PlayList functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented edit PlayList functionality" />
+    <MESSAGE value="implemented delete PlayList functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented delete PlayList functionality" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

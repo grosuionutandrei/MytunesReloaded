@@ -489,7 +489,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         }
         boolean isCurrentPlaying = this.model.checkPlayListCurrentPlaying(playlistToDelete);
         if (isCurrentPlaying) {
-            displayAlert(Alert.AlertType.INFORMATION, "Playlist is playing");
+            displayAlert(Alert.AlertType.INFORMATION, "The playlist that you are trying to delete is in use");
             return;
         }
 
@@ -513,9 +513,13 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         }
     }
 
+
+
+
     private PlayList getSelectedPlayList() {
         return this.allPlaylistTable.getSelectionModel().getSelectedItem();
     }
+
 
 
 }
