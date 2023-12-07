@@ -37,9 +37,6 @@ public class DeletePlayListController implements ConfirmationController, Initial
                 playlistReloadable.reloadPlaylistsFromDb();
             }
          }
-
-
-
     }
 
     @Override

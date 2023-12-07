@@ -15,7 +15,8 @@ public class PlayListModel {
      */
     private PlayList currentSelectedPlayList;
     /**
-     * stores the current selected song to be added to the playlist*/
+     * stores the current selected song to be added to the playlist
+     */
     private Song currentSelectedSong;
 
 
@@ -53,17 +54,15 @@ public class PlayListModel {
         return executed;
     }
 
-    public void cancelUpdatePlayList(){
-        this.currentSelectedPlayList=null;
+    public void cancelUpdatePlayList() {
+        this.currentSelectedPlayList = null;
     }
 
     public boolean deletePlayList(PlayList playListToDelete) throws MyTunesException {
-        boolean executed = this.playlistCreation.deletePlayList(playListToDelete.getId());
-        this.currentSelectedPlayList = null;
-        return executed;
+        return this.playlistCreation.deletePlayList(playListToDelete.getId());
     }
 
     public boolean addSongToPlayList(PlayList playListToAdd, Song songToBeAdded) throws MyTunesException {
-        return this.playlistCreation.addSongToPlaylist(playListToAdd,songToBeAdded);
+        return this.playlistCreation.addSongToPlaylist(playListToAdd, songToBeAdded);
     }
 }
