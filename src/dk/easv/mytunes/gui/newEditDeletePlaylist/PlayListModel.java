@@ -8,7 +8,11 @@ public class PlayListModel {
 
     private MyTunesPlaylistCreation playlistCreation;
     private static PlayListModel instance;
-    private PlayList playListToEdit;
+
+    /**
+     * Stores the current selected playlist used for edit or delete operations
+     */
+    private PlayList currentSelectedPlayList;
 
 
     private PlayListModel() throws MyTunesException {
@@ -31,14 +35,23 @@ public class PlayListModel {
         return MyTunesPlaylistCreation.checkTitle(title);
     }
 
-    public PlayList getPlayListToEdit() {
-        return playListToEdit;
+    public PlayList getCurrentSelectedPlayList() {
+        return currentSelectedPlayList;
     }
 
-    public void setPlayListToEdit(PlayList playListToEdit) {
-        this.playListToEdit = playListToEdit;
+    public void setCurrentSelectedPlayList(PlayList currentSelectedPlayList) {
+        this.currentSelectedPlayList = currentSelectedPlayList;
     }
+
     public boolean updatePlayList(String newTitle) throws MyTunesException {
-        return this.playlistCreation.updatePlayList(this.playListToEdit,newTitle);
+        boolean executed = this.playlistCreation.updatePlayList(this.currentSelectedPlayList, newTitle);
+        this.currentSelectedPlayList = null;
+        return executed;
+    }
+
+    public boolean deletePlayList() throws MyTunesException {
+        boolean executed = this.playlistCreation.deletePlayList(this.currentSelectedPlayList.getId());
+        this.currentSelectedPlayList = null;
+        return executed;
     }
 }

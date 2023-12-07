@@ -37,7 +37,7 @@ public class EditPlaylistController extends NewEditController {
     }
 
     public void setPlaylistToEdit(PlayList playList) {
-        getPlayListModel().setPlayListToEdit(playList);
+        getPlayListModel().setCurrentSelectedPlayList(playList);
         getPlaylistTitle().setText(playList.getName());
     }
 

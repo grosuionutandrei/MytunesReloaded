@@ -23,7 +23,7 @@ public class MyTunesLogic {
         this.songReader = SongReader.getSongReader();
         this.songsDao = SongsDao.getSongsDao();
         this.playlistDao = PlaylistDao.getPlaylistDao();
-        this.fileHandler=FileHandler.getInstance();
+        this.fileHandler = FileHandler.getInstance();
     }
 
     public static MyTunesLogic getMyTuneLogic() throws MyTunesException {
@@ -58,20 +58,20 @@ public class MyTunesLogic {
         return songsSize - 1;
     }
 
-//    public List<Song> changeCurrentPlayingSongsList(String currentNameLocation, List<Song> playlist, List<Song> allSongs) {
+    //    public List<Song> changeCurrentPlayingSongsList(String currentNameLocation, List<Song> playlist, List<Song> allSongs) {
 //        System.out.println(currentNameLocation + "cu" + allSongs.size());
 //        if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
 //            return allSongs;
 //        }
 //        return playlist;
 //    }
-public ObservableList<Song> changeCurrentPlayingSongsList(String currentNameLocation, ObservableList<Song> playlist, ObservableList<Song> allSongs) {
-    System.out.println(currentNameLocation + "cu" + allSongs.size());
-    if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
-        return allSongs;
+    public ObservableList<Song> changeCurrentPlayingSongsList(String currentNameLocation, ObservableList<Song> playlist, ObservableList<Song> allSongs) {
+        System.out.println(currentNameLocation + "cu" + allSongs.size());
+        if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
+            return allSongs;
+        }
+        return playlist;
     }
-    return playlist;
-}
 
     public Song getCurrentSongToBePlayed(int index, List<Song> songs) {
         return songs.get(index);
@@ -103,7 +103,9 @@ public ObservableList<Song> changeCurrentPlayingSongsList(String currentNameLoca
                 .collect(Collectors.toList());
     }
 
-/** reload all the songs from the data base*/
+    /**
+     * reload all the songs from the data base
+     */
     public void reloadSongsFromDB() throws MyTunesException {
         songsDao.reloadSongsFromDB();
     }
@@ -112,13 +114,26 @@ public ObservableList<Song> changeCurrentPlayingSongsList(String currentNameLoca
     public List<PlayList> getAllPlaylists() throws MyTunesException {
         return this.playlistDao.getAllPlaylistsFromCache();
     }
+
     public PlayList getSelectedPlayList(int index) throws MyTunesException {
         return this.playlistDao.getAllPlaylistsFromCache().get(index);
     }
 
 
     public List<PlayList> reloadPlaylistsFromDB() throws MyTunesException {
-       return this.playlistDao.reloadPlaylistsFromDb();
+        return this.playlistDao.reloadPlaylistsFromDb();
+    }
+
+    /**
+     * checks if the user selected to play music from the all songs list
+     * by comparing the tables ids
+     */
+    public boolean checkIfChangedToAllSongs(String currentTableId, String tableToCompareId) {
+        return currentTableId.equals(tableToCompareId);
+    }
+
+    public boolean checkPlayListCurrentPlaying(int currentPlayListPlayingId, int currentPlaylistToDeleteId) {
+        return currentPlayListPlayingId == currentPlaylistToDeleteId;
     }
 }
 

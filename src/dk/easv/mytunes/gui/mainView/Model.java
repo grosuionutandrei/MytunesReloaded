@@ -58,8 +58,9 @@ public class Model {
      * holds the current selected playlist Songs
      */
 
-     /**
-      * holds all the playlists */
+    /**
+     * holds all the playlists
+     */
     private final ObservableList<PlayList> allPlaylists;
 
     private ObservableList<Song> currentPlayListSongs;
@@ -74,9 +75,9 @@ public class Model {
     private ObservableList<Song> currentPlayingList;
 
 
-
     /**
-     * store the current playing list it is used to know to delete it or not */
+     * store the current playing list it is used to know to delete it or not
+     */
     private int currentPlayingPlayListId;
 
 
@@ -91,7 +92,6 @@ public class Model {
         allSongsObjectsToFilter = FXCollections.observableArrayList();
         populateAllSongsList(allSongsObjectsToFilter);
         currentTablePlaying = PlayingLocation.ALL_SONGS.getValue();
-        // currentPlayingList.setAll(allSongsObjectsToDisplay);
         currentPlayingList = allSongsObjectsToDisplay;
         volumeLevel.setValue(100);
         isMute.setValue(false);
@@ -119,6 +119,8 @@ public class Model {
         //this.currentPlayingList.setAll(songs);
         this.currentPlayingList = myTunesLogic.changeCurrentPlayingSongsList(this.currentTablePlaying, this.currentPlayListSongs, this.allSongsObjectsToDisplay);
         System.out.println(this.currentPlayingList.size());
+        resetTheCurrentPlayingPlaylistId(this.currentTablePlaying);
+
         this.currentPlayingMedia = myTunesLogic.getMediaToBePlayed(this.currentIndexOffTheSong.getValue(), currentPlayingList);
         this.currentSongPlayingName.set(myTunesLogic.getCurrentSongName(this.currentIndexOffTheSong.getValue(), this.currentPlayingList));
         return this.currentPlayingMedia;
@@ -278,7 +280,8 @@ public class Model {
     }
 
     /**
-     * when this method is called it will reload all the songs from the database*/
+     * when this method is called it will reload all the songs from the database
+     */
 
     public void reloadSongsFromDB() throws MyTunesException {
         myTunesLogic.reloadSongsFromDB();
@@ -286,19 +289,23 @@ public class Model {
     }
 
     /**
-     * Call the bll to return the list off playlists*/
+     * Call the bll to return the list off playlists
+     */
     public ObservableList<PlayList> getAllPlaylists() throws MyTunesException {
         return allPlaylists;
     }
+
     private void populateAllPlayLists() throws MyTunesException {
         this.allPlaylists.setAll(myTunesLogic.getAllPlaylists());
     }
-    public void  setPlayingPlayList(int index) throws MyTunesException {
-        PlayList selected =this. myTunesLogic.getSelectedPlayList(index);
+
+    public void setPlayingPlayList(int index) throws MyTunesException {
+        PlayList selected = this.myTunesLogic.getSelectedPlayList(index);
         this.currentPlayListSongs.setAll(selected.getPlayListSongs());
-        this.currentPlayingPlayListId =selected.getId();
+        this.currentPlayingPlayListId = selected.getId();
     }
-    public ObservableList<Song> getCurrentPlayListSongs(){
+
+    public ObservableList<Song> getCurrentPlayListSongs() {
         return this.currentPlayListSongs;
     }
 
@@ -308,6 +315,24 @@ public class Model {
 
 
     public void reloadPlayListsFromDB() throws MyTunesException {
-    this.allPlaylists.setAll(this.myTunesLogic.reloadPlaylistsFromDB());
+        this.allPlaylists.setAll(this.myTunesLogic.reloadPlaylistsFromDB());
+    }
+
+
+    /**
+     * Checks if the playlist for deletion is playing
+     */
+    public boolean checkPlayListCurrentPlaying(PlayList playListToDelete) {
+        return this.myTunesLogic.checkPlayListCurrentPlaying(this.currentPlayingPlayListId, playListToDelete.getId());
+    }
+
+    /**
+     * resets the resetTheCurrentPlayingPlaylistId that is used in the deletion operation
+     */
+    private void resetTheCurrentPlayingPlaylistId(String currentTablePlaying) {
+        boolean isChangedToAllSongs = this.myTunesLogic.checkIfChangedToAllSongs(currentTablePlaying, PlayingLocation.ALL_SONGS.getValue());
+        if (isChangedToAllSongs) {
+            this.currentPlayingPlayListId = -1;
+        }
     }
 }

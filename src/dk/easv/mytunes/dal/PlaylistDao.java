@@ -68,13 +68,42 @@ public class PlaylistDao implements IPlaylistDao {
         } catch (SQLException | MyTunesException e) {
             throw new MyTunesException(e.getMessage(), e);
         }
-
-
     }
 
+    /**
+     * Delete the playlist from the database
+     */
     @Override
     public boolean deletePlayList(int playListId) throws MyTunesException {
-        return false;
+        String sql = "DELETE FROM Playlists WHERE PlaylistId=?";
+        try (Connection conn = CONNECTION_MANAGER.getConnection()) {
+            PreparedStatement psmt = null;
+            int rowsAffected = 0;
+            boolean deletedFromJoin = deletePlaylistFromJoinTable(playListId, conn, psmt);
+            if (deletedFromJoin) {
+                psmt = conn.prepareStatement(sql);
+                psmt.setInt(1, playListId);
+                rowsAffected = psmt.executeUpdate();
+            }
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            throw new MyTunesException("Error occurred in a database operation", e);
+        }
+    }
+
+    /**
+     * Delete the playlist from the join table
+     */
+    private boolean deletePlaylistFromJoinTable(int playListId, Connection conn, PreparedStatement psmt) throws MyTunesException {
+        String sql = "DELETE FROM PlaylistSongs WHERE PlaylistId=?";
+        try {
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, playListId);
+            int rows = psmt.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            throw new MyTunesException("Error occurred in a database operation ", e);
+        }
     }
 
     @Override

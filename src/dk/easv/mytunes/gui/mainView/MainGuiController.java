@@ -14,6 +14,7 @@ import dk.easv.mytunes.gui.components.volume.VolumeControl;
 import dk.easv.mytunes.gui.deleteView.DeleteController;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
 import dk.easv.mytunes.gui.listeners.*;
+import dk.easv.mytunes.gui.newEditDeletePlaylist.DeletePlayListController;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.EditPlaylistController;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.NewPlaylistController;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
@@ -462,7 +463,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
      * @throws IOException If there is an issue with loading the FXML file.
      */
     public void openEditPlaylistWindow(ActionEvent event) throws IOException {
-        PlayList playListToUpdate = this.allPlaylistTable.getSelectionModel().getSelectedItem();
+        PlayList playListToUpdate = getSelectedPlayList();
         if (playListToUpdate == null) {
             displayAlert(Alert.AlertType.ERROR, "No playlist has been selected");
             return;
@@ -479,6 +480,30 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         newPlayListStage.show();
     }
 
+
+    public void deletePlaylist(ActionEvent event) {
+        PlayList playlistToDelete = getSelectedPlayList();
+        if (playlistToDelete == null) {
+            displayAlert(Alert.AlertType.INFORMATION, "No Playlist selected");
+            return;
+        }
+        boolean isCurrentPlaying = this.model.checkPlayListCurrentPlaying(playlistToDelete);
+        if (isCurrentPlaying) {
+            displayAlert(Alert.AlertType.INFORMATION, "Playlist is playing");
+            return;
+        }
+
+
+        DeletePlayListController deletePlayListController = new DeletePlayListController();
+        deletePlayListController.initialize(null, null);
+        deletePlayListController.setPlaylistToDelete(playlistToDelete);
+        deletePlayListController.setReloadable(this);
+        Stage mainStage = getCurrentStage(event);
+        Scene scene = new Scene(deletePlayListController.getConfirmationWindow());
+        Stage confirmation = createPopupStage(mainStage, scene, "Delete Playlist");
+        confirmation.show();
+    }
+
     @Override
     public void reloadPlaylistsFromDb() {
         try {
@@ -486,6 +511,10 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         } catch (MyTunesException e) {
             displayAlert(Alert.AlertType.ERROR, e.getMessage());
         }
+    }
+
+    private PlayList getSelectedPlayList() {
+        return this.allPlaylistTable.getSelectionModel().getSelectedItem();
     }
 
 

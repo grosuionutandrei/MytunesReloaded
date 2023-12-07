@@ -33,4 +33,8 @@ public class MyTunesPlaylistCreation {
         }
         return this.playlistDao.updatePlayList(playlistToUpdate.getId(),newTitle);
     }
+
+    public boolean deletePlayList(int playListId) throws MyTunesException {
+        return this.playlistDao.deletePlayList(playListId);
+    }
 }
