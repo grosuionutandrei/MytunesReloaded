@@ -178,4 +178,18 @@ public class PlaylistDao implements IPlaylistDao {
         return this.allPlaylists;
     }
 
+    @Override
+    public boolean addSongToPlaylist(PlayList playListToAdd, Song songToBeAdded) throws MyTunesException {
+        String sql = "INSERT INTO PlaylistSongs VALUES (?,?)";
+        try (Connection conn = CONNECTION_MANAGER.getConnection()) {
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, playListToAdd.getId());
+            psmt.setInt(2, songToBeAdded.getSongId());
+            int rowAffected = psmt.executeUpdate();
+            return rowAffected > 0;
+        } catch (SQLException e) {
+            throw new MyTunesException("Database connection problems", e);
+        }
+
+    }
 }

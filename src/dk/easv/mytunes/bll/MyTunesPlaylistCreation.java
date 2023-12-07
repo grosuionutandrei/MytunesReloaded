@@ -1,6 +1,7 @@
 package dk.easv.mytunes.bll;
 
 import dk.easv.mytunes.be.PlayList;
+import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.dal.PlaylistDao;
 import dk.easv.mytunes.exceptions.MyTunesException;
 
@@ -36,5 +37,9 @@ public class MyTunesPlaylistCreation {
 
     public boolean deletePlayList(int playListId) throws MyTunesException {
         return this.playlistDao.deletePlayList(playListId);
+    }
+
+    public boolean addSongToPlaylist(PlayList playListToAdd, Song songToBeAdded) throws MyTunesException {
+        return this.playlistDao.addSongToPlaylist(playListToAdd,songToBeAdded);
     }
 }

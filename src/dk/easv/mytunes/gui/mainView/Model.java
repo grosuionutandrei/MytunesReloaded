@@ -318,7 +318,6 @@ public class Model {
         this.allPlaylists.setAll(this.myTunesLogic.reloadPlaylistsFromDB());
     }
 
-
     /**
      * Checks if the playlist for deletion is playing
      */
@@ -334,6 +333,11 @@ public class Model {
         if (isChangedToAllSongs) {
             this.currentPlayingPlayListId = -1;
         }
+    }
+
+    /** Add song to the current playlist playing list view */
+    public void addToPlaylistSongs(Song song){
+        this.currentPlayListSongs.add(song);
     }
 
 

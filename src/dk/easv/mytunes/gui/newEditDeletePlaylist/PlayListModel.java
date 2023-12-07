@@ -1,6 +1,7 @@
 package dk.easv.mytunes.gui.newEditDeletePlaylist;
 
 import dk.easv.mytunes.be.PlayList;
+import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.bll.MyTunesPlaylistCreation;
 import dk.easv.mytunes.exceptions.MyTunesException;
 
@@ -13,6 +14,9 @@ public class PlayListModel {
      * Stores the current selected playlist used for edit or delete operations
      */
     private PlayList currentSelectedPlayList;
+    /**
+     * stores the current selected song to be added to the playlist*/
+    private Song currentSelectedSong;
 
 
     private PlayListModel() throws MyTunesException {
@@ -49,9 +53,17 @@ public class PlayListModel {
         return executed;
     }
 
-    public boolean deletePlayList() throws MyTunesException {
-        boolean executed = this.playlistCreation.deletePlayList(this.currentSelectedPlayList.getId());
+    public void cancelUpdatePlayList(){
+        this.currentSelectedPlayList=null;
+    }
+
+    public boolean deletePlayList(PlayList playListToDelete) throws MyTunesException {
+        boolean executed = this.playlistCreation.deletePlayList(playListToDelete.getId());
         this.currentSelectedPlayList = null;
         return executed;
+    }
+
+    public boolean addSongToPlayList(PlayList playListToAdd, Song songToBeAdded) throws MyTunesException {
+        return this.playlistCreation.addSongToPlaylist(playListToAdd,songToBeAdded);
     }
 }

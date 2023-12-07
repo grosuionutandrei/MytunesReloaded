@@ -5,7 +5,6 @@ import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
 import dk.easv.mytunes.gui.listeners.PlaylistReloadable;
-import dk.easv.mytunes.gui.listeners.Reloadable;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -18,15 +17,17 @@ public class DeletePlayListController implements ConfirmationController, Initial
     private PlayListModel playlistModel;
     private VBox confirmationWindow;
     private PlaylistReloadable playlistReloadable;
+    private PlayList playlistToDelete;
 
     @Override
     public void confirmationEventHandler(boolean confirmation) {
         boolean deleted = false;
         if (confirmation) {
             try {
-                deleted = playlistModel.deletePlayList();
+                deleted = playlistModel.deletePlayList(this.playlistToDelete);
             } catch (MyTunesException e) {
                 displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
+                return;
             }
             if (deleted) {
                 String message = "Deleted with success";
@@ -35,7 +36,9 @@ public class DeletePlayListController implements ConfirmationController, Initial
                 });
                 playlistReloadable.reloadPlaylistsFromDb();
             }
-        }
+         }
+
+
 
     }
 
@@ -60,14 +63,16 @@ public class DeletePlayListController implements ConfirmationController, Initial
         alert.show();
     }
 
-    public void setPlaylistToDelete(PlayList playListToDelete) {
-        this.playlistModel.setCurrentSelectedPlayList(playListToDelete);
+    public void getPlayListToDelete(PlayList playList) {
+        this.playlistToDelete = playList;
     }
 
     private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow, ConfirmationController confirmationController) {
         confirmationWindow.setConfirmationController(confirmationController);
         confirmationWindow.setOperationTitle("Delete operation");
-        confirmationWindow.setOperationInformation("Are you sure that you want to delete this file?");
+        String message = "Are you sure that you want to delete this playlist " + "\n";
+        String playList = "\"" + this.playlistToDelete.getName() + "\" ?";
+        confirmationWindow.setOperationInformation(message + playList);
     }
 
     public void setReloadable(PlaylistReloadable playlistReloadable) {

@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 public class EditPlaylistController extends NewEditController {
     @Override
     public void cancelPlaylist(ActionEvent event) {
+        getPlayListModel().cancelUpdatePlayList();
         getCurrentStage(event).close();
     }
 

@@ -14,6 +14,7 @@ import dk.easv.mytunes.gui.components.volume.VolumeControl;
 import dk.easv.mytunes.gui.deleteView.DeleteController;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
 import dk.easv.mytunes.gui.listeners.*;
+import dk.easv.mytunes.gui.newEditDeletePlaylist.AddToPlayListController;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.DeletePlayListController;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.EditPlaylistController;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.NewPlaylistController;
@@ -231,15 +232,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     /**
-     * store the selected song in the table to a var if, the play button is pressed , then the song will be played
-     */
-    @Override
-    public void updateTemporarySelection(int index, String tableId) {
-
-    }
-
-
-    /**
      * provides the media that needs to be played by the player
      */
     @Override
@@ -390,6 +382,25 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         newSongStage.show();
     }
 
+    /**
+     * Deletes the selected song from the table
+     */
+    public void deleteSong(ActionEvent event) throws IOException {
+        Song songToDelete = getSelectedSong(this.allSongsTable);
+        if (songToDelete == null) {
+            displayAlert(Alert.AlertType.INFORMATION, "No song selected");
+            return;
+        }
+        DeleteController del = new DeleteController();
+        del.setSongToDelete(songToDelete);
+        del.setReloadable(this);
+        del.initialize(null, null);
+        Stage mainStage = getCurrentStage(event);
+        Scene scene = new Scene(del.getConfirmationWindow());
+        Stage confirmation = createPopupStage(mainStage, scene, "Delete Song");
+        confirmation.show();
+    }
+
     private void displayAlert(Alert.AlertType type, String message) {
         alert.setAlertType(type);
         alert.setContentText(message);
@@ -412,25 +423,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         newSongStage.initModality(Modality.WINDOW_MODAL);
         newSongStage.initOwner(mainStage);
         return newSongStage;
-    }
-
-    /**
-     * Deletes the selected song from the table
-     */
-    public void deleteSong(ActionEvent event) throws IOException {
-        Song songToDelete = getSelectedSong(this.allSongsTable);
-        if (songToDelete == null) {
-            displayAlert(Alert.AlertType.INFORMATION, "No song selected");
-            return;
-        }
-        DeleteController del = new DeleteController();
-        del.initialize(null, null);
-        del.setSongToDelete(songToDelete);
-        del.setReloadable(this);
-        Stage mainStage = getCurrentStage(event);
-        Scene scene = new Scene(del.getConfirmationWindow());
-        Stage confirmation = createPopupStage(mainStage, scene, "Delete Song");
-        confirmation.show();
     }
 
 
@@ -492,11 +484,9 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             displayAlert(Alert.AlertType.INFORMATION, "The playlist that you are trying to delete is in use");
             return;
         }
-
-
         DeletePlayListController deletePlayListController = new DeletePlayListController();
+        deletePlayListController.getPlayListToDelete(playlistToDelete);
         deletePlayListController.initialize(null, null);
-        deletePlayListController.setPlaylistToDelete(playlistToDelete);
         deletePlayListController.setReloadable(this);
         Stage mainStage = getCurrentStage(event);
         Scene scene = new Scene(deletePlayListController.getConfirmationWindow());
@@ -513,13 +503,30 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         }
     }
 
-
-
+    @Override
+    public void reloadSongs(Song song) {
+        this.model.addToPlaylistSongs(song);
+    }
 
     private PlayList getSelectedPlayList() {
         return this.allPlaylistTable.getSelectionModel().getSelectedItem();
     }
 
-
-
+    public void addSongToPlaylist(ActionEvent event) {
+        PlayList selectedPlayList = getSelectedPlayList();
+        Song selectedSong = getSelectedSong(allSongsTable);
+        if ((selectedPlayList == null) || (selectedSong == null)) {
+            displayAlert(Alert.AlertType.INFORMATION, "Please selected a song and a playlist");
+            return;
+        }
+        AddToPlayListController addToPlayListController = new AddToPlayListController();
+        addToPlayListController.setPlayListToAdd(selectedPlayList);
+        addToPlayListController.setSongToAdd(selectedSong);
+        addToPlayListController.setPlaylistReloadable(this);
+        addToPlayListController.initialize(null, null);
+        Stage mainStage = getCurrentStage(event);
+        Scene scene = new Scene(addToPlayListController.getConfirmationWindow());
+        Stage confirmation = createPopupStage(mainStage, scene, "Add Song to  playlist");
+        confirmation.show();
+    }
 }

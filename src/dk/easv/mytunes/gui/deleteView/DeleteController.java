@@ -1,4 +1,5 @@
 package dk.easv.mytunes.gui.deleteView;
+
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
@@ -8,6 +9,7 @@ import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -20,39 +22,39 @@ public class DeleteController implements ConfirmationController, Initializable {
 
     @Override
     public void confirmationEventHandler(boolean confirmation) {
-    boolean deleted= false;
-    if(confirmation) {
-        try {
-            deleteModel.deleteSong(songToDelete.getSongId(), songToDelete.getSongPath());
-            deleted= true;
-        } catch (MyTunesException e) {
-          displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
-        }
-        if(deleted){
-            String message = songToDelete.getTitle()+" " + "Deleted with success";
-            Platform.runLater(()->{
-                displayInfoMessage(message, Alert.AlertType.INFORMATION);
+        boolean deleted = false;
+        if (confirmation) {
+            try {
+                deleteModel.deleteSong(songToDelete.getSongId(), songToDelete.getSongPath());
+                deleted = true;
+            } catch (MyTunesException e) {
+                displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
+            }
+            if (deleted) {
+                String message = songToDelete.getTitle() + " " + "Deleted with success";
+                Platform.runLater(() -> {
+                    displayInfoMessage(message, Alert.AlertType.INFORMATION);
 
-            });
-            reloadable.reloadSongsFromDB();
+                });
+                reloadable.reloadSongsFromDB();
 
+            }
         }
-    }
 
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-  try{
-      deleteModel=DeleteModel.getInstance();
-  } catch (MyTunesException e) {
-      displayInfoMessage(e.getMessage(),Alert.AlertType.ERROR);
-  }
-  if(deleteModel!=null){
-      ConfirmationWindow confirmationView =new ConfirmationWindow();
-      confirmationWindow= confirmationView.getConfirmationWindow();
-      initializeConfirmationWindow(confirmationView,this);
-  }
+        try {
+            deleteModel = DeleteModel.getInstance();
+        } catch (MyTunesException e) {
+            displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
+        }
+        if (deleteModel != null) {
+            ConfirmationWindow confirmationView = new ConfirmationWindow();
+            confirmationWindow = confirmationView.getConfirmationWindow();
+            initializeConfirmationWindow(confirmationView, this);
+        }
     }
 
     private void displayInfoMessage(String message, Alert.AlertType type) {
@@ -65,10 +67,13 @@ public class DeleteController implements ConfirmationController, Initializable {
     public void setSongToDelete(Song songToDelete) {
         this.songToDelete = songToDelete;
     }
-    private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow,ConfirmationController confirmationController) {
+
+    private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow, ConfirmationController confirmationController) {
         confirmationWindow.setConfirmationController(confirmationController);
         confirmationWindow.setOperationTitle("Delete operation");
-        confirmationWindow.setOperationInformation("Are you sure that you want to delete this file?");
+        String message = "Are you sure that you want to delete this song" + "\n";
+        String songName = "\"" + songToDelete.getTitle() + "\"?";
+        confirmationWindow.setOperationInformation(message + songName);
     }
 
     public void setReloadable(Reloadable reloadable) {
