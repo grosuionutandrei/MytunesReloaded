@@ -58,13 +58,6 @@ public class MyTunesLogic {
         return songsSize - 1;
     }
 
-    //    public List<Song> changeCurrentPlayingSongsList(String currentNameLocation, List<Song> playlist, List<Song> allSongs) {
-//        System.out.println(currentNameLocation + "cu" + allSongs.size());
-//        if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
-//            return allSongs;
-//        }
-//        return playlist;
-//    }
     public ObservableList<Song> changeCurrentPlayingSongsList(String currentNameLocation, ObservableList<Song> playlist, ObservableList<Song> allSongs) {
         System.out.println(currentNameLocation + "cu" + allSongs.size());
         if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
@@ -134,6 +127,17 @@ public class MyTunesLogic {
 
     public boolean checkPlayListCurrentPlaying(int currentPlayListPlayingId, int currentPlaylistToDeleteId) {
         return currentPlayListPlayingId == currentPlaylistToDeleteId;
+    }
+
+    /**
+     * returns the current playing  playlist
+     *
+     * @param playListId id off the playlist
+     */
+    public PlayList getTheCurrentPlayingPlayList(int playListId) throws MyTunesException {
+        return this.playlistDao.getAllPlaylistsFromCache()
+                .stream().filter(elem -> elem.getId() == playListId)
+                .findFirst().orElse(null);
     }
 }
 

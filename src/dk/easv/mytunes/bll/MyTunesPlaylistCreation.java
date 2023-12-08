@@ -40,6 +40,10 @@ public class MyTunesPlaylistCreation {
     }
 
     public boolean addSongToPlaylist(PlayList playListToAdd, Song songToBeAdded) throws MyTunesException {
+        Song firstSong = playListToAdd.getPlayListSongs().getFirst();
+        if(firstSong.getSongId()==0){
+            return this.playlistDao.updatePlayListNullSong(playListToAdd.getId(),songToBeAdded.getSongId());
+        }
         return this.playlistDao.addSongToPlaylist(playListToAdd,songToBeAdded);
     }
 }

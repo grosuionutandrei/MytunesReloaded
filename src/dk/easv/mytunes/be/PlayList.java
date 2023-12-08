@@ -17,7 +17,6 @@ public class PlayList {
         } else {
             this.playListSongs = playListSongs;
         }
-
     }
 
     public PlayList(String name) {
@@ -46,7 +45,6 @@ public class PlayList {
         return id;
     }
     public int totalSongs(){
-
      if(this.getPlayListSongs().getFirst().getSongId()==0){
          return 0;
      }

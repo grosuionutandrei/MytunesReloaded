@@ -512,7 +512,11 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     @Override
     public void reloadSongs(Song song) {
-        this.model.addToPlaylistSongs(song);
+        try {
+            this.model.reloadPlayListSongs();
+        } catch (MyTunesException e) {
+            displayAlert(Alert.AlertType.ERROR, e.getMessage());
+        }
     }
 
     private PlayList getSelectedPlayList() {
@@ -520,14 +524,19 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     public void addSongToPlaylist(ActionEvent event) {
-        PlayList selectedPlayList = getSelectedPlayList();
+        PlayList playListToAdd = null;
+        try {
+            playListToAdd = model.getCurrentPlayList();
+        } catch (MyTunesException e) {
+            displayAlert(Alert.AlertType.ERROR,e.getMessage());
+        }
         Song selectedSong = getSelectedSong(allSongsTable);
-        if ((selectedPlayList == null) || (selectedSong == null)) {
+        if ((playListToAdd == null) || (selectedSong == null)) {
             displayAlert(Alert.AlertType.INFORMATION, "Please selected a song and a playlist");
             return;
         }
         AddToPlayListController addToPlayListController = new AddToPlayListController();
-        addToPlayListController.setPlayListToAdd(selectedPlayList);
+        addToPlayListController.setPlayListToAdd(playListToAdd);
         addToPlayListController.setSongToAdd(selectedSong);
         addToPlayListController.setPlaylistReloadable(this);
         addToPlayListController.initialize(null, null);

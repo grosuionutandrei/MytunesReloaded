@@ -74,12 +74,10 @@ public class Model {
      */
     private ObservableList<Song> currentPlayingList;
 
-
     /**
      * store the current playing list it is used to know to delete it or not
      */
     private int currentPlayingPlayListId;
-
 
     private Model() throws MyTunesException {
         myTunesLogic = MyTunesLogic.getMyTuneLogic();
@@ -96,14 +94,12 @@ public class Model {
         volumeLevel.setValue(100);
         isMute.setValue(false);
     }
-
     public static Model getModel() throws MyTunesException {
         if (instance == null) {
             instance = new Model();
         }
         return instance;
     }
-
 
     private void populateAllSongsList(ObservableList<Song> songs) throws MyTunesException {
         songs.addAll(myTunesLogic.getAllSongs());
@@ -114,7 +110,6 @@ public class Model {
      */
     public Media getCurrentSongToBePlayed() throws MyTunesException {
         this.currentPlayingList = myTunesLogic.changeCurrentPlayingSongsList(this.currentTablePlaying, this.currentPlayListSongs, this.allSongsObjectsToDisplay);
-        resetTheCurrentPlayingPlaylistId(this.currentTablePlaying);
         this.currentPlayingMedia = myTunesLogic.getMediaToBePlayed(this.currentIndexOffTheSong.getValue(), currentPlayingList);
         this.currentSongPlayingName.set(myTunesLogic.getCurrentSongName(this.currentIndexOffTheSong.getValue(), this.currentPlayingList));
         return this.currentPlayingMedia;
@@ -181,7 +176,6 @@ public class Model {
         this.allSongsObjectsToDisplay.setAll(myTunesLogic.applyFilter(filter, allSongsObjectsToFilter));
         if (!allSongsObjectsToDisplay.isEmpty()) {
             this.currentIndexOffTheSongProperty().set(0);
-            //this.currentPlayingList.setAll(allSongsObjectsToDisplay);
         }
     }
 
@@ -194,7 +188,6 @@ public class Model {
     public void resetFilter() {
         this.allSongsObjectsToDisplay.setAll(allSongsObjectsToFilter);
         this.currentIndexOffTheSongProperty().set(0);
-        //this.currentPlayingList.setAll(allSongsObjectsToDisplay);
     }
 
 
@@ -259,24 +252,13 @@ public class Model {
         System.out.println(this.currentTime);
     }
 
-    /**
-     *
-     */
     public StringProperty currentSongPlayingNameProperty() {
         return currentSongPlayingName;
     }
 
     /**
-     * used to bind time label to the media current time
-     */
-    public StringProperty currentSongTimePlayingProperty() {
-        return currentSongTimePlaying;
-    }
-
-    /**
      * when this method is called it will reload all the songs from the database
      */
-
     public void reloadSongsFromDB() throws MyTunesException {
         myTunesLogic.reloadSongsFromDB();
         this.allSongsObjectsToDisplay.setAll(myTunesLogic.getAllSongs());
@@ -297,6 +279,7 @@ public class Model {
         PlayList selected = this.myTunesLogic.getSelectedPlayList(index);
         this.currentPlayListSongs.setAll(selected.getPlayListSongs());
         this.currentPlayingPlayListId = selected.getId();
+        System.out.println(this.currentPlayingPlayListId);
     }
 
     public ObservableList<Song> getCurrentPlayListSongs() {
@@ -320,18 +303,16 @@ public class Model {
     }
 
     /**
-     * resets the resetTheCurrentPlayingPlaylistId that is used in the deletion operation
+     * Reloads playLists from db and reloads all the playList songs
      */
-    private void resetTheCurrentPlayingPlaylistId(String currentTablePlaying) {
-        boolean isChangedToAllSongs = this.myTunesLogic.checkIfChangedToAllSongs(currentTablePlaying, PlayingLocation.ALL_SONGS.getValue());
-        if (isChangedToAllSongs) {
-            this.currentPlayingPlayListId = -1;
-        }
+    public void reloadPlayListSongs() throws MyTunesException {
+        reloadPlayListsFromDB();
+        PlayList currentPlayList = this.myTunesLogic.getTheCurrentPlayingPlayList(this.currentPlayingPlayListId);
+        this.currentPlayListSongs.setAll(currentPlayList.getPlayListSongs());
     }
 
-    /** Add song to the current playlist playing list view */
-    public void addToPlaylistSongs(Song song){
-        this.currentPlayListSongs.add(song);
+    public PlayList getCurrentPlayList() throws MyTunesException {
+        return this.myTunesLogic.getTheCurrentPlayingPlayList(this.currentPlayingPlayListId);
     }
 
 

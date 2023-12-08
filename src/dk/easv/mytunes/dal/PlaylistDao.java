@@ -105,6 +105,7 @@ public class PlaylistDao implements IPlaylistDao {
             throw new MyTunesException("Error occurred in a database operation ", e);
         }
     }
+
     @Override
     public boolean updatePlayList(int playListId, String newTitle) throws MyTunesException {
         String sql = "UPDATE Playlists SET PlaylistName=? WHERE PlaylistId=?";
@@ -186,8 +187,22 @@ public class PlaylistDao implements IPlaylistDao {
         } catch (SQLException e) {
             throw new MyTunesException("Database connection problems", e);
         }
-
     }
 
-
+    /**
+     * Updates the null song id from the join table
+     */
+    @Override
+    public boolean updatePlayListNullSong(int playListId, int songId) throws MyTunesException {
+        String sql = "UPDATE PlaylistSongs SET SongId=? WHERE PlaylistId=?";
+        try (Connection connection = CONNECTION_MANAGER.getConnection()) {
+            PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setInt(1, songId);
+            psmt.setInt(2, playListId);
+            int rowAffected = psmt.executeUpdate();
+            return rowAffected > 0;
+        } catch (SQLException e) {
+            throw new MyTunesException("Database operation unsuccessful", e.getCause());
+        }
+    }
 }

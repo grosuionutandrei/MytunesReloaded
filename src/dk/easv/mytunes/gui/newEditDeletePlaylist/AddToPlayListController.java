@@ -48,8 +48,8 @@ public class AddToPlayListController implements ConfirmationController, Initiali
         }
     }
 
-    public void setPlayListToAdd(PlayList playList) {
-        this.playListToAdd = playList;
+    public void setPlayListToAdd(PlayList playListToAdd) {
+        this.playListToAdd = playListToAdd;
     }
 
     public void setSongToAdd(Song song) {
