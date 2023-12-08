@@ -48,9 +48,26 @@ public class SongsDao implements ISongsDao {
 
     @Override
     public boolean deleteSong(int songId) throws MyTunesException {
-        System.out.println(songId);
         boolean executed =  false;
      String sql = "DELETE FROM Songs WHERE SongId=?";
+     boolean deletedFromJoiTable = deleteFromJoinTable(songId);
+     if(deletedFromJoiTable){
+         try (Connection conn = CONNECTION_MANAGER.getConnection()){
+             PreparedStatement psmt = conn.prepareStatement(sql);
+             psmt.setInt(1,songId);
+             psmt.execute();
+             executed= true;
+         } catch (SQLException e) {
+             throw new MyTunesException("Error when trying to delete from data base");
+         }
+     }
+
+        return executed;
+    }
+
+    private boolean deleteFromJoinTable(int songId) throws MyTunesException{
+        boolean executed =  false;
+        String sql = "DELETE FROM PlaylistSongs WHERE SongId=?";
         try (Connection conn = CONNECTION_MANAGER.getConnection()){
             PreparedStatement psmt = conn.prepareStatement(sql);
             psmt.setInt(1,songId);
@@ -86,8 +103,6 @@ public class SongsDao implements ISongsDao {
     public List<Song> getAllSongsFromCache() throws MyTunesException {
         return this.objectSongs;
     }
-
-
     private void loadAllSongsFromDB() throws MyTunesException {
 
         List<Song> songs = new ArrayList<>();
@@ -113,7 +128,6 @@ public class SongsDao implements ISongsDao {
         }
         this.objectSongs = songs;
     }
-
 
     @Override
     public List<Song> getPlayListSongs(int playListId) {
