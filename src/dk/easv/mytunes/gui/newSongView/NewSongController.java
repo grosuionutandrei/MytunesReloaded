@@ -1,4 +1,5 @@
 package dk.easv.mytunes.gui.newSongView;
+
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.utility.SongFormat;
 import javafx.application.Platform;
@@ -9,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,7 +27,6 @@ public class NewSongController extends NewEditController implements Initializabl
     private TextField fileLocation;
     @FXML
     private TextField songDuration;
-
 
     public void openFileChoser(ActionEvent event) {
         Stage newSongStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -54,11 +55,24 @@ public class NewSongController extends NewEditController implements Initializabl
         String path = fileLocation.getText();
         String time = songDuration.getText();
         if (editModel.areTitleOrPathEmpty(title, path)) {
-            initiateInfoAlert(newSongStage,null);
+            initiateInfoAlert(newSongStage, null);
             return;
         }
-        if(!editModel.checkIfFileExists(path)){
-            initiateInfoAlert(newSongStage,"No file, returned by your path!" +"\n"+"Please check again");
+
+        boolean checkIfDuplicate = false;
+        try {
+            checkIfDuplicate = editModel.checkIfDuplicate(path);
+        } catch (MyTunesException e) {
+            initiateErrorAlert(e, newSongStage);
+            return;
+        }
+        if (checkIfDuplicate) {
+            initiateInfoAlert(newSongStage, "Please chose another file, this song is already in the list");
+            return;
+        }
+
+        if (!editModel.checkIfFileExists(path)) {
+            initiateInfoAlert(newSongStage, "No file, returned by your path!" + "\n" + "Please check again");
             return;
         }
 
@@ -72,9 +86,6 @@ public class NewSongController extends NewEditController implements Initializabl
         getReloadableController().reloadSongsFromDB();
         newSongStage.close();
     }
-
-
-
 
 
     @FXML

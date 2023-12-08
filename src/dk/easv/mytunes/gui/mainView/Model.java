@@ -113,14 +113,8 @@ public class Model {
      * gets the current song that needs to be played
      */
     public Media getCurrentSongToBePlayed() throws MyTunesException {
-        System.out.println(allSongsObjectsToDisplay.size());
-        //List<Song> songs = myTunesLogic.changeCurrentPlayingSongsList(this.currentTablePlaying,this.playListSongs,this.allSongsObjectsToDisplay);
-        //  System.out.println(songs.size());
-        //this.currentPlayingList.setAll(songs);
         this.currentPlayingList = myTunesLogic.changeCurrentPlayingSongsList(this.currentTablePlaying, this.currentPlayListSongs, this.allSongsObjectsToDisplay);
-        System.out.println(this.currentPlayingList.size());
         resetTheCurrentPlayingPlaylistId(this.currentTablePlaying);
-
         this.currentPlayingMedia = myTunesLogic.getMediaToBePlayed(this.currentIndexOffTheSong.getValue(), currentPlayingList);
         this.currentSongPlayingName.set(myTunesLogic.getCurrentSongName(this.currentIndexOffTheSong.getValue(), this.currentPlayingList));
         return this.currentPlayingMedia;

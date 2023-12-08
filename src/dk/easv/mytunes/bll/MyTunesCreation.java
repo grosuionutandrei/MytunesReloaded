@@ -37,7 +37,6 @@ public class MyTunesCreation {
 
     public boolean createNewSong(String path, String title, String artist, String genre, String songDuration) throws MyTunesException {
         Song song = new Song(path, title, artist, genre, Double.parseDouble(songDuration));
-        System.out.println(song);
         return songsDao.createSong(song);
     }
 
@@ -118,8 +117,8 @@ public class MyTunesCreation {
 
 
     public boolean checkFilePath(String filePath) {
-            File file = new File(filePath);
-            return file.exists() && !file.isDirectory();
+        File file = new File(filePath);
+        return file.exists() && !file.isDirectory();
     }
 
     public boolean areTitleOrPathEmpty(String title, String path) {
@@ -134,16 +133,22 @@ public class MyTunesCreation {
         return songsDao.updateSong(updatedSong);
     }
 
+    public boolean checkIfDuplicate(String path) throws MyTunesException {
+        Song song = this.songsDao.getAllSongsFromCache().stream().filter(elem -> elem.getSongPath().equals(path)).findFirst().orElse(null);
+        return song != null;
+    }
+
     /**
      * delete a song from the data base
-     * @param songId the id off the song that need s to be deleted */
-    public boolean deleteSong(int songId,String songPath) throws MyTunesException {
+     *
+     * @param songId the id off the song that need s to be deleted
+     */
+    public boolean deleteSong(int songId, String songPath) throws MyTunesException {
         boolean deletedFromDb = songsDao.deleteSong(songId);
         boolean deletedFromLocal = false;
-        if(deletedFromDb){
-            deletedFromLocal =fileHandler.deleteSongLocal(songPath);
+        if (deletedFromDb) {
+            deletedFromLocal = fileHandler.deleteSongLocal(songPath);
         }
-
         return (deletedFromDb && deletedFromLocal);
     }
 }

@@ -2,9 +2,9 @@ package dk.easv.mytunes.gui.editSongView;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.bll.MyTunesCreation;
 import dk.easv.mytunes.exceptions.MyTunesException;
-import dk.easv.mytunes.gui.newSongView.NewEditCommon;
+import dk.easv.mytunes.gui.newSongView.NewEditCommonModel;
 
-public class EditSongModel extends NewEditCommon {
+public class EditSongModel extends NewEditCommonModel {
     private static EditSongModel instance;
 
     private Song initialSong;

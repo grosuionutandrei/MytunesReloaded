@@ -1,5 +1,6 @@
 package dk.easv.mytunes.gui.components.player;
 
+import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.listeners.DataSupplier;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
@@ -17,39 +18,26 @@ public class Player {
     private final StringProperty time = new SimpleStringProperty();
 
 
-    private Player(DataSupplier dataSupplier) {
+    private Player(DataSupplier dataSupplier){
         this.dataSupplier = dataSupplier;
         this.song = dataSupplier.getMedia();
         playTrack(dataSupplier.isPlaying());
     }
-
-
     public static Player useMediaPlayer(DataSupplier dataSupplier) {
         if (instance == null) {
             instance = new Player(dataSupplier);
         }
         return instance;
     }
-
-
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
-    }
-
-    public void playNextSong(Media media, boolean play) {
-        setSong(media);
-        playNextTrack(play);
-    }
-
-    public void playPreviousSong(Media media, boolean play) {
-        setSong(media);
-        playPreviousTrack(play);
     }
 
     /**
      * controls the play functionality if the app just started , music will not play
      **/
     private MediaPlayer playTrack(boolean play) {
+
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.dispose();
@@ -75,18 +63,23 @@ public class Player {
         this.mediaPlayer = playTrack(play);
     }
 
-    private void playPreviousTrack(boolean play) {
+    private void playPreviousTrack(boolean play)  {
         this.mediaPlayer = playTrack(play);
+    }
+    public void playNextSong(Media media, boolean play)  {
+        setSong(media);
+        playNextTrack(play);
+    }
+
+    public void playPreviousSong(Media media, boolean play)  {
+        setSong(media);
+        playPreviousTrack(play);
     }
 
     private void playContinuous() {
         this.setSong(dataSupplier.getNextSong(), dataSupplier.isPlaying());
 
     }
-
-//    public void bindViewWithTimeDuration(Label label, StringProperty binder) {
-//        label.textProperty().bind(binder);
-//    }
 
     private void bindDurationToLabel(StringProperty stringToBind) {
         StringBinding currentTimeStringBinding = Bindings.createStringBinding(() -> formatDuration(mediaPlayer.getCurrentTime()), mediaPlayer.currentTimeProperty());
@@ -100,11 +93,7 @@ public class Player {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
-//    public void bindVolumeToModel(Model model) {
-//        model.volumeProperty().addListener((obs, oldValue, newValue) -> {
-//            this.mediaPlayer.setVolume(newValue.doubleValue());
-//        });
-//    }
+
 
 
     public void setSong(Media media) {

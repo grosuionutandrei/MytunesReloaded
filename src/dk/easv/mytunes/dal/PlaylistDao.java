@@ -105,7 +105,6 @@ public class PlaylistDao implements IPlaylistDao {
             throw new MyTunesException("Error occurred in a database operation ", e);
         }
     }
-
     @Override
     public boolean updatePlayList(int playListId, String newTitle) throws MyTunesException {
         String sql = "UPDATE Playlists SET PlaylistName=? WHERE PlaylistId=?";
@@ -115,12 +114,9 @@ public class PlaylistDao implements IPlaylistDao {
             psmt.setInt(2, playListId);
             int rowsAffected = psmt.executeUpdate();
             return rowsAffected > 0;
-
         } catch (SQLException e) {
             throw new MyTunesException(e.getMessage());
         }
-
-
     }
 
     @Override
@@ -192,4 +188,6 @@ public class PlaylistDao implements IPlaylistDao {
         }
 
     }
+
+
 }

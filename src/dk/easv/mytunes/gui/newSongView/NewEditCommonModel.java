@@ -6,7 +6,7 @@ import dk.easv.mytunes.utility.SongFormat;
 
 import java.io.File;
 
-public abstract class NewEditCommon {
+public abstract class NewEditCommonModel {
      private MyTunesCreation myTunesCreation;
 
 

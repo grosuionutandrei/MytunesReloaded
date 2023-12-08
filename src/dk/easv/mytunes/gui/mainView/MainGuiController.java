@@ -192,7 +192,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         playlistSongsView.setSongs(this.model.getCurrentPlayListSongs());
         playlistSongsView.setSongSelectionListener(this);
         playListSongsContainer.getChildren().add(playlistSongsView);
-        // playlistSongsView.bindModelToPlayListSongs(this.model,this.player,this.playButton);
         VBox.setVgrow(playlistSongsView, Priority.ALWAYS);
     }
 
@@ -220,7 +219,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         model.setPlayMusic(play);
         try {
             player.setSong(model.getCurrentSongToBePlayed(), model.isPlayMusic());
-
         } catch (MyTunesException e) {
             this.alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(e.getMessage());
@@ -253,12 +251,17 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     @Override
     public Media getNextSong() {
         Media media = null;
-        try {
-            media = model.getNextSong();
-        } catch (MyTunesException e) {
-            this.alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(e.getMessage());
-            alert.show();
+        boolean retry = true;
+        int counter = 0;
+        while (retry) {
+            try {
+                media = model.getNextSong();
+                retry = false;
+            } catch (MyTunesException e) {
+                this.alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText(e.getMessage());
+                alert.show();
+            }
         }
         return media;
     }
@@ -269,12 +272,16 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     @Override
     public Media getPreviousSong() {
         Media media = null;
-        try {
-            media = model.getPreviousSong();
-        } catch (MyTunesException e) {
-            this.alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(e.getMessage());
-            alert.show();
+        boolean retry = true;
+        while (retry) {
+            try {
+                media = model.getPreviousSong();
+                retry = false;
+            } catch (MyTunesException e) {
+                this.alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText(e.getMessage());
+                alert.show();
+            }
         }
         return media;
     }
