@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="finished add song to playlist">
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/DeleteSongFromPlaylistController.java" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="implemented delete song from playlist">
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/IPlaylistDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/IPlaylistDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/PlayListModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/PlayListModel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,11 +69,11 @@
       <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\src\dk\easv\mytunes\dal" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\src\dk\easv\resources" />
       <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\src" />
       <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\data" />
       <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\src\dk\easv\mytunes\gui\components\confirmationWindow" />
       <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\src\dk\easv\mytunes\gui\css" />
-      <recent name="D:\computer_science\sco\MediPlayer\MyTunesReloaded\src\dk\easv\mytunes\gui\mainView" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="dk.easv.mytunes.gui.components.songsTable" />
@@ -121,7 +116,7 @@
       <workItem from="1701687927622" duration="36564000" />
       <workItem from="1701816014906" duration="223000" />
       <workItem from="1701893482775" duration="6827000" />
-      <workItem from="1701967217024" duration="38290000" />
+      <workItem from="1701967217024" duration="40762000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -339,7 +334,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702066130947</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="implemented delete song from playlist">
+      <option name="closed" value="true" />
+      <created>1702074431059</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1702074431059</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -377,7 +380,8 @@
     <MESSAGE value="implemented edelete song from join table" />
     <MESSAGE value="implemented delete song from join table" />
     <MESSAGE value="finished add song to playlist" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished add song to playlist" />
+    <MESSAGE value="implemented delete song from playlist" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented delete song from playlist" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
