@@ -65,4 +65,8 @@ public class PlayListModel {
     public boolean addSongToPlayList(PlayList playListToAdd, Song songToBeAdded) throws MyTunesException {
         return this.playlistCreation.addSongToPlaylist(playListToAdd, songToBeAdded);
     }
+
+    public boolean deleteSongFromPlayList(Song songToDelete) throws MyTunesException {
+        return this.playlistCreation.deleteSongFromPLayList(songToDelete);
+    }
 }

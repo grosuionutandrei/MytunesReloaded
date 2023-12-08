@@ -46,4 +46,8 @@ public class MyTunesPlaylistCreation {
         }
         return this.playlistDao.addSongToPlaylist(playListToAdd,songToBeAdded);
     }
+
+    public boolean deleteSongFromPLayList(Song songToDelete) throws MyTunesException {
+        return this.playlistDao.deleteSongFromPLayList(songToDelete.getSongId());
+    }
 }

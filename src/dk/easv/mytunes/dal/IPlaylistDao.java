@@ -17,4 +17,6 @@ public interface IPlaylistDao {
 
     List<PlayList> reloadPlaylistsFromDb() throws MyTunesException;
     public boolean updatePlayListNullSong(int playListId,int songId) throws MyTunesException;
+
+    boolean deleteSongFromPLayList(int songId) throws MyTunesException;
 }

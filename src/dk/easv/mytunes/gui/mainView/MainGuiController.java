@@ -19,6 +19,7 @@ import dk.easv.mytunes.gui.newEditDeletePlaylist.DeletePlayListController;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.EditPlaylistController;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.NewPlaylistController;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
+import dk.easv.mytunes.gui.playlistSongsOperations.DeleteSongFromPlaylistController;
 import dk.easv.mytunes.utility.GraphicIdValues;
 import dk.easv.mytunes.utility.Utility;
 import javafx.application.Platform;
@@ -39,7 +40,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 
 import java.io.IOException;
 import java.net.URL;
@@ -77,6 +77,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private SongsTable allSongsTable;
     @FXML
     private PlaylistTable allPlaylistTable;
+    @FXML
+    private PlaylistSongsView playListSongs;
     @FXML
     private VBox playlistContainer;
     @FXML
@@ -188,11 +190,11 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     private void initiateSongListView() {
-        PlaylistSongsView playlistSongsView = new PlaylistSongsView();
-        playlistSongsView.setSongs(this.model.getCurrentPlayListSongs());
-        playlistSongsView.setSongSelectionListener(this);
-        playListSongsContainer.getChildren().add(playlistSongsView);
-        VBox.setVgrow(playlistSongsView, Priority.ALWAYS);
+        this.playListSongs = new PlaylistSongsView();
+        this.playListSongs.setSongs(this.model.getCurrentPlayListSongs());
+        this.playListSongs.setSongSelectionListener(this);
+        playListSongsContainer.getChildren().add(this.playListSongs);
+        VBox.setVgrow(this.playListSongs, Priority.ALWAYS);
     }
 
     /**
@@ -479,27 +481,129 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         newPlayListStage.show();
     }
 
-
+    /**
+     * Deletes the selected playlist and displays a confirmation window.
+     *
+     * @param event The ActionEvent triggering the operation.
+     */
     public void deletePlaylist(ActionEvent event) {
         PlayList playlistToDelete = getSelectedPlayList();
+
+        // Check if a playlist is selected
         if (playlistToDelete == null) {
             displayAlert(Alert.AlertType.INFORMATION, "No Playlist selected");
             return;
         }
-        boolean isCurrentPlaying = this.model.checkPlayListCurrentPlaying(playlistToDelete);
-        if (isCurrentPlaying) {
+
+        // Check if the playlist is currently being played
+        if (isPlaylistCurrentlyPlaying(playlistToDelete)) {
             displayAlert(Alert.AlertType.INFORMATION, "The playlist that you are trying to delete is in use");
             return;
         }
+
+        // Create and initialize the DeletePlayListController
+        DeletePlayListController deletePlayListController = createDeletePlayListController(playlistToDelete);
+        Stage confirmationStage = createConfirmationStage(deletePlayListController, event);
+
+        // Show the confirmation window
+        confirmationStage.show();
+    }
+
+    /**
+     * Checks if the given playlist is currently being played.
+     *
+     * @param playlist The playlist to check.
+     * @return True if the playlist is currently playing, otherwise false.
+     */
+    private boolean isPlaylistCurrentlyPlaying(PlayList playlist) {
+        return this.model.checkPlayListCurrentPlaying(playlist);
+    }
+
+    /**
+     * Creates and initializes a DeletePlayListController with the specified playlist.
+     *
+     * @param playlistToDelete The playlist to be deleted.
+     * @return The initialized DeletePlayListController.
+     */
+    private DeletePlayListController createDeletePlayListController(PlayList playlistToDelete) {
         DeletePlayListController deletePlayListController = new DeletePlayListController();
         deletePlayListController.getPlayListToDelete(playlistToDelete);
         deletePlayListController.initialize(null, null);
         deletePlayListController.setReloadable(this);
+        return deletePlayListController;
+    }
+
+    /**
+     * Creates a confirmation stage for deleting the playlist.
+     *
+     * @param deletePlayListController The DeletePlayListController for the confirmation window.
+     * @param event                    The ActionEvent triggering the operation.
+     * @return The created confirmation stage.
+     */
+    private Stage createConfirmationStage(DeletePlayListController deletePlayListController, ActionEvent event) {
         Stage mainStage = getCurrentStage(event);
         Scene scene = new Scene(deletePlayListController.getConfirmationWindow());
-        Stage confirmation = createPopupStage(mainStage, scene, "Delete Playlist");
-        confirmation.show();
+        return createPopupStage(mainStage, scene, "Delete Playlist");
     }
+
+
+    /**
+     * Adds a song to the current playlist and displays a confirmation window.
+     *
+     * @param event The ActionEvent triggering the operation.
+     */
+    public void addSongToPlaylist(ActionEvent event) {
+        PlayList playListToAdd;
+        Song selectedSong = getSelectedSong(allSongsTable);
+
+        try {
+            playListToAdd = model.getCurrentPlayList();
+            if (playListToAdd == null || selectedSong == null) {
+                displayAlert(Alert.AlertType.INFORMATION, "Please select a song and a playlist");
+                return;
+            }
+            AddToPlayListController addToPlayListController = createAddToPlayListController(playListToAdd, selectedSong);
+            Stage mainStage = getCurrentStage(event);
+            Scene scene = new Scene(addToPlayListController.getConfirmationWindow());
+            Stage confirmation = createPopupStage(mainStage, scene, "Add Song to Playlist");
+            confirmation.show();
+        } catch (MyTunesException e) {
+            displayAlert(Alert.AlertType.ERROR, e.getMessage());
+        }
+    }
+
+    /**
+     * Creates an instance of AddToPlayListController with the provided playlist and song.
+     *
+     * @param playListToAdd The playlist to add the song to.
+     * @param selectedSong  The song to be added to the playlist.
+     * @return An instance of AddToPlayListController.
+     */
+    private AddToPlayListController createAddToPlayListController(PlayList playListToAdd, Song selectedSong) {
+        AddToPlayListController addToPlayListController = new AddToPlayListController();
+        addToPlayListController.setPlayListToAdd(playListToAdd);
+        addToPlayListController.setSongToAdd(selectedSong);
+        addToPlayListController.setPlaylistReloadable(this);
+        addToPlayListController.initialize(null, null);
+        return addToPlayListController;
+    }
+
+    @FXML
+    private void deleteSongFromPlayList(ActionEvent event) {
+        Song songToDelete = getSelectedSongFromPlayList();
+        if (songToDelete == null) {
+            displayAlert(Alert.AlertType.INFORMATION, "Please select a song to be deleted");
+            return;
+        }
+        DeleteSongFromPlaylistController dsfpc = new DeleteSongFromPlaylistController();
+        dsfpc.getSongToDelete(songToDelete);
+        dsfpc.setReloadable(this);
+        dsfpc.initialize(null, null);
+        Scene scene = new Scene(dsfpc.getConfirmationWindow());
+        Stage stage = createPopupStage(getCurrentStage(event), scene, "Delete song from playlist");
+        stage.show();
+    }
+
 
     @Override
     public void reloadPlaylistsFromDb() {
@@ -511,7 +615,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     @Override
-    public void reloadSongs(Song song) {
+    public void reloadSongs() {
         try {
             this.model.reloadPlayListSongs();
         } catch (MyTunesException e) {
@@ -523,26 +627,13 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         return this.allPlaylistTable.getSelectionModel().getSelectedItem();
     }
 
-    public void addSongToPlaylist(ActionEvent event) {
-        PlayList playListToAdd = null;
-        try {
-            playListToAdd = model.getCurrentPlayList();
-        } catch (MyTunesException e) {
-            displayAlert(Alert.AlertType.ERROR,e.getMessage());
-        }
-        Song selectedSong = getSelectedSong(allSongsTable);
-        if ((playListToAdd == null) || (selectedSong == null)) {
-            displayAlert(Alert.AlertType.INFORMATION, "Please selected a song and a playlist");
-            return;
-        }
-        AddToPlayListController addToPlayListController = new AddToPlayListController();
-        addToPlayListController.setPlayListToAdd(playListToAdd);
-        addToPlayListController.setSongToAdd(selectedSong);
-        addToPlayListController.setPlaylistReloadable(this);
-        addToPlayListController.initialize(null, null);
-        Stage mainStage = getCurrentStage(event);
-        Scene scene = new Scene(addToPlayListController.getConfirmationWindow());
-        Stage confirmation = createPopupStage(mainStage, scene, "Add Song to  playlist");
-        confirmation.show();
+
+    /**
+     * Get the selected song from the playlist songs list view
+     */
+    private Song getSelectedSongFromPlayList() {
+        return this.playListSongs.getSelectionModel().getSelectedItem();
     }
+
+
 }

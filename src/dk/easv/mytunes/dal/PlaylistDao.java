@@ -205,4 +205,17 @@ public class PlaylistDao implements IPlaylistDao {
             throw new MyTunesException("Database operation unsuccessful", e.getCause());
         }
     }
+
+    @Override
+    public boolean deleteSongFromPLayList(int songId) throws MyTunesException {
+        String sql = "DELETE FROM PlaylistSongs WHERE SongId=?";
+        try (Connection conn=CONNECTION_MANAGER.getConnection()){
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setInt(1,songId);
+            int affectedRows= psmt.executeUpdate();
+            return affectedRows>0;
+        } catch (SQLException |MyTunesException e) {
+            throw new MyTunesException(e.getMessage(),e.getCause());
+        }
+    }
 }

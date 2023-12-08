@@ -30,7 +30,7 @@ public class AddToPlayListController implements ConfirmationController, Initiali
             }
             if(executed){
                 playlistReloadable.reloadPlaylistsFromDb();
-                playlistReloadable.reloadSongs(this.songToBeAdded);
+                playlistReloadable.reloadSongs();
             }
         }
     }
