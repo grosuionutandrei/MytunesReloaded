@@ -1,4 +1,13 @@
 package dk.easv.mytunes.gui.playlistSongsOperations;
 
-public class MoveSongsController {
+import dk.easv.mytunes.gui.components.movebutton.MoveButton;
+import javafx.fxml.FXML;
+
+public class MoveSongsController  {
+
+
+
+
+
+
 }

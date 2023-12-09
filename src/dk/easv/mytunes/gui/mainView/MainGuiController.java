@@ -3,6 +3,9 @@ package dk.easv.mytunes.gui.mainView;
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.gui.components.movebutton.DownGraphic;
+import dk.easv.mytunes.gui.components.movebutton.MoveButton;
+import dk.easv.mytunes.gui.components.movebutton.UpGraphic;
 import dk.easv.mytunes.gui.components.playListSongView.PlaylistSongsView;
 import dk.easv.mytunes.gui.components.playListTable.PlaylistTable;
 import dk.easv.mytunes.gui.components.player.Player;
@@ -83,6 +86,10 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private VBox playlistContainer;
     @FXML
     private VBox playListSongsContainer;
+    @FXML
+    private Button upButton;
+    @FXML
+    private Button downButton;
 
 
     public void playPreviousSong(ActionEvent event) {
@@ -127,10 +134,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             searchButton.setGraphic(searchGraphic.getGraphic());
             searchValue.setEditable(true);
             model.resetFilter();
-
         }
-
-
     }
 
 
@@ -139,6 +143,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         alert = new Alert(Alert.AlertType.ERROR);
         searchGraphic = new SearchGraphic();
         searchButton.setGraphic(searchGraphic.getGraphic());
+        initializeUpButton();
+        initializeDownButton();
         try {
             this.model = Model.getModel();
         } catch (MyTunesException e) {
@@ -195,6 +201,20 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         this.playListSongs.setSongSelectionListener(this);
         playListSongsContainer.getChildren().add(this.playListSongs);
         VBox.setVgrow(this.playListSongs, Priority.ALWAYS);
+    }
+
+    private void initializeUpButton() {
+        MoveButton moveButton = new UpGraphic();
+        upButton.setGraphic(moveButton.getGraphic());
+        upButton.setPrefWidth(50);
+        upButton.setPrefHeight(25);
+    }
+
+    private void initializeDownButton() {
+        MoveButton moveButton = new DownGraphic();
+        downButton.setGraphic(moveButton.getGraphic());
+        downButton.setPrefWidth(50);
+        downButton.setPrefHeight(25);
     }
 
     /**
