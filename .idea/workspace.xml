@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="start implementing move song view">
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/movebutton/DownGraphic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/movebutton/MoveButton.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/movebutton/UpGraphic.java" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="implemented move song view">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/TitleCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/TitleCell.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/GraphicIdValues.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/GraphicIdValues.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,8 +23,8 @@
         <option value="CSS File" />
         <option value="Enum" />
         <option value="FxmlFile" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -121,7 +120,7 @@
       <workItem from="1701816014906" duration="223000" />
       <workItem from="1701893482775" duration="6827000" />
       <workItem from="1701967217024" duration="41166000" />
-      <workItem from="1702143480319" duration="5388000" />
+      <workItem from="1702143480319" duration="12754000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -355,7 +354,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702077091577</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="implemented move song view">
+      <option name="closed" value="true" />
+      <created>1702150146779</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1702150146779</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -395,7 +402,8 @@
     <MESSAGE value="finished add song to playlist" />
     <MESSAGE value="implemented delete song from playlist" />
     <MESSAGE value="start implementing move song view" />
-    <option name="LAST_COMMIT_MESSAGE" value="start implementing move song view" />
+    <MESSAGE value="implemented move song view" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented move song view" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

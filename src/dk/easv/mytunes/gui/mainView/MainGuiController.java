@@ -23,6 +23,7 @@ import dk.easv.mytunes.gui.newEditDeletePlaylist.EditPlaylistController;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.NewPlaylistController;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
 import dk.easv.mytunes.gui.playlistSongsOperations.DeleteSongFromPlaylistController;
+import dk.easv.mytunes.gui.playlistSongsOperations.MoveSongsController;
 import dk.easv.mytunes.utility.GraphicIdValues;
 import dk.easv.mytunes.utility.Utility;
 import javafx.application.Platform;
@@ -624,6 +625,25 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         stage.show();
     }
 
+    @FXML
+    private void moveSongInPlaylist(ActionEvent event) {
+        this.upButton.setDisable(true);
+        int selectedSong = this.playListSongs.getSelectionModel().getSelectedIndex();
+        String operation = ((Node) event.getTarget()).getId();
+        MoveSongsController moveSongsController = new MoveSongsController();
+        int newPosition = moveSongsController.moveSong(this.model.getCurrentPlayListSongs(), selectedSong, operation);
+
+
+
+        Platform.runLater(() -> {
+            this.playListSongs.getSelectionModel().select(newPosition);
+            this.playListSongs.getFocusModel().focus(newPosition);
+            this.upButton.setDisable(false);
+        });
+
+
+    }
+
 
     @Override
     public void reloadPlaylistsFromDb() {
@@ -642,6 +662,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             displayAlert(Alert.AlertType.ERROR, e.getMessage());
         }
     }
+
 
     private PlayList getSelectedPlayList() {
         return this.allPlaylistTable.getSelectionModel().getSelectedItem();
