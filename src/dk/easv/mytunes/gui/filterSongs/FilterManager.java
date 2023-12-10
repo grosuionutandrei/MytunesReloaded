@@ -5,6 +5,7 @@ import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
 import dk.easv.mytunes.gui.components.searchButton.UndoGraphic;
 import dk.easv.mytunes.gui.mainView.Model;
 import dk.easv.mytunes.utility.GraphicIdValues;
+import dk.easv.mytunes.utility.InformationalMessages;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,6 +26,8 @@ public class FilterManager {
         this.searchValue = searchValue;
     }
 
+    /**
+     * Applies the filter entered by the user */
     public void applyFilter(ActionEvent event) {
         String filter = searchValue.getText();
 
@@ -32,7 +35,7 @@ public class FilterManager {
             if (!filter.isEmpty()) {
                 applySearchFilter(filter);
             } else {
-                showInfoMessage("Filter is empty");
+                showInfoMessage(InformationalMessages.FILTER_EMPTY.getValue());
             }
         } else {
             clearSearchFilter();
