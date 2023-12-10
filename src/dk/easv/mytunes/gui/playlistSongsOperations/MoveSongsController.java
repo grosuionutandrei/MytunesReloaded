@@ -14,9 +14,8 @@ import java.util.List;
 public class MoveSongsController {
     private PlayListModel playListModel;
     private PlaylistReloadable playlistReloadable;
-    private final int MOVEUP = 1;
-    private final int MOVEDOWN = -1;
-
+    private final int MOVEUP = -1;
+    private final int MOVEDOWN = 1;
 
     public MoveSongsController() {
         try {
@@ -37,7 +36,9 @@ public class MoveSongsController {
      * @param observableList  the current list off songs that is displayed
      */
     public int moveSong(PlayList currentPlayList, int selectedIndex, String operation, ObservableList<Song> observableList) {
+        System.out.println(selectedIndex);
         if (selectedIndex < 0) {
+            playlistReloadable.resetButtons();
             return selectedIndex;
         }
         List<Song> temporaryList = currentPlayList.getPlayListSongs();
@@ -52,6 +53,7 @@ public class MoveSongsController {
             currentPlayList.setPlayListSongs(temporaryList);
             playListModel.saveChange(currentPlayList);
             playlistReloadable.reloadSongs();
+            playlistReloadable.changePlayingIndex(newIndex);
             playlistReloadable.resetButtons();
         } catch (MyTunesException e) {
             displayInfoMessage(e.getMessage() + " changes will not be saved", Alert.AlertType.ERROR);
@@ -72,10 +74,6 @@ public class MoveSongsController {
 
     private boolean isIndexValid(int currentIndex, int newIndex, int size) {
         return newIndex >= 0 && newIndex < size && currentIndex >= 0 && currentIndex < size;
-    }
-
-    private void resetObservableList(ObservableList<Song> observableList, List<Song> temporaryList) {
-        observableList.setAll(temporaryList);
     }
 
     public PlayListModel getPlayListModel() {
@@ -105,5 +103,8 @@ public class MoveSongsController {
         return GraphicIdValues.UP.getValue().equals(operation);
     }
 
+    private void resetObservableList(ObservableList<Song> observableList, List<Song> temporaryList) {
+        observableList.setAll(temporaryList);
+    }
 
 }

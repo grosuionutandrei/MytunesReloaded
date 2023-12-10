@@ -7,4 +7,5 @@ public interface PlaylistReloadable {
     public void reloadPlaylistsFromDb();
     public void reloadSongs();
     public void resetButtons();
+    public void changePlayingIndex(int index);
 }

@@ -27,6 +27,9 @@ public class Model {
      * holds the current song time played
      */
     private Duration currentTime = new Duration(0.0);
+
+
+
     /**
      * current index off the song that is being played
      */
@@ -313,6 +316,10 @@ public class Model {
 
     public PlayList getCurrentPlayList() throws MyTunesException {
         return this.myTunesLogic.getTheCurrentPlayingPlayList(this.currentPlayingPlayListId);
+    }
+
+    public void  setCurrentIndexOffTheSong(int index) {
+        this.currentIndexOffTheSong.set(index);
     }
 
 

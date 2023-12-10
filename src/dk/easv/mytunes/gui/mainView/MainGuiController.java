@@ -643,9 +643,16 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         }
         int newPosition = moveSongsController.moveSong(currentPlayList, selectedSong, operation, this.model.getCurrentPlayListSongs());
         Platform.runLater(() -> {
-            this.playListSongs.getSelectionModel().select(newPosition);
-            this.playListSongs.getFocusModel().focus(newPosition);
+            selectAndFocusPlaylistItem(newPosition);
+
         });
+    }
+
+    /**
+     * Changes the focus and select off the plyListSongs view according to the movement operation*/
+    private void selectAndFocusPlaylistItem(int newPosition) {
+        if (newPosition >0){this.playListSongs.getSelectionModel().select(newPosition);
+            this.playListSongs.getFocusModel().focus(newPosition);}
     }
 
     @Override
@@ -670,6 +677,10 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     public void resetButtons() {
         this.upButton.setDisable(false);
         this.downButton.setDisable(false);
+    }
+    @Override
+    public void changePlayingIndex(int index){
+    this.model.setCurrentIndexOffTheSong(index);
     }
 
 
