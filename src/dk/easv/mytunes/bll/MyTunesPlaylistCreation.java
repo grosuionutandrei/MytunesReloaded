@@ -5,6 +5,8 @@ import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.dal.PlaylistDao;
 import dk.easv.mytunes.exceptions.MyTunesException;
 
+import java.util.List;
+
 public class MyTunesPlaylistCreation {
     private PlaylistDao playlistDao;
     private static MyTunesPlaylistCreation instance;
@@ -49,5 +51,9 @@ public class MyTunesPlaylistCreation {
 
     public boolean deleteSongFromPLayList(Song songToDelete) throws MyTunesException {
         return this.playlistDao.deleteSongFromPLayList(songToDelete.getSongId());
+    }
+
+    public boolean saveChange(PlayList currentPlayList) throws MyTunesException {
+        return this.playlistDao.saveChange(currentPlayList);
     }
 }

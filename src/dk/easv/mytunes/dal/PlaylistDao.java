@@ -218,4 +218,40 @@ public class PlaylistDao implements IPlaylistDao {
             throw new MyTunesException(e.getMessage(),e.getCause());
         }
     }
+
+    @Override
+    public boolean saveChange(PlayList currentPlayList) throws MyTunesException {
+        String deleteSql = "DELETE FROM PlaylistSongs WHERE PlaylistId = ?";
+        String insertSql = "INSERT INTO PlaylistSongs (PlaylistId, SongId) VALUES (?, ?)";
+
+        try (Connection conn = CONNECTION_MANAGER.getConnection()) {
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement deletePsmt = conn.prepareStatement(deleteSql);
+                 PreparedStatement insertPsmt = conn.prepareStatement(insertSql)) {
+
+                // Delete all songs associated with the specified playlist ID
+                deletePsmt.setInt(1, currentPlayList.getId());
+                deletePsmt.executeUpdate();
+
+                // Insert the updated list of songs for the playlist
+                for (Song song : currentPlayList.getPlayListSongs()) {
+                    insertPsmt.setInt(1, currentPlayList.getId());
+                    insertPsmt.setInt(2, song.getSongId());
+                    insertPsmt.executeUpdate();
+                }
+
+                conn.commit(); // Commit the transaction if everything is successful
+                return true; // Return true to indicate success
+            } catch (SQLException e) {
+                conn.rollback(); // Rollback the transaction if an error occurs
+                throw new MyTunesException("Error saving changes to the database", e);
+            }
+        } catch (SQLException e) {
+            throw new MyTunesException("Error connecting to the database", e);
+        }
+    }
 }
+
+
+

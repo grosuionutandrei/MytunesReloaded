@@ -47,6 +47,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, Reloadable, PlayListSelectionListener, PlaylistReloadable {
@@ -628,22 +630,23 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     @FXML
     private void moveSongInPlaylist(ActionEvent event) {
         this.upButton.setDisable(true);
+        this.downButton.setDisable(true);
         int selectedSong = this.playListSongs.getSelectionModel().getSelectedIndex();
         String operation = ((Node) event.getTarget()).getId();
         MoveSongsController moveSongsController = new MoveSongsController();
-        int newPosition = moveSongsController.moveSong(this.model.getCurrentPlayListSongs(), selectedSong, operation);
-
-
-
+        moveSongsController.setPlaylistReloadable(this);
+        PlayList currentPlayList = null;
+        try {
+            currentPlayList = this.model.getCurrentPlayList();
+        } catch (MyTunesException e) {
+            displayAlert(Alert.AlertType.ERROR, e.getMessage());
+        }
+        int newPosition = moveSongsController.moveSong(currentPlayList, selectedSong, operation, this.model.getCurrentPlayListSongs());
         Platform.runLater(() -> {
             this.playListSongs.getSelectionModel().select(newPosition);
             this.playListSongs.getFocusModel().focus(newPosition);
-            this.upButton.setDisable(false);
         });
-
-
     }
-
 
     @Override
     public void reloadPlaylistsFromDb() {
@@ -661,6 +664,12 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         } catch (MyTunesException e) {
             displayAlert(Alert.AlertType.ERROR, e.getMessage());
         }
+    }
+
+    @Override
+    public void resetButtons() {
+        this.upButton.setDisable(false);
+        this.downButton.setDisable(false);
     }
 
 

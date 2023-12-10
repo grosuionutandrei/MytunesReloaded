@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="implemented move song view">
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="start to implement move song functionality">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/TitleCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/TitleCell.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/AppGui.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/IPlaylistDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/IPlaylistDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/PlaylistReloadable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/PlaylistReloadable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/PlayListModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/PlayListModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/GraphicIdValues.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/GraphicIdValues.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +122,8 @@
       <workItem from="1701816014906" duration="223000" />
       <workItem from="1701893482775" duration="6827000" />
       <workItem from="1701967217024" duration="41166000" />
-      <workItem from="1702143480319" duration="12754000" />
+      <workItem from="1702143480319" duration="13650000" />
+      <workItem from="1702205779339" duration="8117000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -362,7 +365,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702150146779</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="start to implement move song functionality">
+      <option name="closed" value="true" />
+      <created>1702159445145</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1702159445145</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -403,7 +414,8 @@
     <MESSAGE value="implemented delete song from playlist" />
     <MESSAGE value="start implementing move song view" />
     <MESSAGE value="implemented move song view" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented move song view" />
+    <MESSAGE value="start to implement move song functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="start to implement move song functionality" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

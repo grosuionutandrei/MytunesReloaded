@@ -5,6 +5,8 @@ import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.bll.MyTunesPlaylistCreation;
 import dk.easv.mytunes.exceptions.MyTunesException;
 
+import java.util.List;
+
 public class PlayListModel {
 
     private MyTunesPlaylistCreation playlistCreation;
@@ -68,5 +70,10 @@ public class PlayListModel {
 
     public boolean deleteSongFromPlayList(Song songToDelete) throws MyTunesException {
         return this.playlistCreation.deleteSongFromPLayList(songToDelete);
+    }
+
+    public boolean saveChange(PlayList currentPlaylist) throws MyTunesException {
+       return this.playlistCreation.saveChange(currentPlaylist);
+
     }
 }
