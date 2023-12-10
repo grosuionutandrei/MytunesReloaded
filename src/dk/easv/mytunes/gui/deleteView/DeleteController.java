@@ -8,10 +8,12 @@ import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DeleteController implements ConfirmationController, Initializable {
+public class DeleteController implements ConfirmationController,Initializable {
 
     private DeleteModel deleteModel;
     private VBox confirmationWindow;
@@ -48,7 +50,10 @@ public class DeleteController implements ConfirmationController, Initializable {
             displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
         }
         if (deleteModel != null) {
-            ConfirmationWindow confirmationView = new ConfirmationWindow();
+           ConfirmationWindow confirmationView = new ConfirmationWindow();
+           if(confirmationView.getConfirmationWindow()==null){
+               return;
+           }
             confirmationWindow = confirmationView.getConfirmationWindow();
             initializeConfirmationWindow(confirmationView, this);
         }

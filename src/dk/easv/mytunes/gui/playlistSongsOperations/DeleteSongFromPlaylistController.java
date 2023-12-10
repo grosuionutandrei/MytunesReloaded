@@ -8,7 +8,6 @@ import dk.easv.mytunes.gui.newEditDeletePlaylist.PlayListModel;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -30,7 +29,7 @@ public class DeleteSongFromPlaylistController implements ConfirmationController,
     public void confirmationEventHandler(boolean confirmation) {
         if (confirmation) {
             try {
-                boolean deleted = playlistModel.deleteSongFromPlayList(this.songToDelete,listToDeleteFrom);
+                boolean deleted = playlistModel.deleteSongFromPlayList(this.songToDelete, listToDeleteFrom);
                 if (deleted) {
                     String message = "Deleted with success";
                     displayInfoMessage(message, Alert.AlertType.INFORMATION);
@@ -63,9 +62,9 @@ public class DeleteSongFromPlaylistController implements ConfirmationController,
         alert.show();
     }
 
-    public void getSongToDelete(Song song, List<Song> listToDeleteFrom ) {
+    public void getSongToDelete(Song song, List<Song> listToDeleteFrom) {
         this.songToDelete = song;
-        this.listToDeleteFrom= listToDeleteFrom;
+        this.listToDeleteFrom = listToDeleteFrom;
     }
 
     private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow, ConfirmationController confirmationController) {
@@ -77,7 +76,6 @@ public class DeleteSongFromPlaylistController implements ConfirmationController,
     }
 
     public void setReloadable(PlaylistReloadable playlistReloadable) {
-
         this.playlistReloadable = playlistReloadable;
     }
 

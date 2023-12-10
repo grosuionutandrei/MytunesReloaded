@@ -4,6 +4,7 @@ import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.listeners.Reloadable;
 import dk.easv.mytunes.gui.mainView.MainGuiController;
 import dk.easv.mytunes.utility.Genre;
+import dk.easv.mytunes.utility.InformationalMessages;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.stage.FileChooser;
@@ -57,7 +58,7 @@ public abstract class NewEditController {
         alertWindowOperation.setX(newSongStage.getX());
         alertWindowOperation.setY(newSongStage.getY());
         if (message == null) {
-            alertWindowOperation.setContentText("Title and Location can not be empty");
+            alertWindowOperation.setContentText(InformationalMessages.NO_EMPTY_INPUT.getValue());
         } else {
             alertWindowOperation.setContentText(message);
         }

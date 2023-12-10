@@ -1,5 +1,7 @@
 package dk.easv.mytunes.gui.components.confirmationWindow;
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
+import dk.easv.mytunes.utility.InformationalMessages;
+import dk.easv.mytunes.utility.Utility;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,15 +31,13 @@ public class ConfirmationWindow {
     private Button cancelButton;
 
 
-    public ConfirmationWindow() {
+    public ConfirmationWindow()  {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ConfirmationWindow.fxml"));
         loader.setController(this);
         try {
             container = loader.load();
         } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Something went wrong with the application");
-            alert.show();
+            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.FXML_MISSING.getValue());
         }
         if (container != null) {
          addConfirmHandler();

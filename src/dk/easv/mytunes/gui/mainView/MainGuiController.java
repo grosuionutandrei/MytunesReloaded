@@ -1,4 +1,5 @@
 package dk.easv.mytunes.gui.mainView;
+
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
@@ -24,7 +25,9 @@ import dk.easv.mytunes.gui.newSongView.NewSongController;
 import dk.easv.mytunes.gui.playlistSongsOperations.DeleteSongFromPlaylistController;
 import dk.easv.mytunes.gui.playlistSongsOperations.MoveSongsController;
 import dk.easv.mytunes.gui.songSelection.PlaySong;
+import dk.easv.mytunes.utility.InformationalMessages;
 import dk.easv.mytunes.utility.PlayButtonGraphic;
+import dk.easv.mytunes.utility.Titles;
 import dk.easv.mytunes.utility.Utility;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -42,22 +45,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, Reloadable, PlayListSelectionListener, PlaylistReloadable {
     private final int FIRST_INDEX = 0;
-    private final int new_editWindowWidth = 420;
+    private final int POPUP_WIDTH = 420;
 
     private Model model;
     private Player player;
     private ISearchGraphic searchGraphic;
     private VolumeControl volumeControl;
-    private Utility utility;
-
 
     @FXML
     private Label infoLabel;
@@ -116,7 +117,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     /**
-     *handles the filter behaviour off the application*/
+     * handles the filter behaviour off the application
+     */
     @FXML
     private void applyFilter(ActionEvent event) {
         FilterManager filterManager = new FilterManager(this.model, searchGraphic, infoLabel, searchButton, searchValue);
@@ -154,7 +156,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             });
             this.player = Player.useMediaPlayer(this);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
-            this.utility = new Utility();
         }
 
     }
@@ -213,7 +214,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             model.setPlayingPlayList(selectedId);
             System.out.println(model.getCurrentPlayingPlayListId());
         } catch (MyTunesException e) {
-            displayAlert(Alert.AlertType.ERROR, e.getMessage());
+            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
         }
     }
 
@@ -226,8 +227,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
      */
     @Override
     public void onSongSelect(int rowIndex, String tableId, boolean play) {
-        PlaySong playSong =  new PlaySong(this.model,this.player);
-        playSong.playSelectedSong(rowIndex,tableId,play,this.playButton);
+        PlaySong playSong = new PlaySong(this.model, this.player);
+        playSong.playSelectedSong(rowIndex, tableId, play, this.playButton);
     }
 
     /**
@@ -239,9 +240,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             media = model.getCurrentSongToBePlayed();
         } catch (MyTunesException e) {
-            this.alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(e.getMessage());
-            alert.show();
+            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
         }
         return media;
     }
@@ -352,51 +351,56 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             model.reloadSongsFromDB();
         } catch (MyTunesException e) {
-            alert.setContentText(e.getMessage() + "\n" + "Check your internet connection");
-            alert.showAndWait();
+            String message = e.getMessage() + "\n" + InformationalMessages.NO_INTERNET_CONNECTION.getValue();
+            Utility.displayInformation(Alert.AlertType.ERROR, message);
         }
     }
 
     @FXML
-    private void openNewSongWindow(ActionEvent event) throws IOException {
-        Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../newSongView/NewSongView.fxml"));
-        Parent parent = loader.load();
-        NewSongController news = loader.getController();
-        news.setReloadableController(this);
-        Scene scene = new Scene(parent);
-        String stageName = "Add new Song";
-        Stage newSongStage = createPopupStage(mainStage, scene, stageName);
-        newSongStage.show();
+    private void openNewSongWindow(ActionEvent event) {
+        try {
+            Stage mainStage = Utility.getCurrentStage(event);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../newSongView/NewSongView.fxml"));
+            Parent parent = loader.load();
+            NewSongController news = loader.getController();
+            news.setReloadableController(this);
+            Scene scene = new Scene(parent);
+            Stage newSongStage = Utility.createPopupStage(mainStage, scene, Titles.ADD_NEW_SONG.getValue(), POPUP_WIDTH);
+            newSongStage.show();
+        } catch (IOException e) {
+            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.FXML_MISSING.getValue());
+        }
     }
 
     @FXML
-    private void openEditWindow(ActionEvent event) throws IOException {
+    private void openEditWindow(ActionEvent event) {
         Song songToUpdate = getSelectedSong(this.allSongsTable);
         if (songToUpdate == null) {
-            displayAlert(Alert.AlertType.INFORMATION, "No song selected");
+            Utility.displayInformation(Alert.AlertType.INFORMATION, InformationalMessages.NO_SONG_SELECTED.getValue());
             return;
         }
-
-        Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../editSongView/EditSongView.fxml"));
-        Parent parent = loader.load();
-        EditSongController esc = loader.getController();
-        esc.initializeEditView(songToUpdate);
-        esc.setReloadableController(this);
-        Scene scene = new Scene(parent);
-        String stageName = "Edit Song";
-        Stage newSongStage = createPopupStage(mainStage, scene, stageName);
-        newSongStage.show();
+        try {
+            Stage mainStage = Utility.getCurrentStage(event);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../editSongView/EditSongView.fxml"));
+            Parent parent = loader.load();
+            EditSongController esc = loader.getController();
+            esc.initializeEditView(songToUpdate);
+            esc.setReloadableController(this);
+            Scene scene = new Scene(parent);
+            Stage newSongStage = Utility.createPopupStage(mainStage, scene, Titles.EDIT_SONG.getValue(), POPUP_WIDTH);
+            newSongStage.show();
+        } catch (IOException e) {
+            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.FXML_MISSING.getValue());
+        }
     }
 
     /**
      * Deletes the selected song from the table
      */
-    public void deleteSong(ActionEvent event) throws IOException {
+    public void deleteSong(ActionEvent event) {
         Song songToDelete = getSelectedSong(this.allSongsTable);
         if (songToDelete == null) {
-            displayAlert(Alert.AlertType.INFORMATION, "No song selected");
+            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.NO_SONG_SELECTED.getValue());
             return;
         }
         DeleteController del = new DeleteController();
@@ -404,9 +408,13 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         del.setReloadable(this);
         del.initialize(null, null);
         Stage mainStage = getCurrentStage(event);
-        Scene scene = new Scene(del.getConfirmationWindow());
-        Stage confirmation = createPopupStage(mainStage, scene, "Delete Song");
-        confirmation.show();
+        if (del.getConfirmationWindow() != null) {
+            Scene scene = new Scene(del.getConfirmationWindow());
+            Stage confirmation = Utility.createPopupStage(mainStage, scene, Titles.DELETE_SONG.getValue(), POPUP_WIDTH);
+            confirmation.show();
+        } else {
+            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.OPERATION_FAILED.getValue());
+        }
     }
 
     private void displayAlert(Alert.AlertType type, String message) {
@@ -417,20 +425,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     private Song getSelectedSong(TableView<Song> table) {
         return table.getSelectionModel().getSelectedItem();
-    }
-
-    /**
-     * initiate a  new stage that will block all the events, besides the current window
-     */
-    private Stage createPopupStage(Stage mainStage, Scene scene, String name) {
-        Stage newSongStage = new Stage();
-        newSongStage.setX(utility.calculateMidPoint(mainStage.getX(), mainStage.getWidth(), this.new_editWindowWidth));
-        newSongStage.setY(mainStage.getHeight() / 2);
-        newSongStage.setTitle(name);
-        newSongStage.setScene(scene);
-        newSongStage.initModality(Modality.WINDOW_MODAL);
-        newSongStage.initOwner(mainStage);
-        return newSongStage;
     }
 
 
@@ -452,7 +446,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         pc.setReloadable(this);
         Scene scene = new Scene(root);
         Stage mainStage = getCurrentStage(event);
-        Stage newPlayListStage = createPopupStage(mainStage, scene, "Create playlist");
+        Stage newPlayListStage = Utility.createPopupStage(mainStage, scene, Titles.CREATE_PLAYLIST.getValue(), POPUP_WIDTH);
         newPlayListStage.show();
     }
 
@@ -476,7 +470,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         editController.setPlaylistToEdit(playListToUpdate);
         Scene scene = new Scene(root);
         Stage mainStage = getCurrentStage(event);
-        Stage newPlayListStage = createPopupStage(mainStage, scene, "Edit playlist");
+        Stage newPlayListStage = Utility.createPopupStage(mainStage, scene, Titles.EDIT_PLAYLIST.getValue(), POPUP_WIDTH);
         newPlayListStage.show();
     }
 
@@ -542,7 +536,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private Stage createConfirmationStage(DeletePlayListController deletePlayListController, ActionEvent event) {
         Stage mainStage = getCurrentStage(event);
         Scene scene = new Scene(deletePlayListController.getConfirmationWindow());
-        return createPopupStage(mainStage, scene, "Delete Playlist");
+        return Utility.createPopupStage(mainStage, scene, Titles.DELETE_PLAYLIST.getValue(), POPUP_WIDTH);
     }
 
 
@@ -564,7 +558,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             AddToPlayListController addToPlayListController = createAddToPlayListController(playListToAdd, selectedSong);
             Stage mainStage = getCurrentStage(event);
             Scene scene = new Scene(addToPlayListController.getConfirmationWindow());
-            Stage confirmation = createPopupStage(mainStage, scene, "Add Song to Playlist");
+            Stage confirmation = Utility.createPopupStage(mainStage, scene, Titles.ADD_SONG_PLAYLIST.getValue(), POPUP_WIDTH);
             confirmation.show();
         } catch (MyTunesException e) {
             displayAlert(Alert.AlertType.ERROR, e.getMessage());
@@ -588,7 +582,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     @FXML
-    private void deleteSongFromPlayList(ActionEvent event) {
+    private void deleteSongFromPlayList(ActionEvent event) throws IOException {
         Song songToDelete = getSelectedSongFromPlayList();
         if (songToDelete == null) {
             displayAlert(Alert.AlertType.INFORMATION, "Please select a song to be deleted");
@@ -599,7 +593,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         dsfpc.setReloadable(this);
         dsfpc.initialize(null, null);
         Scene scene = new Scene(dsfpc.getConfirmationWindow());
-        Stage stage = createPopupStage(getCurrentStage(event), scene, "Delete song from playlist");
+        Stage stage = Utility.createPopupStage(getCurrentStage(event), scene, Titles.DELETE_SONG_PLAYLIST.getValue(), POPUP_WIDTH);
         stage.show();
     }
 

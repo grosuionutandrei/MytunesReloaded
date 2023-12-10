@@ -1,5 +1,4 @@
 package dk.easv.mytunes.gui.newEditDeletePlaylist;
-
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
@@ -9,7 +8,6 @@ import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
