@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="implemented move song functionality">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/PlaylistReloadable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/PlaylistReloadable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/PlayListModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/PlayListModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/DeleteSongFromPlaylistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/DeleteSongFromPlaylistController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +120,7 @@
       <workItem from="1701893482775" duration="6827000" />
       <workItem from="1701967217024" duration="41166000" />
       <workItem from="1702143480319" duration="13650000" />
-      <workItem from="1702205779339" duration="10346000" />
+      <workItem from="1702205779339" duration="11582000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -378,7 +378,23 @@
       <option name="project" value="LOCAL" />
       <updated>1702219495919</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="implemented move song functionality">
+      <option name="closed" value="true" />
+      <created>1702221437992</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1702221437992</updated>
+    </task>
+    <task id="LOCAL-00034" summary="implemented move song functionality">
+      <option name="closed" value="true" />
+      <created>1702221529157</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1702221529157</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

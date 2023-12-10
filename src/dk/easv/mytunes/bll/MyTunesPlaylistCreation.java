@@ -49,7 +49,10 @@ public class MyTunesPlaylistCreation {
         return this.playlistDao.addSongToPlaylist(playListToAdd,songToBeAdded);
     }
 
-    public boolean deleteSongFromPLayList(Song songToDelete) throws MyTunesException {
+    public boolean deleteSongFromPLayList(Song songToDelete,List<Song> songsToDeleteFrom) throws MyTunesException {
+        if(songsToDeleteFrom.size()==1){
+            throw new MyTunesException("List can not be empty");
+        }
         return this.playlistDao.deleteSongFromPLayList(songToDelete.getSongId());
     }
 

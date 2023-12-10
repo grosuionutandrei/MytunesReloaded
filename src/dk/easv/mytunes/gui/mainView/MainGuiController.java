@@ -619,7 +619,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             return;
         }
         DeleteSongFromPlaylistController dsfpc = new DeleteSongFromPlaylistController();
-        dsfpc.getSongToDelete(songToDelete);
+        dsfpc.getSongToDelete(songToDelete,this.model.getCurrentPlayListSongs());
         dsfpc.setReloadable(this);
         dsfpc.initialize(null, null);
         Scene scene = new Scene(dsfpc.getConfirmationWindow());

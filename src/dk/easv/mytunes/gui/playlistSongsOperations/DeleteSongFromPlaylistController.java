@@ -1,5 +1,6 @@
 package dk.easv.mytunes.gui.playlistSongsOperations;
 
+import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
@@ -11,16 +12,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DeleteSongFromPlaylistController implements ConfirmationController, Initializable {
     private VBox confirmationWindow;
     private Song songToDelete;
+    private List<Song> listToDeleteFrom;
     private PlayListModel playlistModel;
     private PlaylistReloadable playlistReloadable;
 
     /**
      * Handles the confirmation result of deleting a song from a playlist.
+     * if the list contains only one song the operation will not be allowed
      *
      * @param confirmation True if the user confirmed the deletion, false otherwise.
      */
@@ -28,7 +32,7 @@ public class DeleteSongFromPlaylistController implements ConfirmationController,
     public void confirmationEventHandler(boolean confirmation) {
         if (confirmation) {
             try {
-                boolean deleted = playlistModel.deleteSongFromPlayList(this.songToDelete);
+                boolean deleted = playlistModel.deleteSongFromPlayList(this.songToDelete,listToDeleteFrom);
                 if (deleted) {
                     String message = "Deleted with success";
                     displayInfoMessage(message, Alert.AlertType.INFORMATION);
@@ -61,8 +65,9 @@ public class DeleteSongFromPlaylistController implements ConfirmationController,
         alert.show();
     }
 
-    public void getSongToDelete(Song song) {
+    public void getSongToDelete(Song song, List<Song> listToDeleteFrom ) {
         this.songToDelete = song;
+        this.listToDeleteFrom= listToDeleteFrom;
     }
 
     private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow, ConfirmationController confirmationController) {
@@ -74,6 +79,7 @@ public class DeleteSongFromPlaylistController implements ConfirmationController,
     }
 
     public void setReloadable(PlaylistReloadable playlistReloadable) {
+
         this.playlistReloadable = playlistReloadable;
     }
 
