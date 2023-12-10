@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refactored filter into  a separate class">
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/InformationalMessages.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/filterSongs/FilterManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/filterSongs/FilterManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/songSelection/PlaySong.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/PlayButtonGraphic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/Utility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/Utility.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,10 +21,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="Enum" />
         <option value="FxmlFile" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -117,7 +121,7 @@
       <workItem from="1701893482775" duration="6827000" />
       <workItem from="1701967217024" duration="41166000" />
       <workItem from="1702143480319" duration="13650000" />
-      <workItem from="1702205779339" duration="13999000" />
+      <workItem from="1702205779339" duration="17765000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -407,7 +411,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702238654707</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="refactored filter into  a separate class">
+      <option name="closed" value="true" />
+      <created>1702239137841</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1702239137841</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

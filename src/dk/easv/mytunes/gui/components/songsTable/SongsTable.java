@@ -60,8 +60,6 @@ public class SongsTable extends TableView<Song> {
                 if (!row.isEmpty() && event.getClickCount() == 2) {
                  songSelectionListener.onSongSelect(row.getIndex(),this.getId(),true);
                 }else if(!row.isEmpty()&& event.getClickCount()==1){
-                   // songSelectionListener.onSongSelect(row.getIndex(),this.getId());
-
                 }
             });
             return row;

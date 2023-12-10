@@ -1,5 +1,7 @@
 package dk.easv.mytunes.utility;
 
+import javafx.scene.control.Alert;
+
 public class Utility {
 
 
@@ -14,6 +16,12 @@ public class Utility {
         int minutes = (int) (length / 60);
         int seconds = (int) (length % 60);
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    public static void displayInformation(Alert.AlertType alertType,String message){
+        Alert alert = new Alert(alertType);
+            alert.setContentText(message);
+            alert.show();
     }
 
     public double calculateMidPoint(double mainX,double mainW,double popW){

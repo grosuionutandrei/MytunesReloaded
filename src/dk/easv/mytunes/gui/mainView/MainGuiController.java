@@ -1,5 +1,4 @@
 package dk.easv.mytunes.gui.mainView;
-
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
@@ -11,7 +10,6 @@ import dk.easv.mytunes.gui.components.playListTable.PlaylistTable;
 import dk.easv.mytunes.gui.components.player.Player;
 import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
 import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
-import dk.easv.mytunes.gui.components.searchButton.UndoGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
 import dk.easv.mytunes.gui.deleteView.DeleteController;
@@ -25,7 +23,8 @@ import dk.easv.mytunes.gui.newEditDeletePlaylist.NewPlaylistController;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
 import dk.easv.mytunes.gui.playlistSongsOperations.DeleteSongFromPlaylistController;
 import dk.easv.mytunes.gui.playlistSongsOperations.MoveSongsController;
-import dk.easv.mytunes.utility.GraphicIdValues;
+import dk.easv.mytunes.gui.songSelection.PlaySong;
+import dk.easv.mytunes.utility.PlayButtonGraphic;
 import dk.easv.mytunes.utility.Utility;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -45,7 +44,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -99,16 +97,16 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     public void playMusic(ActionEvent event) {
-        if (this.playButton.getText().equals(">")) {
+        if (this.playButton.getText().equals(PlayButtonGraphic.PLAY.getValue())) {
             this.model.setPlayMusic(true);
             this.isPlaying();
             this.player.getMediaPlayer().play();
-            this.playButton.setText("||");
+            this.playButton.setText(PlayButtonGraphic.STOP.getValue());
         } else {
             this.model.setPlayMusic(false);
             this.isPlaying();
             this.player.getMediaPlayer().pause();
-            this.playButton.setText(">");
+            this.playButton.setText(PlayButtonGraphic.PLAY.getValue());
             this.model.setCurrentTime(this.player.getMediaPlayer().getCurrentTime());
         }
     }
@@ -117,11 +115,12 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         player.playNextSong(this.getNextSong(), this.isPlaying());
     }
 
+    /**
+     *handles the filter behaviour off the application*/
     @FXML
     private void applyFilter(ActionEvent event) {
         FilterManager filterManager = new FilterManager(this.model, searchGraphic, infoLabel, searchButton, searchValue);
         filterManager.applyFilter(event);
-
     }
 
 
@@ -219,23 +218,16 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     /**
-     * controls the media player when is double-clicked on a song
+     * Play the selected song when it is double-clicked.
+     *
+     * @param rowIndex The index of the selected song.
+     * @param tableId  The ID of the table containing the song.
+     * @param play     Whether to play the song.
      */
     @Override
-    public void onSongSelect(int index, String tableId, boolean play) {
-        model.currentIndexOffTheSongProperty().set(index);
-        model.setCurrentTablePlaying(tableId);
-        model.setPlayMusic(play);
-        try {
-            player.setSong(model.getCurrentSongToBePlayed(), model.isPlayMusic());
-        } catch (MyTunesException e) {
-            this.alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(e.getMessage());
-            alert.show();
-        }
-        if (this.playButton.getText().equals(">")) {
-            this.playButton.setText("||");
-        }
+    public void onSongSelect(int rowIndex, String tableId, boolean play) {
+        PlaySong playSong =  new PlaySong(this.model,this.player);
+        playSong.playSelectedSong(rowIndex,tableId,play,this.playButton);
     }
 
     /**
