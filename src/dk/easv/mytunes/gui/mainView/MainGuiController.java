@@ -16,6 +16,7 @@ import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
 import dk.easv.mytunes.gui.deleteView.DeleteController;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
+import dk.easv.mytunes.gui.filterSongs.FilterManager;
 import dk.easv.mytunes.gui.listeners.*;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.AddToPlayListController;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.DeletePlayListController;
@@ -47,8 +48,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, Reloadable, PlayListSelectionListener, PlaylistReloadable {
@@ -118,26 +117,11 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         player.playNextSong(this.getNextSong(), this.isPlaying());
     }
 
+    @FXML
+    private void applyFilter(ActionEvent event) {
+        FilterManager filterManager = new FilterManager(this.model, searchGraphic, infoLabel, searchButton, searchValue);
+        filterManager.applyFilter(event);
 
-    public void applyFilter(ActionEvent event) {
-        String filter = this.searchValue.getText();
-        if (searchButton.getGraphic().getId().equals(GraphicIdValues.SEARCH.getValue())) {
-            if (!filter.isEmpty()) {
-                searchGraphic = new UndoGraphic();
-                model.applyFilter(filter);
-                infoLabel.setVisible(false);
-                searchButton.setGraphic(searchGraphic.getGraphic());
-                this.searchValue.setText("");
-                this.searchValue.setEditable(false);
-            } else {
-                infoLabel.setVisible(true);
-            }
-        } else {
-            searchGraphic = new SearchGraphic();
-            searchButton.setGraphic(searchGraphic.getGraphic());
-            searchValue.setEditable(true);
-            model.resetFilter();
-        }
     }
 
 
@@ -619,7 +603,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             return;
         }
         DeleteSongFromPlaylistController dsfpc = new DeleteSongFromPlaylistController();
-        dsfpc.getSongToDelete(songToDelete,this.model.getCurrentPlayListSongs());
+        dsfpc.getSongToDelete(songToDelete, this.model.getCurrentPlayListSongs());
         dsfpc.setReloadable(this);
         dsfpc.initialize(null, null);
         Scene scene = new Scene(dsfpc.getConfirmationWindow());
@@ -649,10 +633,13 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     /**
-     * Changes the focus and select off the plyListSongs view according to the movement operation*/
+     * Changes the focus and select off the plyListSongs view according to the movement operation
+     */
     private void selectAndFocusPlaylistItem(int newPosition) {
-        if (newPosition >0){this.playListSongs.getSelectionModel().select(newPosition);
-            this.playListSongs.getFocusModel().focus(newPosition);}
+        if (newPosition > 0) {
+            this.playListSongs.getSelectionModel().select(newPosition);
+            this.playListSongs.getFocusModel().focus(newPosition);
+        }
     }
 
     @Override
@@ -678,9 +665,10 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         this.upButton.setDisable(false);
         this.downButton.setDisable(false);
     }
+
     @Override
-    public void changePlayingIndex(int index){
-    this.model.setCurrentIndexOffTheSong(index);
+    public void changePlayingIndex(int index) {
+        this.model.setCurrentIndexOffTheSong(index);
     }
 
 

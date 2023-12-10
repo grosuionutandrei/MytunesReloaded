@@ -1,6 +1,4 @@
 package dk.easv.mytunes.gui.playlistSongsOperations;
-
-import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
