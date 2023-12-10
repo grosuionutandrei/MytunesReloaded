@@ -29,7 +29,7 @@ public class MoveSongsController {
     /**
      * It moves songs from the playList up and down, tries to save the changes to the database if it fails will
      * display an error message to inform the user, and allows the user to still perform the movement operation on the playlistSongs
-     *
+     * updates the current index off the playing song, to play the next song in the list according to the new location
      * @param currentPlayList the current playlist playing
      * @param selectedIndex   the selected index from the ListView<Song>
      * @param operation       the operation that will be executed move up or move down
