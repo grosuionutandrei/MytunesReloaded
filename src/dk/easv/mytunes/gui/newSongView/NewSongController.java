@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ResourceBundle;
 
 public class NewSongController extends NewEditController implements Initializable {
@@ -31,12 +32,11 @@ public class NewSongController extends NewEditController implements Initializabl
     public void openFileChoser(ActionEvent event) {
         Stage newSongStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         File selectedFile = getFileChooser().showOpenDialog(newSongStage);
-        SongFormat songFormat = null;
-        double duration = 0.0;
+        
         if (selectedFile != null) {
             try {
-                songFormat = editModel.getFormat(selectedFile.getName());
-                duration = editModel.getDuration(selectedFile, songFormat);
+                SongFormat songFormat = setSongFormat(selectedFile);
+                double duration =setDuration(selectedFile,songFormat);
                 this.fileLocation.setText(selectedFile.getPath());
                 this.songDuration.setText(String.valueOf(duration));
             } catch (MyTunesException e) {
@@ -44,6 +44,13 @@ public class NewSongController extends NewEditController implements Initializabl
                 getAlert().showAndWait();
             }
         }
+    }
+
+    private double setDuration(File file, SongFormat songFormat) throws MyTunesException {
+      return editModel.getDuration(file,songFormat);        
+    }
+    private SongFormat setSongFormat(File file) throws MyTunesException {
+    return  editModel.getFormat(file.getName());  
     }
 
     @FXML

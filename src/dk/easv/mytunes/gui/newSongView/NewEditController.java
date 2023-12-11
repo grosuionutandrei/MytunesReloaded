@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public abstract class NewEditController {
     private final Alert alertWindowOperation = new Alert(Alert.AlertType.NONE);
-    private Alert info;
+
     private Reloadable reloadable;
     private final FileChooser fileChooser = new FileChooser();
 
@@ -32,11 +32,6 @@ public abstract class NewEditController {
     public Alert getAlert() {
         return alertWindowOperation;
     }
-
-    public Alert getInfo() {
-        return info;
-    }
-
 
     public void setItems(ComboBox<String> comboBox) {
         Genre[] items = Genre.values();
