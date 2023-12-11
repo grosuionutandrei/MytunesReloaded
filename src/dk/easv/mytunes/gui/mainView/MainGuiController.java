@@ -450,6 +450,10 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         newPlayListStage.show();
     }
 
+
+
+//    Continue refactoring from here
+
     /**
      * Opens a playlist editing window for a selected playlist.
      *
