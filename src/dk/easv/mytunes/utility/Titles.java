@@ -1,6 +1,6 @@
 package dk.easv.mytunes.utility;
 
-public enum Titles {
+public enum Titles implements Messages {
     ADD_NEW_SONG("Add new Song"),
     EDIT_SONG("Edit Song"),
     DELETE_SONG("Delete Song"),

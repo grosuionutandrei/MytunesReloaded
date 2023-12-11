@@ -46,6 +46,9 @@ public class DeletePlayListController implements ConfirmationController, Initial
         }
         if (playlistModel != null) {
             ConfirmationWindow confirmationView = new ConfirmationWindow();
+            if(confirmationView.getConfirmationWindow()==null){
+                return;
+            }
             confirmationWindow = confirmationView.getConfirmationWindow();
             initializeConfirmationWindow(confirmationView, this);
         }

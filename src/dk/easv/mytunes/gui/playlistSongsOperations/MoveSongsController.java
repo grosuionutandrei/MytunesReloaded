@@ -6,6 +6,7 @@ import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.listeners.PlaylistReloadable;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.PlayListModel;
 import dk.easv.mytunes.utility.GraphicIdValues;
+import dk.easv.mytunes.utility.Utility;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
@@ -17,12 +18,13 @@ public class MoveSongsController {
     private final int MOVEUP = -1;
     private final int MOVEDOWN = 1;
 
-    public MoveSongsController() {
+    public MoveSongsController(PlaylistReloadable playlistReloadable) {
         try {
             this.playListModel = PlayListModel.getInstance();
         } catch (MyTunesException e) {
-            displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
+            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
         }
+        this.playlistReloadable = playlistReloadable;
     }
 
 
@@ -30,6 +32,7 @@ public class MoveSongsController {
      * It moves songs from the playList up and down, tries to save the changes to the database if it fails will
      * display an error message to inform the user, and allows the user to still perform the movement operation on the playlistSongs
      * updates the current index off the playing song, to play the next song in the list according to the new location
+     *
      * @param currentPlayList the current playlist playing
      * @param selectedIndex   the selected index from the ListView<Song>
      * @param operation       the operation that will be executed move up or move down
@@ -56,7 +59,7 @@ public class MoveSongsController {
             playlistReloadable.changePlayingIndex(newIndex);
             playlistReloadable.resetButtons();
         } catch (MyTunesException e) {
-            displayInfoMessage(e.getMessage() + " changes will not be saved", Alert.AlertType.ERROR);
+            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage() + " changes will not be saved");
             playlistReloadable.resetButtons();
             resetObservableList(observableList, temporaryList);
         }
@@ -82,13 +85,6 @@ public class MoveSongsController {
 
     public void setPlayListModel(PlayListModel playListModel) {
         this.playListModel = playListModel;
-    }
-
-    private void displayInfoMessage(String message, Alert.AlertType type) {
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setAlertType(type);
-        alert.setContentText(message);
-        alert.show();
     }
 
     public PlaylistReloadable getPlaylistReloadable() {

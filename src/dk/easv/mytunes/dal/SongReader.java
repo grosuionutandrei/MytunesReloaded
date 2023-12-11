@@ -1,6 +1,7 @@
 package dk.easv.mytunes.dal;
 
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.utility.ExceptionsMessages;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 
@@ -35,7 +36,7 @@ public class SongReader implements ISongReader {
             mediaUri=new File(path).toURI();
             media = new Media(mediaUri.toString());
         }catch (NullPointerException| MediaException|IllegalArgumentException|UnsupportedOperationException e){
-            throw new MyTunesException("Reading file from local storage went wrong",e.getCause());
+            throw new MyTunesException(ExceptionsMessages.READING_SONG_LOCAL,e.getCause());
         }
         return media;
     }

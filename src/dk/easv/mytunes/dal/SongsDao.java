@@ -3,6 +3,7 @@ package dk.easv.mytunes.dal;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.utility.ExceptionsMessages;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -124,7 +125,7 @@ public class SongsDao implements ISongsDao {
             }
 
         } catch (SQLException e) {
-            throw new MyTunesException("Reading songs from the data base gone wrong", e.getCause());
+            throw new MyTunesException(ExceptionsMessages.READING_SONGS_FAILED, e.getCause());
         }
         this.objectSongs = songs;
     }

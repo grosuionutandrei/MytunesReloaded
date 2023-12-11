@@ -1,11 +1,25 @@
 package dk.easv.mytunes.exceptions;
 
+import dk.easv.mytunes.utility.ExceptionHandler;
+import dk.easv.mytunes.utility.ExceptionsMessages;
+import dk.easv.mytunes.utility.InformationalMessages;
+
 public class MyTunesException extends Exception {
+    private ExceptionsMessages exceptionsMessages;
     public MyTunesException() {
     }
 
     public MyTunesException(String message) {
         super(message);
+    }
+    public MyTunesException(ExceptionsMessages message){
+        super(message.getValue());
+        this.exceptionsMessages=message;
+    }
+
+    public MyTunesException(ExceptionsMessages message, Throwable cause){
+        super(message.getValue(),cause);
+        this.exceptionsMessages=message;
     }
 
     public MyTunesException(String message, Throwable cause) {
@@ -18,5 +32,9 @@ public class MyTunesException extends Exception {
 
     public MyTunesException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public ExceptionsMessages getExceptionsMessages() {
+        return exceptionsMessages;
     }
 }

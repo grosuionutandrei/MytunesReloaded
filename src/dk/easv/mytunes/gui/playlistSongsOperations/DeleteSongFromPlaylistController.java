@@ -1,19 +1,20 @@
 package dk.easv.mytunes.gui.playlistSongsOperations;
+
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
 import dk.easv.mytunes.gui.listeners.PlaylistReloadable;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.PlayListModel;
-import javafx.fxml.Initializable;
+import dk.easv.mytunes.utility.InformationalMessages;
+import dk.easv.mytunes.utility.Utility;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 
-public class DeleteSongFromPlaylistController implements ConfirmationController, Initializable {
-    private VBox confirmationWindow;
+import java.util.List;
+
+public class DeleteSongFromPlaylistController implements ConfirmationController {
+    private ConfirmationWindow confirmationWindow;
     private Song songToDelete;
     private List<Song> listToDeleteFrom;
     private PlayListModel playlistModel;
@@ -31,40 +32,24 @@ public class DeleteSongFromPlaylistController implements ConfirmationController,
             try {
                 boolean deleted = playlistModel.deleteSongFromPlayList(this.songToDelete, listToDeleteFrom);
                 if (deleted) {
-                    String message = "Deleted with success";
-                    displayInfoMessage(message, Alert.AlertType.INFORMATION);
+                    Utility.displayInformation(Alert.AlertType.INFORMATION, InformationalMessages.DELETE_SUCCEEDED.getValue());
                     playlistReloadable.reloadSongs();
                 }
             } catch (MyTunesException e) {
-                displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
+                Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
             }
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        try {
-            playlistModel = PlayListModel.getInstance();
-        } catch (MyTunesException e) {
-            displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
-        }
-        if (playlistModel != null) {
-            ConfirmationWindow confirmationView = new ConfirmationWindow();
-            confirmationWindow = confirmationView.getConfirmationWindow();
-            initializeConfirmationWindow(confirmationView, this);
-        }
-    }
-
-    private void displayInfoMessage(String message, Alert.AlertType type) {
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setAlertType(type);
-        alert.setContentText(message);
-        alert.show();
-    }
-
-    public void getSongToDelete(Song song, List<Song> listToDeleteFrom) {
-        this.songToDelete = song;
+    public DeleteSongFromPlaylistController(Song songToDelete, List<Song> listToDeleteFrom, PlayListModel playListModel, PlaylistReloadable playlistReloadable) {
+        this.songToDelete = songToDelete;
         this.listToDeleteFrom = listToDeleteFrom;
+        this.playlistModel = playListModel;
+        this.playlistReloadable = playlistReloadable;
+        this.confirmationWindow = new ConfirmationWindow();
+        if (confirmationWindow.getConfirmationWindow() != null) {
+            initializeConfirmationWindow(confirmationWindow, this);
+        }
     }
 
     private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow, ConfirmationController confirmationController) {
@@ -75,11 +60,7 @@ public class DeleteSongFromPlaylistController implements ConfirmationController,
         confirmationWindow.setOperationInformation(message + songName);
     }
 
-    public void setReloadable(PlaylistReloadable playlistReloadable) {
-        this.playlistReloadable = playlistReloadable;
-    }
-
     public VBox getConfirmationWindow() {
-        return confirmationWindow;
+        return confirmationWindow.getConfirmationWindow();
     }
 }

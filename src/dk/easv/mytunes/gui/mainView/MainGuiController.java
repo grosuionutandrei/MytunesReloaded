@@ -17,18 +17,12 @@ import dk.easv.mytunes.gui.deleteView.DeleteController;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
 import dk.easv.mytunes.gui.filterSongs.FilterManager;
 import dk.easv.mytunes.gui.listeners.*;
-import dk.easv.mytunes.gui.newEditDeletePlaylist.AddToPlayListController;
-import dk.easv.mytunes.gui.newEditDeletePlaylist.DeletePlayListController;
-import dk.easv.mytunes.gui.newEditDeletePlaylist.EditPlaylistController;
-import dk.easv.mytunes.gui.newEditDeletePlaylist.NewPlaylistController;
+import dk.easv.mytunes.gui.newEditDeletePlaylist.*;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
 import dk.easv.mytunes.gui.playlistSongsOperations.DeleteSongFromPlaylistController;
 import dk.easv.mytunes.gui.playlistSongsOperations.MoveSongsController;
 import dk.easv.mytunes.gui.songSelection.PlaySong;
-import dk.easv.mytunes.utility.InformationalMessages;
-import dk.easv.mytunes.utility.PlayButtonGraphic;
-import dk.easv.mytunes.utility.Titles;
-import dk.easv.mytunes.utility.Utility;
+import dk.easv.mytunes.utility.*;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -62,7 +56,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     @FXML
     private Label infoLabel;
-    private Alert alert;
+
     @FXML
     private VBox allSongsContainer;
     @FXML
@@ -128,7 +122,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        alert = new Alert(Alert.AlertType.ERROR);
         searchGraphic = new SearchGraphic();
         searchButton.setGraphic(searchGraphic.getGraphic());
         initializeUpButton();
@@ -136,9 +129,9 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             this.model = Model.getModel();
         } catch (MyTunesException e) {
-            alert.setContentText(e.getMessage());
+
             Platform.runLater(() -> {
-                alert.show();
+                ExceptionHandler.displayErrorAlert(e.getMessage());
             });
         }
 
@@ -176,8 +169,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             this.allPlaylistTable.setSongs(model.getAllPlaylists());
         } catch (MyTunesException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-            alert.show();
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
         playlistContainer.getChildren().add(this.allPlaylistTable);
     }
@@ -209,12 +201,10 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
      */
     @Override
     public void onPlayListSelect(int selectedId) {
-        System.out.println(selectedId + " " + "i am listening ");
         try {
             model.setPlayingPlayList(selectedId);
-            System.out.println(model.getCurrentPlayingPlayListId());
         } catch (MyTunesException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
     }
 
@@ -240,7 +230,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             media = model.getCurrentSongToBePlayed();
         } catch (MyTunesException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
         return media;
     }
@@ -253,15 +243,15 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         Media media = null;
         boolean retry = true;
         int counter = 0;
-        while (retry) {
+        while (retry && counter<5) {
             try {
                 media = model.getNextSong();
                 retry = false;
             } catch (MyTunesException e) {
-                this.alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText(e.getMessage());
-                alert.show();
+                ExceptionHandler.displayErrorAlert(e.getMessage());
+
             }
+            counter++;
         }
         return media;
     }
@@ -278,9 +268,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
                 media = model.getPreviousSong();
                 retry = false;
             } catch (MyTunesException e) {
-                this.alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText(e.getMessage());
-                alert.show();
+                ExceptionHandler.displayErrorAlert(e.getExceptionsMessages());
             }
         }
         return media;
@@ -308,7 +296,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
      */
     @Override
     public void setVolumeLevel(Double volumeLevel) {
-        System.out.println(this.player);
         this.model.volumeLevelProperty().set(volumeLevel / 100);
     }
 
@@ -351,8 +338,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             model.reloadSongsFromDB();
         } catch (MyTunesException e) {
-            String message = e.getMessage() + "\n" + InformationalMessages.NO_INTERNET_CONNECTION.getValue();
-            Utility.displayInformation(Alert.AlertType.ERROR, message);
+            ExceptionHandler.displayErrorAlert(ExceptionsMessages.READING_SONGS_FAILED);
         }
     }
 
@@ -368,7 +354,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             Stage newSongStage = Utility.createPopupStage(mainStage, scene, Titles.ADD_NEW_SONG.getValue(), POPUP_WIDTH);
             newSongStage.show();
         } catch (IOException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.FXML_MISSING.getValue());
+            ExceptionHandler.displayErrorAlert(InformationalMessages.FXML_MISSING);
         }
     }
 
@@ -376,7 +362,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private void openEditWindow(ActionEvent event) {
         Song songToUpdate = getSelectedSong(this.allSongsTable);
         if (songToUpdate == null) {
-            Utility.displayInformation(Alert.AlertType.INFORMATION, InformationalMessages.NO_SONG_SELECTED.getValue());
+            ExceptionHandler.displayWarningAlert(InformationalMessages.NO_SONG_SELECTED);
             return;
         }
         try {
@@ -390,7 +376,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             Stage newSongStage = Utility.createPopupStage(mainStage, scene, Titles.EDIT_SONG.getValue(), POPUP_WIDTH);
             newSongStage.show();
         } catch (IOException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.FXML_MISSING.getValue());
+            ExceptionHandler.displayErrorAlert(InformationalMessages.FXML_MISSING);
         }
     }
 
@@ -400,7 +386,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     public void deleteSong(ActionEvent event) {
         Song songToDelete = getSelectedSong(this.allSongsTable);
         if (songToDelete == null) {
-            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.NO_SONG_SELECTED.getValue());
+            ExceptionHandler.displayErrorAlert(InformationalMessages.NO_SONG_SELECTED);
             return;
         }
         DeleteController del = new DeleteController();
@@ -413,14 +399,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             Stage confirmation = Utility.createPopupStage(mainStage, scene, Titles.DELETE_SONG.getValue(), POPUP_WIDTH);
             confirmation.show();
         } else {
-            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.OPERATION_FAILED.getValue());
+            ExceptionHandler.displayErrorAlert(InformationalMessages.OPERATION_FAILED);
         }
-    }
-
-    private void displayAlert(Alert.AlertType type, String message) {
-        alert.setAlertType(type);
-        alert.setContentText(message);
-        alert.show();
     }
 
     private Song getSelectedSong(TableView<Song> table) {
@@ -451,31 +431,31 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
 
-
-//    Continue refactoring from here
-
     /**
      * Opens a playlist editing window for a selected playlist.
      *
      * @param event The ActionEvent that triggered the opening of the window.
-     * @throws IOException If there is an issue with loading the FXML file.
      */
-    public void openEditPlaylistWindow(ActionEvent event) throws IOException {
+    public void openEditPlaylistWindow(ActionEvent event) {
         PlayList playListToUpdate = getSelectedPlayList();
         if (playListToUpdate == null) {
-            displayAlert(Alert.AlertType.ERROR, "No playlist has been selected");
+            ExceptionHandler.displayWarningAlert(InformationalMessages.NO_PLAYLIST_SELECTED);
             return;
         }
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../newEditDeletePlaylist/NewPlaylistView.fxml"));
-        EditPlaylistController editController = new EditPlaylistController();
-        loader.setController(editController);
-        Parent root = loader.load();
-        editController.setReloadable(this);
-        editController.setPlaylistToEdit(playListToUpdate);
-        Scene scene = new Scene(root);
-        Stage mainStage = getCurrentStage(event);
-        Stage newPlayListStage = Utility.createPopupStage(mainStage, scene, Titles.EDIT_PLAYLIST.getValue(), POPUP_WIDTH);
-        newPlayListStage.show();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../newEditDeletePlaylist/NewPlaylistView.fxml"));
+            EditPlaylistController editController = new EditPlaylistController();
+            loader.setController(editController);
+            Parent root = loader.load();
+            editController.setReloadable(this);
+            editController.setPlaylistToEdit(playListToUpdate);
+            Scene scene = new Scene(root);
+            Stage mainStage = getCurrentStage(event);
+            Stage newPlayListStage = Utility.createPopupStage(mainStage, scene, Titles.EDIT_PLAYLIST.getValue(), POPUP_WIDTH);
+            newPlayListStage.show();
+        } catch (IOException e) {
+            ExceptionHandler.displayErrorAlert(InformationalMessages.FXML_MISSING);
+        }
     }
 
     /**
@@ -486,24 +466,23 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     public void deletePlaylist(ActionEvent event) {
         PlayList playlistToDelete = getSelectedPlayList();
 
-        // Check if a playlist is selected
         if (playlistToDelete == null) {
-            displayAlert(Alert.AlertType.INFORMATION, "No Playlist selected");
+            ExceptionHandler.displayWarningAlert(InformationalMessages.NO_PLAYLIST_SELECTED);
             return;
         }
 
-        // Check if the playlist is currently being played
         if (isPlaylistCurrentlyPlaying(playlistToDelete)) {
-            displayAlert(Alert.AlertType.INFORMATION, "The playlist that you are trying to delete is in use");
+            ExceptionHandler.displayInformationAlert(InformationalMessages.PLAYLIST_IN_USE);
             return;
         }
 
-        // Create and initialize the DeletePlayListController
         DeletePlayListController deletePlayListController = createDeletePlayListController(playlistToDelete);
-        Stage confirmationStage = createConfirmationStage(deletePlayListController, event);
-
-        // Show the confirmation window
-        confirmationStage.show();
+        if (deletePlayListController.getConfirmationWindow() != null) {
+            Stage confirmationStage = createConfirmationStage(deletePlayListController, event);
+            confirmationStage.show();
+        } else {
+            ExceptionHandler.displayErrorAlert(InformationalMessages.OPERATION_FAILED);
+        }
     }
 
     /**
@@ -550,55 +529,56 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
      * @param event The ActionEvent triggering the operation.
      */
     public void addSongToPlaylist(ActionEvent event) {
-        PlayList playListToAdd;
         Song selectedSong = getSelectedSong(allSongsTable);
 
+        if (selectedSong == null) {
+            ExceptionHandler.displayWarningAlert(InformationalMessages.NO_SONG_SELECTED);
+            return;
+        }
+
         try {
-            playListToAdd = model.getCurrentPlayList();
-            if (playListToAdd == null || selectedSong == null) {
-                displayAlert(Alert.AlertType.INFORMATION, "Please select a song and a playlist");
+            PlayList playListToAdd = model.getCurrentPlayList();
+
+            if (playListToAdd == null) {
+                ExceptionHandler.displayWarningAlert(InformationalMessages.NO_PLAYLIST_SELECTED);
                 return;
             }
-            AddToPlayListController addToPlayListController = createAddToPlayListController(playListToAdd, selectedSong);
-            Stage mainStage = getCurrentStage(event);
-            Scene scene = new Scene(addToPlayListController.getConfirmationWindow());
-            Stage confirmation = Utility.createPopupStage(mainStage, scene, Titles.ADD_SONG_PLAYLIST.getValue(), POPUP_WIDTH);
-            confirmation.show();
+            AddToPlayListController addToPlayListController = new AddToPlayListController(PlayListModel.getInstance(), playListToAdd, selectedSong, this);
+            if (addToPlayListController.getConfirmationWindow() != null) {
+                Stage mainStage = getCurrentStage(event);
+                Scene scene = new Scene(addToPlayListController.getConfirmationWindow());
+                Stage confirmation = Utility.createPopupStage(mainStage, scene, Titles.ADD_SONG_PLAYLIST.getValue(), POPUP_WIDTH);
+                confirmation.show();
+            } else {
+                ExceptionHandler.displayErrorAlert(InformationalMessages.OPERATION_FAILED);
+
+            }
         } catch (MyTunesException e) {
-            displayAlert(Alert.AlertType.ERROR, e.getMessage());
+            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage());
         }
     }
 
     /**
-     * Creates an instance of AddToPlayListController with the provided playlist and song.
-     *
-     * @param playListToAdd The playlist to add the song to.
-     * @param selectedSong  The song to be added to the playlist.
-     * @return An instance of AddToPlayListController.
-     */
-    private AddToPlayListController createAddToPlayListController(PlayList playListToAdd, Song selectedSong) {
-        AddToPlayListController addToPlayListController = new AddToPlayListController();
-        addToPlayListController.setPlayListToAdd(playListToAdd);
-        addToPlayListController.setSongToAdd(selectedSong);
-        addToPlayListController.setPlaylistReloadable(this);
-        addToPlayListController.initialize(null, null);
-        return addToPlayListController;
-    }
-
+     * Deletes the selected song from the playlist*/
     @FXML
-    private void deleteSongFromPlayList(ActionEvent event) throws IOException {
+    private void deleteSongFromPlayList(ActionEvent event){
         Song songToDelete = getSelectedSongFromPlayList();
         if (songToDelete == null) {
-            displayAlert(Alert.AlertType.INFORMATION, "Please select a song to be deleted");
+            ExceptionHandler.displayWarningAlert(InformationalMessages.NO_SONG_SELECTED);
             return;
         }
-        DeleteSongFromPlaylistController dsfpc = new DeleteSongFromPlaylistController();
-        dsfpc.getSongToDelete(songToDelete, this.model.getCurrentPlayListSongs());
-        dsfpc.setReloadable(this);
-        dsfpc.initialize(null, null);
-        Scene scene = new Scene(dsfpc.getConfirmationWindow());
-        Stage stage = Utility.createPopupStage(getCurrentStage(event), scene, Titles.DELETE_SONG_PLAYLIST.getValue(), POPUP_WIDTH);
-        stage.show();
+        try{
+        DeleteSongFromPlaylistController dsfpc = new DeleteSongFromPlaylistController(songToDelete,this.model.getCurrentPlayListSongs(),PlayListModel.getInstance(),this);
+       if(dsfpc.getConfirmationWindow()!=null){
+           Scene scene = new Scene(dsfpc.getConfirmationWindow());
+           Stage stage = Utility.createPopupStage(getCurrentStage(event), scene, Titles.DELETE_SONG_PLAYLIST.getValue(), POPUP_WIDTH);
+           stage.show();
+       }else{
+           ExceptionHandler.displayErrorAlert(InformationalMessages.OPERATION_FAILED);
+       }
+        }catch (MyTunesException e){
+            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage());
+        }
     }
 
     @FXML
@@ -607,18 +587,17 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         this.downButton.setDisable(true);
         int selectedSong = this.playListSongs.getSelectionModel().getSelectedIndex();
         String operation = ((Node) event.getTarget()).getId();
-        MoveSongsController moveSongsController = new MoveSongsController();
+        MoveSongsController moveSongsController = new MoveSongsController(this);
         moveSongsController.setPlaylistReloadable(this);
         PlayList currentPlayList = null;
         try {
             currentPlayList = this.model.getCurrentPlayList();
         } catch (MyTunesException e) {
-            displayAlert(Alert.AlertType.ERROR, e.getMessage());
+            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage());
         }
         int newPosition = moveSongsController.moveSong(currentPlayList, selectedSong, operation, this.model.getCurrentPlayListSongs());
         Platform.runLater(() -> {
             selectAndFocusPlaylistItem(newPosition);
-
         });
     }
 
@@ -637,7 +616,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             this.model.reloadPlayListsFromDB();
         } catch (MyTunesException e) {
-            displayAlert(Alert.AlertType.ERROR, e.getMessage());
+            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage());
         }
     }
 
@@ -646,10 +625,12 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             this.model.reloadPlayListSongs();
         } catch (MyTunesException e) {
-            displayAlert(Alert.AlertType.ERROR, e.getMessage());
+            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage());
         }
     }
 
+    /**
+     *Enables the moving song up and down  buttons */
     @Override
     public void resetButtons() {
         this.upButton.setDisable(false);
