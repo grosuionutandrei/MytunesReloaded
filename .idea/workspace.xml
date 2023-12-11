@@ -4,21 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="moved create popUpWindow to the utility class">
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/ExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/ExceptionsMessages.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/Messages.java" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="Refactored exception messages handling to a separate class.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/SongReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/SongReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/ConnectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/ConnectionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/PlaylistDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/SongsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/dal/SongsDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/exceptions/MyTunesException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/exceptions/MyTunesException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/confirmationWindow/ConfirmationWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/confirmationWindow/ConfirmationWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/movebutton/MoveButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/movebutton/MoveButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/PlaylistSongsView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/PlaylistSongsView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListTable/PlaylistTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListTable/PlaylistTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/deleteView/DeleteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/deleteView/DeleteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/editSongView/EditSongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/editSongView/EditSongController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/Model.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/AddToPlayListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/AddToPlayListController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/DeletePlayListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/DeletePlayListController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/DeleteSongFromPlaylistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/DeleteSongFromPlaylistController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/EditPlaylistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/EditPlaylistController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/NewEditController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/NewEditController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/NewPlaylistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newEditDeletePlaylist/NewPlaylistController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/ExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/ExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/ExceptionsMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/ExceptionsMessages.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/InformationalMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/InformationalMessages.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/Titles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/Titles.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +135,7 @@
       <workItem from="1701893482775" duration="6827000" />
       <workItem from="1701967217024" duration="41166000" />
       <workItem from="1702143480319" duration="13650000" />
-      <workItem from="1702205779339" duration="35715000" />
+      <workItem from="1702205779339" duration="44325000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -451,7 +457,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702252826966</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Refactored exception messages handling to a separate class.">
+      <option name="closed" value="true" />
+      <created>1702323972103</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1702323972103</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -469,7 +483,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add new song functionality implemented" />
     <MESSAGE value="implemented reload songs from db after creating   a new one , plus refactor the palable list to change reference to the observable list off dispalying songs" />
     <MESSAGE value="edit song implemented" />
     <MESSAGE value="confirmation window implemented" />
@@ -494,7 +507,8 @@
     <MESSAGE value="refactored play song when double clicked   to a separate class &quot;PlaySong&quot;" />
     <MESSAGE value="moved Create popUpWindow to the utility class" />
     <MESSAGE value="moved create popUpWindow to the utility class" />
-    <option name="LAST_COMMIT_MESSAGE" value="moved create popUpWindow to the utility class" />
+    <MESSAGE value="Refactored exception messages handling to a separate class." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored exception messages handling to a separate class." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

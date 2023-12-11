@@ -27,4 +27,8 @@ public class ExceptionHandler {
         info.setContentText(informationalMessages.getValue());
         info.show();
     }
+    public static void displayInformationAlert(String message) {
+        info.setContentText(message);
+        info.show();
+    }
 }

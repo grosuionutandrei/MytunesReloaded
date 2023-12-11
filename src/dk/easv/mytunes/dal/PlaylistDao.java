@@ -3,6 +3,7 @@ package dk.easv.mytunes.dal;
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.utility.ExceptionsMessages;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class PlaylistDao implements IPlaylistDao {
                 }
             }
         } catch (SQLException | MyTunesException e) {
-            throw new MyTunesException(e.getMessage());
+            throw new MyTunesException(ExceptionsMessages.DB_UNSUCCESFULL,e.getCause());
         }
         return playListId;
     }
@@ -66,7 +67,7 @@ public class PlaylistDao implements IPlaylistDao {
             int rowsAffected = psmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException | MyTunesException e) {
-            throw new MyTunesException(e.getMessage(), e);
+            throw new MyTunesException(ExceptionsMessages.DB_UNSUCCESFULL, e.getCause());
         }
     }
 
@@ -87,7 +88,7 @@ public class PlaylistDao implements IPlaylistDao {
             }
             return rowsAffected > 0;
         } catch (SQLException e) {
-            throw new MyTunesException("Error occurred in a database operation", e);
+            throw new MyTunesException(ExceptionsMessages.DB_UNSUCCESFULL, e.getCause());
         }
     }
 
@@ -102,7 +103,7 @@ public class PlaylistDao implements IPlaylistDao {
             int rows = psmt.executeUpdate();
             return rows > 0;
         } catch (SQLException e) {
-            throw new MyTunesException("Error occurred in a database operation ", e);
+            throw new MyTunesException(ExceptionsMessages.DB_UNSUCCESFULL, e.getCause());
         }
     }
 
@@ -116,7 +117,7 @@ public class PlaylistDao implements IPlaylistDao {
             int rowsAffected = psmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-            throw new MyTunesException(e.getMessage());
+            throw new MyTunesException(ExceptionsMessages.DB_UNSUCCESFULL,e.getCause());
         }
     }
 
@@ -164,7 +165,7 @@ public class PlaylistDao implements IPlaylistDao {
                 }
             }
         } catch (SQLException e) {
-            throw new MyTunesException("Error when trying to read from database");
+            throw new MyTunesException(ExceptionsMessages.READING_FROMDB_FAILED);
         }
         playlistMap.keySet().forEach(elem -> playLists.add(playlistMap.get(elem)));
         this.allPlaylists = playLists;
@@ -185,7 +186,7 @@ public class PlaylistDao implements IPlaylistDao {
             int rowAffected = psmt.executeUpdate();
             return rowAffected > 0;
         } catch (SQLException e) {
-            throw new MyTunesException("Database connection problems", e);
+            throw new MyTunesException(ExceptionsMessages.NO_DATABASE_CONNECTION, e);
         }
     }
 
@@ -202,7 +203,7 @@ public class PlaylistDao implements IPlaylistDao {
             int rowAffected = psmt.executeUpdate();
             return rowAffected > 0;
         } catch (SQLException e) {
-            throw new MyTunesException("Database operation unsuccessful", e.getCause());
+            throw new MyTunesException(ExceptionsMessages.DB_UNSUCCESFULL ,e.getCause());
         }
     }
 
@@ -215,7 +216,7 @@ public class PlaylistDao implements IPlaylistDao {
             int affectedRows= psmt.executeUpdate();
             return affectedRows>0;
         } catch (SQLException |MyTunesException e) {
-            throw new MyTunesException(e.getMessage(),e.getCause());
+            throw new MyTunesException(ExceptionsMessages.DELETE_SONG_FAILED,e.getCause());
         }
     }
 
@@ -245,10 +246,10 @@ public class PlaylistDao implements IPlaylistDao {
                 return true; // Return true to indicate success
             } catch (SQLException e) {
                 conn.rollback(); // Rollback the transaction if an error occurs
-                throw new MyTunesException("Error saving changes to the database", e);
+                throw new MyTunesException(ExceptionsMessages.TRANSACTION_FAILED, e.getCause());
             }
         } catch (SQLException e) {
-            throw new MyTunesException("Error connecting to the database", e);
+            throw new MyTunesException(ExceptionsMessages.NO_DATABASE_CONNECTION, e.getCause());
         }
     }
 }

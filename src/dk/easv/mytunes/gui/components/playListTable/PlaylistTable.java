@@ -71,19 +71,6 @@ public class PlaylistTable extends TableView<PlayList> {
         });
     }
 
-
-    /**
-     * controls the current index and the playList from where song will be played
-     */
-//    public void bindModelToPlayList(Model model ) {
-//        this.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-//            model.setCurrentPlayListId(newSelection.getId());
-//            model.setCurrentPlayListSongs();
-//            model.setCurrentListSelected(this.getId());
-//            model.setCurrentPlayingList();
-//        });
-//
-//    }
     public void setPlayListSelectionListener(PlayListSelectionListener playListSelectionListener) {
         this.playListSelectionListener = playListSelectionListener;
     }

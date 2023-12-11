@@ -29,7 +29,6 @@ public class Model {
     private Duration currentTime = new Duration(0.0);
 
 
-
     /**
      * current index off the song that is being played
      */
@@ -97,6 +96,7 @@ public class Model {
         volumeLevel.setValue(100);
         isMute.setValue(false);
     }
+
     public static Model getModel() throws MyTunesException {
         if (instance == null) {
             instance = new Model();
@@ -252,7 +252,6 @@ public class Model {
 
     public void setCurrentTime(Duration currentTime) {
         this.currentTime = currentTime;
-        System.out.println(this.currentTime);
     }
 
     public StringProperty currentSongPlayingNameProperty() {
@@ -282,7 +281,6 @@ public class Model {
         PlayList selected = this.myTunesLogic.getSelectedPlayList(index);
         this.currentPlayListSongs.setAll(selected.getPlayListSongs());
         this.currentPlayingPlayListId = selected.getId();
-        System.out.println(this.currentPlayingPlayListId);
     }
 
     public ObservableList<Song> getCurrentPlayListSongs() {
@@ -318,7 +316,7 @@ public class Model {
         return this.myTunesLogic.getTheCurrentPlayingPlayList(this.currentPlayingPlayListId);
     }
 
-    public void  setCurrentIndexOffTheSong(int index) {
+    public void setCurrentIndexOffTheSong(int index) {
         this.currentIndexOffTheSong.set(index);
     }
 

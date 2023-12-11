@@ -39,10 +39,10 @@ public class SongsDao implements ISongsDao {
             pstmt.setDouble(5, s.getLength());
             pstmt.execute();
             executed = true;
-        } catch (SQLServerException e) {
-            throw new MyTunesException("Database error when tried to create the song", e.getCause());
+        } catch (SQLServerException  e) {
+            throw new MyTunesException(ExceptionsMessages.SONG_CREATION_FAILED, e.getCause());
         } catch (SQLException es) {
-            throw new MyTunesException("Database error when tried to create the song", es.getCause());
+            throw new MyTunesException(ExceptionsMessages.DELETE_SONG_FAILED ,es.getCause());
         }
         return executed;
     }
@@ -59,7 +59,7 @@ public class SongsDao implements ISongsDao {
              psmt.execute();
              executed= true;
          } catch (SQLException e) {
-             throw new MyTunesException("Error when trying to delete from data base");
+             throw new MyTunesException(ExceptionsMessages.DELETE_SONG_FAILED,e.getCause());
          }
      }
 
@@ -75,7 +75,7 @@ public class SongsDao implements ISongsDao {
             psmt.execute();
             executed= true;
         } catch (SQLException e) {
-            throw new MyTunesException("Error when trying to delete from data base");
+            throw new MyTunesException(ExceptionsMessages.DELETE_SONG_FAILED,e.getCause());
         }
         return executed;
     }
@@ -95,7 +95,7 @@ public class SongsDao implements ISongsDao {
             psmt.execute();
             executed = true;
         } catch (SQLException | MyTunesException e) {
-            throw new MyTunesException("Database error when tried to update the song", e.getCause());
+            throw new MyTunesException(ExceptionsMessages.UPDATE_SONG_FAILED, e.getCause());
         }
         return executed;
     }
@@ -125,7 +125,7 @@ public class SongsDao implements ISongsDao {
             }
 
         } catch (SQLException e) {
-            throw new MyTunesException(ExceptionsMessages.READING_SONGS_FAILED, e.getCause());
+            throw new MyTunesException(ExceptionsMessages.READING_FROMDB_FAILED, e.getCause());
         }
         this.objectSongs = songs;
     }

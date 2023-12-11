@@ -2,6 +2,8 @@ package dk.easv.mytunes.gui.newEditDeletePlaylist;
 
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.listeners.PlaylistReloadable;
+import dk.easv.mytunes.utility.ExceptionHandler;
+import dk.easv.mytunes.utility.InformationalMessages;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,7 +37,7 @@ public abstract class NewEditController implements Initializable {
         try {
             setPlayListModel(PlayListModel.getInstance());
         } catch (MyTunesException e) {
-            displayAlert(Alert.AlertType.ERROR, (e.getMessage()));
+            ExceptionHandler.displayErrorAlert(e.getMessage());
             return;
         }
         setOnChangeListener(getPlaylistTitle(), getInformation());
@@ -54,19 +56,6 @@ public abstract class NewEditController implements Initializable {
      * @param event The ActionEvent that triggered the save/update.
      */
     public abstract void savePlaylist(ActionEvent event);
-
-    /**
-     * Display an alert with the specified type and message.
-     *
-     * @param alertType The type of alert (e.g., INFORMATION, WARNING).
-     * @param message   The message to display in the alert.
-     */
-
-    public void displayAlert(Alert.AlertType alertType, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
 
     public PlaylistReloadable getReloadable() {
@@ -90,7 +79,10 @@ public abstract class NewEditController implements Initializable {
             }
         });
     }
-
+    public void showTitleError() {
+        getInformation().setText(InformationalMessages.NO_EMPTY_TITLE.getValue());
+        getInformation().setVisible(true);
+    }
     public Stage getCurrentStage(ActionEvent event) {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }

@@ -4,6 +4,6 @@ import javafx.scene.Group;
 import javafx.scene.shape.SVGPath;
 
 public interface MoveButton {
-    public Group getGraphic();
-    public void setGraphic(SVGPath svgPath);
+     Group getGraphic();
+ void setGraphic(SVGPath svgPath);
 }

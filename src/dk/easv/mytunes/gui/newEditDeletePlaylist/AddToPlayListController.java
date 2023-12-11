@@ -6,7 +6,9 @@ import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
 import dk.easv.mytunes.gui.listeners.PlaylistReloadable;
+import dk.easv.mytunes.utility.ExceptionHandler;
 import dk.easv.mytunes.utility.InformationalMessages;
+import dk.easv.mytunes.utility.Titles;
 import dk.easv.mytunes.utility.Utility;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
@@ -27,7 +29,7 @@ public class AddToPlayListController implements ConfirmationController {
             try {
                 executed = this.playListModel.addSongToPlayList(this.playListToAdd, this.songToBeAdded);
             } catch (MyTunesException e) {
-                Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
+                ExceptionHandler.displayErrorAlert(e.getExceptionsMessages());
                 return;
             }
             if (executed) {
@@ -46,7 +48,7 @@ public class AddToPlayListController implements ConfirmationController {
         if (confirmationWindow.getConfirmationWindow() != null) {
             initializeConfirmationWindow(this.confirmationWindow, this);
         } else {
-            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.FXML_MISSING.getValue());
+            ExceptionHandler.displayErrorAlert(InformationalMessages.FXML_MISSING);
         }
     }
 
@@ -57,13 +59,13 @@ public class AddToPlayListController implements ConfirmationController {
     }
 
     private void setConfirmationMessage(ConfirmationWindow confirmationWindow) {
-        confirmationWindow.setOperationTitle("Add song to  playlist operation");
-        String message1 = "Are you sure that you want to add ";
+        confirmationWindow.setOperationTitle(Titles.ADD_SONG_PLAYLIST.getValue());
+
         String songName = "\"" + this.songToBeAdded.getTitle() + "\"";
         String message2 = "to the ";
         String playlistName = "\"" + this.playListToAdd.getName() + "\"";
         String end = " playlist?";
-        String fullMessage = message1 + songName + "\n" + message2 + playlistName + end;
+        String fullMessage = InformationalMessages.ADD_QUESTION.getValue() + songName + "\n" + message2 + playlistName + end;
         confirmationWindow.setOperationInformation(fullMessage);
     }
 

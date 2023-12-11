@@ -10,7 +10,12 @@ public enum InformationalMessages implements Messages {
     NO_PLAYLIST_SELECTED("No playlist has been selected"),
     PLAYLIST_IN_USE("The playlist that you are trying to delete is in use"),
     NO_SONG_AND_PLAYLIST("Please select a song and a playlist"),
-    DELETE_SUCCEEDED("Deleted with success");
+    DELETE_SUCCEEDED("Deleted with success"),
+    DELETE_QUESTION("Are you sure that you want to delete this song"),
+    NO_FILE("No file, returned by your path!\nPlease check again"),
+    ADD_QUESTION("Are you sure that you want to add "),
+    DELETE_PLAYLIST_QUESTION("Are you sure that you want to delete this playlist " + "\n"),
+    NO_EMPTY_TITLE("Title can not be empty!");
 
     private final String value;
 

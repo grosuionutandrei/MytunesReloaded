@@ -338,7 +338,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             model.reloadSongsFromDB();
         } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(ExceptionsMessages.READING_SONGS_FAILED);
+            ExceptionHandler.displayErrorAlert(ExceptionsMessages.READING_FROMDB_FAILED);
         }
     }
 
@@ -654,6 +654,5 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private Song getSelectedSongFromPlayList() {
         return this.playListSongs.getSelectionModel().getSelectedItem();
     }
-
 
 }

@@ -30,29 +30,6 @@ private SongSelectionListener songSelectionListener;
         this.setPrefWidth(width);
     }
 
-
-
-
-
-
-
-
-
-
-//    public void bindModelToPlayListSongs(Model model, Player player, Button button){
-//            this.getSelectionModel().selectedIndexProperty().addListener((obs, oldValue, newValue) -> {
-//                if (newValue.intValue() >= 0) {
-//                   // model.setCurrentListSelected(this.getId());
-//                    //model.setCurrentPlayingList();
-//                    model.setCurrentMediaPosition(newValue.intValue());
-//                    player.setSong(model.getCurrentSong(),model.getVolume(),model.isPlayMusic());
-//                    button.setText(">");
-//                    player.bindDurationToLabel(model.timePassedProperty());
-//                }
-//            });
-//        }
-
-
     public void setSongSelectionListener(SongSelectionListener songSelectionListener) {
         this.songSelectionListener = songSelectionListener;
     }

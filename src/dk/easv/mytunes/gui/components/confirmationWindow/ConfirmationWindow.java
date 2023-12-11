@@ -1,12 +1,11 @@
 package dk.easv.mytunes.gui.components.confirmationWindow;
+
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
+import dk.easv.mytunes.utility.ExceptionHandler;
 import dk.easv.mytunes.utility.InformationalMessages;
-import dk.easv.mytunes.utility.Utility;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -24,24 +23,24 @@ public class ConfirmationWindow {
     @FXML
     private Label operationTitle;
 
-    @FXML private Label operationInformation;
+    @FXML
+    private Label operationInformation;
     @FXML
     private Button confirmButton;
     @FXML
     private Button cancelButton;
 
 
-    public ConfirmationWindow()  {
+    public ConfirmationWindow() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ConfirmationWindow.fxml"));
         loader.setController(this);
         try {
             container = loader.load();
         } catch (IOException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR, InformationalMessages.FXML_MISSING.getValue());
+            ExceptionHandler.displayErrorAlert(InformationalMessages.FXML_MISSING);
         }
         if (container != null) {
-         addConfirmHandler();
-         addCancelHandler();
+            initializeHandlers();
         }
     }
 
@@ -59,23 +58,31 @@ public class ConfirmationWindow {
     }
 
 
+    private void initializeHandlers() {
+        addConfirmHandler();
+        addCancelHandler();
+    }
+
     private void addConfirmHandler() {
         this.confirmButton.setOnMouseClicked(event ->
-        {confirmationController.confirmationEventHandler(true);
-         getCurrentStage(event).close();
-        }
+                {
+                    confirmationController.confirmationEventHandler(true);
+                    getCurrentStage(event).close();
+                }
         );
     }
 
     private void addCancelHandler() {
-        this.cancelButton.setOnMouseClicked(event ->{
-                confirmationController.confirmationEventHandler(false);
-                getCurrentStage(event).close();
+        this.cancelButton.setOnMouseClicked(event -> {
+            confirmationController.confirmationEventHandler(false);
+            getCurrentStage(event).close();
         });
     }
+
     public void setConfirmationController(ConfirmationController confirmationController) {
         this.confirmationController = confirmationController;
     }
+
     private Stage getCurrentStage(MouseEvent event) {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }

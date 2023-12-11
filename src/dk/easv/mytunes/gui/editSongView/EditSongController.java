@@ -3,6 +3,8 @@ package dk.easv.mytunes.gui.editSongView;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.newSongView.NewEditController;
+import dk.easv.mytunes.utility.ExceptionHandler;
+import dk.easv.mytunes.utility.InformationalMessages;
 import dk.easv.mytunes.utility.SongFormat;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -40,10 +42,8 @@ public class EditSongController extends NewEditController implements Initializab
         try {
             this.editModel = EditSongModel.getInstance();
         } catch (MyTunesException e) {
-            getAlert().setAlertType(Alert.AlertType.ERROR);
-            getAlert().setContentText(e.getMessage());
             Platform.runLater(() -> {
-                getAlert().show();
+                ExceptionHandler.displayErrorAlert(e.getMessage());
             });
 
         }
@@ -95,7 +95,7 @@ public class EditSongController extends NewEditController implements Initializab
         try {
             performSongUpdate();
         } catch (MyTunesException e) {
-            handleUpdateError(e, editSongStage);
+         handleUpdateError(e,editSongStage);
         } finally {
             editSongStage.close();
         }
@@ -117,7 +117,7 @@ public class EditSongController extends NewEditController implements Initializab
         }
 
         if (!editModel.checkIfFileExists(path)) {
-            initiateInfoAlert(stage, "No file, returned by your path!\nPlease check again");
+            initiateInfoAlert(stage, InformationalMessages.NO_FILE.getValue());
             return false;
         }
 
@@ -132,12 +132,15 @@ public class EditSongController extends NewEditController implements Initializab
         String path = fileLocation.getText();
         int initialId = editModel.getInitialSong().getSongId();
         Song updatedSong = new Song(initialId, path, title, artist, genre, Double.parseDouble(duration));
-        editModel.updateSong(updatedSong);
-        getReloadableController().reloadSongsFromDB();
+        boolean updated = editModel.updateSong(updatedSong);
+        if(updated){
+            getReloadableController().reloadSongsFromDB();
+        }
+
     }
 
     private void handleUpdateError(MyTunesException e, Stage stage) {
-        initiateErrorAlert(e, stage);
+         initiateErrorAlert(e, stage);
     }
 
     /**
@@ -166,13 +169,8 @@ public class EditSongController extends NewEditController implements Initializab
             fileLocation.setText(selectedFile.getPath());
             songDuration.setText(String.valueOf(duration));
         } catch (MyTunesException e) {
-            displayError(e);
+           ExceptionHandler.displayErrorAlert(e.getMessage());
         }
-    }
-
-    private void displayError(MyTunesException e) {
-        getAlert().setContentText(e.getMessage());
-        getAlert().showAndWait();
     }
 
 }

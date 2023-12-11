@@ -4,6 +4,9 @@ import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
 import dk.easv.mytunes.gui.listeners.PlaylistReloadable;
+import dk.easv.mytunes.utility.ExceptionHandler;
+import dk.easv.mytunes.utility.InformationalMessages;
+import dk.easv.mytunes.utility.Titles;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -19,20 +22,18 @@ public class DeletePlayListController implements ConfirmationController, Initial
 
     @Override
     public void confirmationEventHandler(boolean confirmation) {
-        boolean deleted = false;
+        boolean deleted;
         if (confirmation) {
             try {
                 deleted = playlistModel.deletePlayList(this.playlistToDelete);
+                if (deleted) {
+                    Platform.runLater(() -> {
+                        ExceptionHandler.displayInformationAlert(InformationalMessages.DELETE_SUCCEEDED);
+                    });
+                    playlistReloadable.reloadPlaylistsFromDb();
+                }
             } catch (MyTunesException e) {
-                displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
-                return;
-            }
-            if (deleted) {
-                String message = "Deleted with success";
-                Platform.runLater(() -> {
-                    displayInfoMessage(message, Alert.AlertType.INFORMATION);
-                });
-                playlistReloadable.reloadPlaylistsFromDb();
+                ExceptionHandler.displayErrorAlert(e.getMessage());
             }
          }
     }
@@ -42,7 +43,7 @@ public class DeletePlayListController implements ConfirmationController, Initial
         try {
             playlistModel = PlayListModel.getInstance();
         } catch (MyTunesException e) {
-            displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
         if (playlistModel != null) {
             ConfirmationWindow confirmationView = new ConfirmationWindow();
@@ -54,23 +55,15 @@ public class DeletePlayListController implements ConfirmationController, Initial
         }
     }
 
-    private void displayInfoMessage(String message, Alert.AlertType type) {
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setAlertType(type);
-        alert.setContentText(message);
-        alert.show();
-    }
-
     public void getPlayListToDelete(PlayList playList) {
         this.playlistToDelete = playList;
     }
 
     private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow, ConfirmationController confirmationController) {
         confirmationWindow.setConfirmationController(confirmationController);
-        confirmationWindow.setOperationTitle("Delete operation");
-        String message = "Are you sure that you want to delete this playlist " + "\n";
+        confirmationWindow.setOperationTitle(Titles.DELETE_PLAYLIST.getValue());
         String playList = "\"" + this.playlistToDelete.getName() + "\" ?";
-        confirmationWindow.setOperationInformation(message + playList);
+        confirmationWindow.setOperationInformation(InformationalMessages.DELETE_PLAYLIST_QUESTION.getValue() + playList);
     }
 
     public void setReloadable(PlaylistReloadable playlistReloadable) {

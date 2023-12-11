@@ -2,6 +2,8 @@ package dk.easv.mytunes.gui.newEditDeletePlaylist;
 
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.utility.ExceptionHandler;
+import dk.easv.mytunes.utility.InformationalMessages;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 
@@ -12,30 +14,37 @@ public class EditPlaylistController extends NewEditController {
         getCurrentStage(event).close();
     }
 
-    @Override
     public void savePlaylist(ActionEvent event) {
-        String title = getPlaylistTitle().getText();
-        boolean isTitleEmpty = getPlayListModel().checkTitle(title);
-        boolean updated = false;
-        if (isTitleEmpty) {
-            String infoMessage = "Title can not be empty!";
-            getInformation().setText(infoMessage);
-            getInformation().setVisible(true);
+        if (!isValidTitle()) {
+            showTitleError();
             return;
         }
 
-        try {
-            updated = getPlayListModel().updatePlayList(title);
-        } catch (MyTunesException e) {
-            displayAlert(Alert.AlertType.ERROR, e.getMessage());
-            return;
-        }
-        if (updated) {
+        if (updatePlaylist()) {
             getReloadable().reloadPlaylistsFromDb();
         }
+        closeCurrentStage(event);
+    }
 
+    private boolean isValidTitle() {
+        String title = getPlaylistTitle().getText();
+        return !getPlayListModel().checkTitle(title);
+    }
+
+    private boolean updatePlaylist() {
+        try {
+            String title = getPlaylistTitle().getText();
+            return getPlayListModel().updatePlayList(title);
+        } catch (MyTunesException e) {
+            ExceptionHandler.displayErrorAlert(e.getMessage());
+            return false;
+        }
+    }
+
+    private void closeCurrentStage(ActionEvent event) {
         getCurrentStage(event).close();
     }
+
 
     public void setPlaylistToEdit(PlayList playList) {
         getPlayListModel().setCurrentSelectedPlayList(playList);

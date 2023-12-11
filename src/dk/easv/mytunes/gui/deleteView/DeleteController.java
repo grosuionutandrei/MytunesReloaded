@@ -4,6 +4,9 @@ import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
 import dk.easv.mytunes.gui.listeners.Reloadable;
+import dk.easv.mytunes.utility.ExceptionHandler;
+import dk.easv.mytunes.utility.InformationalMessages;
+import dk.easv.mytunes.utility.Titles;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -28,15 +31,13 @@ public class DeleteController implements ConfirmationController,Initializable {
                 deleteModel.deleteSong(songToDelete.getSongId(), songToDelete.getSongPath());
                 deleted = true;
             } catch (MyTunesException e) {
-                displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
+                ExceptionHandler.displayErrorAlert(e.getExceptionsMessages());
             }
             if (deleted) {
-                String message = songToDelete.getTitle() + " " + "Deleted with success";
+                String message = songToDelete.getTitle() + " " + InformationalMessages.DELETE_SUCCEEDED;
                 Platform.runLater(() -> {
-                    displayInfoMessage(message, Alert.AlertType.INFORMATION);
-
+                    ExceptionHandler.displayInformationAlert(message);
                 });
-                reloadable.reloadSongsFromDB();
                 reloadable.reloadSongsFromDB();
             }
         }
@@ -47,7 +48,7 @@ public class DeleteController implements ConfirmationController,Initializable {
         try {
             deleteModel = DeleteModel.getInstance();
         } catch (MyTunesException e) {
-            displayInfoMessage(e.getMessage(), Alert.AlertType.ERROR);
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
         if (deleteModel != null) {
            ConfirmationWindow confirmationView = new ConfirmationWindow();
@@ -59,21 +60,14 @@ public class DeleteController implements ConfirmationController,Initializable {
         }
     }
 
-    private void displayInfoMessage(String message, Alert.AlertType type) {
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setAlertType(type);
-        alert.setContentText(message);
-        alert.show();
-    }
-
     public void setSongToDelete(Song songToDelete) {
         this.songToDelete = songToDelete;
     }
 
     private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow, ConfirmationController confirmationController) {
         confirmationWindow.setConfirmationController(confirmationController);
-        confirmationWindow.setOperationTitle("Delete operation");
-        String message = "Are you sure that you want to delete this song" + "\n";
+        confirmationWindow.setOperationTitle(Titles.DELETE_SONG.getValue());
+        String message = InformationalMessages.DELETE_QUESTION.getValue() + "\n";
         String songName = "\"" + songToDelete.getTitle() + "\"?";
         confirmationWindow.setOperationInformation(message + songName);
     }
