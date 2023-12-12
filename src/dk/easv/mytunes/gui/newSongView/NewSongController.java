@@ -9,14 +9,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.URL;
-import java.time.Duration;
 import java.util.ResourceBundle;
 
 public class NewSongController extends NewEditController implements Initializable {
@@ -64,7 +62,7 @@ public class NewSongController extends NewEditController implements Initializabl
         String genre = genreDropDown.getSelectionModel().getSelectedItem();
         String path = fileLocation.getText();
         String time = songDuration.getText();
-        if (!validateInputs(title, path, newSongStage, this.editModel)) {
+        if (validateInputs(title, path, newSongStage, this.editModel)) {
             return;
         }
         if (checkIfDuplicate(path, newSongStage)) {

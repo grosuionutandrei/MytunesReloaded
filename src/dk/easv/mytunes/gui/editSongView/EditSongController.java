@@ -4,18 +4,15 @@ import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.newSongView.NewEditController;
 import dk.easv.mytunes.utility.ExceptionHandler;
-import dk.easv.mytunes.utility.InformationalMessages;
 import dk.easv.mytunes.utility.SongFormat;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -45,7 +42,6 @@ public class EditSongController extends NewEditController implements Initializab
             Platform.runLater(() -> {
                 ExceptionHandler.displayErrorAlert(e.getMessage());
             });
-
         }
         setItems(genreDropDown);
     }
@@ -91,7 +87,7 @@ public class EditSongController extends NewEditController implements Initializab
         Stage editSongStage = getCurrentStage(event);
          String title = songTitle.getText();
          String path = fileLocation.getText();
-         if (!validateInputs(title,path,editSongStage,this.editModel)) {
+         if (validateInputs(title, path, editSongStage, this.editModel)) {
             return;
         }
         try {
@@ -108,21 +104,6 @@ public class EditSongController extends NewEditController implements Initializab
     private Stage getCurrentStage(ActionEvent event) {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
-
-//    private boolean validateInputs(Stage stage) {
-//
-//        if (editModel.areTitleOrPathEmpty(title, path)) {
-//            initiateInfoAlert(stage, null);
-//            return false;
-//        }
-//
-//        if (!editModel.checkIfFileExists(path)) {
-//            initiateInfoAlert(stage, InformationalMessages.NO_FILE.getValue());
-//            return false;
-//        }
-//
-//        return true;
-//    }
 
     private void performSongUpdate() throws MyTunesException {
         String title = songTitle.getText();

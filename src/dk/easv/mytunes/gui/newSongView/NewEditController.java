@@ -2,8 +2,6 @@ package dk.easv.mytunes.gui.newSongView;
 
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.listeners.Reloadable;
-import dk.easv.mytunes.gui.mainView.MainGuiController;
-import dk.easv.mytunes.gui.newEditDeletePlaylist.PlayListModel;
 import dk.easv.mytunes.utility.Genre;
 import dk.easv.mytunes.utility.InformationalMessages;
 import javafx.scene.control.Alert;
@@ -72,12 +70,12 @@ public abstract class NewEditController {
     public boolean validateInputs(String title , String path, Stage stage, NewEditCommonModel editCommonModel) {
         if (editCommonModel.areTitleOrPathEmpty(title, path)) {
             initiateInfoAlert(stage, null);
-            return false;
+            return true;
         }
         if (!editCommonModel.checkIfFileExists(path)) {
             initiateInfoAlert(stage, InformationalMessages.NO_FILE.getValue());
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }
