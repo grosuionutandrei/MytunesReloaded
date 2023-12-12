@@ -3,6 +3,7 @@ package dk.easv.mytunes.gui.newSongView;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.listeners.Reloadable;
 import dk.easv.mytunes.gui.mainView.MainGuiController;
+import dk.easv.mytunes.gui.newEditDeletePlaylist.PlayListModel;
 import dk.easv.mytunes.utility.Genre;
 import dk.easv.mytunes.utility.InformationalMessages;
 import javafx.scene.control.Alert;
@@ -57,7 +58,6 @@ public abstract class NewEditController {
         } else {
             alertWindowOperation.setContentText(message);
         }
-
         alertWindowOperation.showAndWait();
     }
 
@@ -67,5 +67,17 @@ public abstract class NewEditController {
         alertWindowOperation.setY(newSongStage.getY());
         alertWindowOperation.setContentText(e.getMessage());
         alertWindowOperation.showAndWait();
+    }
+
+    public boolean validateInputs(String title , String path, Stage stage, NewEditCommonModel editCommonModel) {
+        if (editCommonModel.areTitleOrPathEmpty(title, path)) {
+            initiateInfoAlert(stage, null);
+            return false;
+        }
+        if (!editCommonModel.checkIfFileExists(path)) {
+            initiateInfoAlert(stage, InformationalMessages.NO_FILE.getValue());
+            return false;
+        }
+        return true;
     }
 }

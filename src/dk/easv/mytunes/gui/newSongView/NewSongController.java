@@ -1,7 +1,10 @@
 package dk.easv.mytunes.gui.newSongView;
 
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.utility.ExceptionHandler;
+import dk.easv.mytunes.utility.InformationalMessages;
 import dk.easv.mytunes.utility.SongFormat;
+import dk.easv.mytunes.utility.Utility;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,13 +33,12 @@ public class NewSongController extends NewEditController implements Initializabl
     private TextField songDuration;
 
     public void openFileChoser(ActionEvent event) {
-        Stage newSongStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage newSongStage = Utility.getCurrentStage(event);
         File selectedFile = getFileChooser().showOpenDialog(newSongStage);
-        
         if (selectedFile != null) {
             try {
                 SongFormat songFormat = setSongFormat(selectedFile);
-                double duration =setDuration(selectedFile,songFormat);
+                double duration = setDuration(selectedFile, songFormat);
                 this.fileLocation.setText(selectedFile.getPath());
                 this.songDuration.setText(String.valueOf(duration));
             } catch (MyTunesException e) {
@@ -47,57 +49,62 @@ public class NewSongController extends NewEditController implements Initializabl
     }
 
     private double setDuration(File file, SongFormat songFormat) throws MyTunesException {
-      return editModel.getDuration(file,songFormat);        
+        return editModel.getDuration(file, songFormat);
     }
+
     private SongFormat setSongFormat(File file) throws MyTunesException {
-    return  editModel.getFormat(file.getName());  
+        return editModel.getFormat(file.getName());
     }
 
     @FXML
     private void addNewSong(ActionEvent event) {
-        Stage newSongStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage newSongStage = Utility.getCurrentStage(event);
         String title = songTitle.getText();
         String artist = songArtist.getText();
         String genre = genreDropDown.getSelectionModel().getSelectedItem();
         String path = fileLocation.getText();
         String time = songDuration.getText();
-        if (editModel.areTitleOrPathEmpty(title, path)) {
-            initiateInfoAlert(newSongStage, null);
+        if (!validateInputs(title, path, newSongStage, this.editModel)) {
             return;
         }
-
-        boolean checkIfDuplicate = false;
-        try {
-            checkIfDuplicate = editModel.checkIfDuplicate(path);
-        } catch (MyTunesException e) {
-            initiateErrorAlert(e, newSongStage);
+        if (checkIfDuplicate(path, newSongStage)) {
             return;
         }
-        if (checkIfDuplicate) {
-            initiateInfoAlert(newSongStage, "Please chose another file, this song is already in the list");
-            return;
-        }
-
         if (!editModel.checkIfFileExists(path)) {
-            initiateInfoAlert(newSongStage, "No file, returned by your path!" + "\n" + "Please check again");
+            initiateInfoAlert(newSongStage, InformationalMessages.NO_FILE.getValue());
             return;
         }
+        saveSong(path,title,genre,artist,time,newSongStage);
+    }
 
+    private  void saveSong(String path,String title,String artist,String genre,String time,Stage currentStage ){
         try {
             editModel.createNewSong(path, title, artist, genre, time);
+            getReloadableController().reloadSongsFromDB();
+            currentStage.close();
         } catch (MyTunesException e) {
-            initiateErrorAlert(e, newSongStage);
-            newSongStage.close();
-            return;
+            initiateErrorAlert(e, currentStage);
+            currentStage.close();
         }
-        getReloadableController().reloadSongsFromDB();
-        newSongStage.close();
+    }
+
+    private boolean checkIfDuplicate(String path, Stage currentStage) {
+        try {
+            if (editModel.checkIfDuplicate(path)) {
+                initiateInfoAlert(currentStage, InformationalMessages.NO_DUPLICATE.getValue());
+                return true;
+            }
+        } catch (MyTunesException e) {
+            initiateErrorAlert(e, currentStage);
+            return true;
+        }
+        return false;
     }
 
 
     @FXML
     private void cancelAddNewSong(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage stage = Utility.getCurrentStage(event);
         stage.close();
     }
 
@@ -106,9 +113,8 @@ public class NewSongController extends NewEditController implements Initializabl
         try {
             this.editModel = NewEditModel.getInstance();
         } catch (MyTunesException e) {
-            getAlert().setContentText(e.getMessage());
             Platform.runLater(() -> {
-                getAlert().show();
+                ExceptionHandler.displayErrorAlert(e.getMessage());
             });
         }
         setItems(genreDropDown);

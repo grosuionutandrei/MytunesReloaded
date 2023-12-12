@@ -89,7 +89,9 @@ public class EditSongController extends NewEditController implements Initializab
      @FXML
     private void updateSong(ActionEvent event) {
         Stage editSongStage = getCurrentStage(event);
-        if (!validateInputs(editSongStage)) {
+         String title = songTitle.getText();
+         String path = fileLocation.getText();
+         if (!validateInputs(title,path,editSongStage,this.editModel)) {
             return;
         }
         try {
@@ -107,22 +109,20 @@ public class EditSongController extends NewEditController implements Initializab
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
 
-    private boolean validateInputs(Stage stage) {
-        String title = songTitle.getText();
-        String path = fileLocation.getText();
-
-        if (editModel.areTitleOrPathEmpty(title, path)) {
-            initiateInfoAlert(stage, null);
-            return false;
-        }
-
-        if (!editModel.checkIfFileExists(path)) {
-            initiateInfoAlert(stage, InformationalMessages.NO_FILE.getValue());
-            return false;
-        }
-
-        return true;
-    }
+//    private boolean validateInputs(Stage stage) {
+//
+//        if (editModel.areTitleOrPathEmpty(title, path)) {
+//            initiateInfoAlert(stage, null);
+//            return false;
+//        }
+//
+//        if (!editModel.checkIfFileExists(path)) {
+//            initiateInfoAlert(stage, InformationalMessages.NO_FILE.getValue());
+//            return false;
+//        }
+//
+//        return true;
+//    }
 
     private void performSongUpdate() throws MyTunesException {
         String title = songTitle.getText();
@@ -132,11 +132,9 @@ public class EditSongController extends NewEditController implements Initializab
         String path = fileLocation.getText();
         int initialId = editModel.getInitialSong().getSongId();
         Song updatedSong = new Song(initialId, path, title, artist, genre, Double.parseDouble(duration));
-        boolean updated = editModel.updateSong(updatedSong);
-        if(updated){
+        if(editModel.updateSong(updatedSong)){
             getReloadableController().reloadSongsFromDB();
         }
-
     }
 
     private void handleUpdateError(MyTunesException e, Stage stage) {
