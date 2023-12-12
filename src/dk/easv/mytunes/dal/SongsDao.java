@@ -14,6 +14,7 @@ public class SongsDao implements ISongsDao {
     private List<Song> objectSongs = null;
     private static SongsDao instance;
 
+
     private SongsDao() throws MyTunesException {
         loadAllSongsFromDB();
     }
@@ -39,49 +40,45 @@ public class SongsDao implements ISongsDao {
             pstmt.setDouble(5, s.getLength());
             pstmt.execute();
             executed = true;
-        } catch (SQLServerException  e) {
+        } catch (SQLServerException e) {
             throw new MyTunesException(ExceptionsMessages.SONG_CREATION_FAILED, e.getCause());
         } catch (SQLException es) {
-            throw new MyTunesException(ExceptionsMessages.DELETE_SONG_FAILED ,es.getCause());
+            throw new MyTunesException(ExceptionsMessages.DELETE_SONG_FAILED, es.getCause());
         }
         return executed;
     }
 
-    @Override
-    public boolean deleteSong(int songId) throws MyTunesException {
-        boolean executed =  false;
-     String sql = "DELETE FROM Songs WHERE SongId=?";
-     boolean deletedFromJoiTable = deleteFromJoinTable(songId);
-     if(deletedFromJoiTable){
-         try (Connection conn = CONNECTION_MANAGER.getConnection()){
-             PreparedStatement psmt = conn.prepareStatement(sql);
-             psmt.setInt(1,songId);
-             psmt.execute();
-             executed= true;
-         } catch (SQLException e) {
-             throw new MyTunesException(ExceptionsMessages.DELETE_SONG_FAILED,e.getCause());
-         }
-     }
 
-        return executed;
-    }
-
-    private boolean deleteFromJoinTable(int songId) throws MyTunesException{
-        boolean executed =  false;
-        String sql = "DELETE FROM PlaylistSongs WHERE SongId=?";
-        try (Connection conn = CONNECTION_MANAGER.getConnection()){
-            PreparedStatement psmt = conn.prepareStatement(sql);
-            psmt.setInt(1,songId);
-            psmt.execute();
-            executed= true;
+    public boolean deleteSong(int songId, String path) throws MyTunesException {
+        String sqlDeleteSong = "DELETE FROM Songs WHERE SongId=?";
+        String sqlDeleteFromJoin = "DELETE FROM PlaylistSongs WHERE SongId=?";
+        try (Connection connection = CONNECTION_MANAGER.getConnection()) {
+            connection.setAutoCommit(false);
+            try (PreparedStatement psmtDelete = connection.prepareStatement(sqlDeleteSong);
+                 PreparedStatement psmtFromJoin = connection.prepareStatement(sqlDeleteFromJoin)) {
+                psmtDelete.setInt(1, songId);
+                psmtFromJoin.setInt(1, songId);
+                psmtDelete.execute();
+                psmtFromJoin.execute();
+                FileHandler fileHandler = FileHandler.getInstance();
+                if (!fileHandler.deleteSongLocal(path)) {
+                    connection.rollback();
+                    return false;
+                }
+                connection.commit();
+                return true;
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new MyTunesException(ExceptionsMessages.TRANSACTION_FAILED, e);
+            }
         } catch (SQLException e) {
-            throw new MyTunesException(ExceptionsMessages.DELETE_SONG_FAILED,e.getCause());
+            throw new MyTunesException(ExceptionsMessages.NO_DATABASE_CONNECTION, e);
         }
-        return executed;
     }
 
     @Override
     public boolean updateSong(Song song) throws MyTunesException {
+        System.out.println(song);
         boolean executed = false;
         String sql = "UPDATE Songs SET SongPath=?, Title=?, Artist=?,Genre=?,Length=? WHERE SongId=?";
         try (Connection conn = CONNECTION_MANAGER.getConnection()) {
@@ -104,6 +101,7 @@ public class SongsDao implements ISongsDao {
     public List<Song> getAllSongsFromCache() throws MyTunesException {
         return this.objectSongs;
     }
+
     private void loadAllSongsFromDB() throws MyTunesException {
 
         List<Song> songs = new ArrayList<>();

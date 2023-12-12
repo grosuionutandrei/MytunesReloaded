@@ -144,11 +144,7 @@ public class MyTunesCreation {
      * @param songId the id off the song that need s to be deleted
      */
     public boolean deleteSong(int songId, String songPath) throws MyTunesException {
-        boolean deletedFromDb = songsDao.deleteSong(songId);
-        boolean deletedFromLocal = false;
-        if (deletedFromDb) {
-            deletedFromLocal = fileHandler.deleteSongLocal(songPath);
-        }
-        return (deletedFromDb && deletedFromLocal);
+      return songsDao.deleteSong(songId,songPath);
     }
+
 }

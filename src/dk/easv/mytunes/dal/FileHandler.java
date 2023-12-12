@@ -5,6 +5,7 @@ import dk.easv.mytunes.exceptions.MyTunesException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class FileHandler {
@@ -31,6 +32,7 @@ public class FileHandler {
         }
         return deleted;
     }
+
     public boolean deleteSongLocal(String path) throws MyTunesException {
         return deleteSongFromLocal(path);
     }

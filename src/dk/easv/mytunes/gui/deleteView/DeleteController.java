@@ -31,10 +31,10 @@ public class DeleteController implements ConfirmationController,Initializable {
                 deleteModel.deleteSong(songToDelete.getSongId(), songToDelete.getSongPath());
                 deleted = true;
             } catch (MyTunesException e) {
-                ExceptionHandler.displayErrorAlert(e.getExceptionsMessages());
+                ExceptionHandler.displayErrorAlert(e.getMessage());
             }
             if (deleted) {
-                String message = songToDelete.getTitle() + " " + InformationalMessages.DELETE_SUCCEEDED;
+                String message = songToDelete.getTitle() + " " + InformationalMessages.DELETE_SUCCEEDED.getValue();
                 Platform.runLater(() -> {
                     ExceptionHandler.displayInformationAlert(message);
                 });
