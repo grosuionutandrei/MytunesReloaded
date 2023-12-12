@@ -6,9 +6,9 @@ import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
 import dk.easv.mytunes.gui.listeners.PlaylistReloadable;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.PlayListModel;
+import dk.easv.mytunes.utility.ExceptionHandler;
 import dk.easv.mytunes.utility.InformationalMessages;
-import dk.easv.mytunes.utility.Utility;
-import javafx.scene.control.Alert;
+import dk.easv.mytunes.utility.Titles;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -32,11 +32,11 @@ public class DeleteSongFromPlaylistController implements ConfirmationController 
             try {
                 boolean deleted = playlistModel.deleteSongFromPlayList(this.songToDelete, listToDeleteFrom);
                 if (deleted) {
-                    Utility.displayInformation(Alert.AlertType.INFORMATION, InformationalMessages.DELETE_SUCCEEDED.getValue());
+                    ExceptionHandler.displayInformationAlert(InformationalMessages.DELETE_SUCCEEDED);
                     playlistReloadable.reloadSongs();
                 }
             } catch (MyTunesException e) {
-                Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
+                ExceptionHandler.displayErrorAlert(e.getMessage());
             }
         }
     }
@@ -54,10 +54,9 @@ public class DeleteSongFromPlaylistController implements ConfirmationController 
 
     private void initializeConfirmationWindow(ConfirmationWindow confirmationWindow, ConfirmationController confirmationController) {
         confirmationWindow.setConfirmationController(confirmationController);
-        confirmationWindow.setOperationTitle("Delete operation");
-        String message = "Are you sure that you want to delete this song from the playlist " + "\n";
+        confirmationWindow.setOperationTitle(Titles.DELETE_SONG.getValue());
         String songName = "\"" + this.songToDelete.getTitle() + "\" ?";
-        confirmationWindow.setOperationInformation(message + songName);
+        confirmationWindow.setOperationInformation(InformationalMessages.DELETE_SONG_PLAYLIST.getValue() + songName);
     }
 
     public VBox getConfirmationWindow() {

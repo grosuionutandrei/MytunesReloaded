@@ -6,7 +6,7 @@ import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.movebutton.DownGraphic;
 import dk.easv.mytunes.gui.components.movebutton.MoveButton;
 import dk.easv.mytunes.gui.components.movebutton.UpGraphic;
-import dk.easv.mytunes.gui.components.playListSongView.PlaylistSongsView;
+import dk.easv.mytunes.gui.components.playListSongView.PlaylistContainerController;
 import dk.easv.mytunes.gui.components.playListTable.PlaylistTable;
 import dk.easv.mytunes.gui.components.player.Player;
 import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
@@ -36,7 +36,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
@@ -75,12 +74,12 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private SongsTable allSongsTable;
     @FXML
     private PlaylistTable allPlaylistTable;
-    @FXML
-    private PlaylistSongsView playListSongs;
+
     @FXML
     private VBox playlistContainer;
     @FXML
     private VBox playListSongsContainer;
+    private PlaylistContainerController playListContainerInitializer;
     @FXML
     private Button upButton;
     @FXML
@@ -141,7 +140,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
             initiateTableSong();
             initiatePlaylistTable();
-            initiateSongListView();
+            playListContainerInitializer = new PlaylistContainerController(this.playListSongsContainer, this, this.model.getCurrentPlayListSongs(), this.upButton, this.downButton);
             searchValue.textProperty().addListener((obs, oldValue, newValue) -> {
                 if (infoLabel.isVisible()) {
                     infoLabel.setVisible(false);
@@ -172,14 +171,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             ExceptionHandler.displayErrorAlert(e.getMessage());
         }
         playlistContainer.getChildren().add(this.allPlaylistTable);
-    }
-
-    private void initiateSongListView() {
-        this.playListSongs = new PlaylistSongsView();
-        this.playListSongs.setSongs(this.model.getCurrentPlayListSongs());
-        this.playListSongs.setSongSelectionListener(this);
-        playListSongsContainer.getChildren().add(this.playListSongs);
-        VBox.setVgrow(this.playListSongs, Priority.ALWAYS);
     }
 
     private void initializeUpButton() {
@@ -243,7 +234,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         Media media = null;
         boolean retry = true;
         int counter = 0;
-        while (retry && counter<5) {
+        while (retry && counter < 5) {
             try {
                 media = model.getNextSong();
                 retry = false;
@@ -554,61 +545,48 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
             }
         } catch (MyTunesException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage());
+            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
         }
     }
 
     /**
-     * Deletes the selected song from the playlist*/
+     * Deletes the selected song from the playlist
+     */
     @FXML
-    private void deleteSongFromPlayList(ActionEvent event){
-        Song songToDelete = getSelectedSongFromPlayList();
+    private void deleteSongFromPlayList(ActionEvent event) {
+        Song songToDelete = playListContainerInitializer.getSelectedSongFromPlayList();
         if (songToDelete == null) {
             ExceptionHandler.displayWarningAlert(InformationalMessages.NO_SONG_SELECTED);
             return;
         }
-        try{
-        DeleteSongFromPlaylistController dsfpc = new DeleteSongFromPlaylistController(songToDelete,this.model.getCurrentPlayListSongs(),PlayListModel.getInstance(),this);
-       if(dsfpc.getConfirmationWindow()!=null){
-           Scene scene = new Scene(dsfpc.getConfirmationWindow());
-           Stage stage = Utility.createPopupStage(getCurrentStage(event), scene, Titles.DELETE_SONG_PLAYLIST.getValue(), POPUP_WIDTH);
-           stage.show();
-       }else{
-           ExceptionHandler.displayErrorAlert(InformationalMessages.OPERATION_FAILED);
-       }
-        }catch (MyTunesException e){
-            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage());
+        try {
+            DeleteSongFromPlaylistController dsfpc = new DeleteSongFromPlaylistController(songToDelete, this.model.getCurrentPlayListSongs(), PlayListModel.getInstance(), this);
+            if (dsfpc.getConfirmationWindow() != null) {
+                Scene scene = new Scene(dsfpc.getConfirmationWindow());
+                Stage stage = Utility.createPopupStage(getCurrentStage(event), scene, Titles.DELETE_SONG_PLAYLIST.getValue(), POPUP_WIDTH);
+                stage.show();
+            } else {
+                ExceptionHandler.displayErrorAlert(InformationalMessages.OPERATION_FAILED);
+            }
+        } catch (MyTunesException e) {
+            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
         }
     }
 
     @FXML
     private void moveSongInPlaylist(ActionEvent event) {
-        this.upButton.setDisable(true);
-        this.downButton.setDisable(true);
-        int selectedSong = this.playListSongs.getSelectionModel().getSelectedIndex();
+        this.playListContainerInitializer.disableButtons();
+        int selectedSong = playListContainerInitializer.getSelectedSongIndex();
         String operation = ((Node) event.getTarget()).getId();
-        MoveSongsController moveSongsController = new MoveSongsController(this);
-        moveSongsController.setPlaylistReloadable(this);
         PlayList currentPlayList = null;
         try {
             currentPlayList = this.model.getCurrentPlayList();
         } catch (MyTunesException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage());
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
-        int newPosition = moveSongsController.moveSong(currentPlayList, selectedSong, operation, this.model.getCurrentPlayListSongs());
-        Platform.runLater(() -> {
-            selectAndFocusPlaylistItem(newPosition);
-        });
-    }
-
-    /**
-     * Changes the focus and select off the plyListSongs view according to the movement operation
-     */
-    private void selectAndFocusPlaylistItem(int newPosition) {
-        if (newPosition > 0) {
-            this.playListSongs.getSelectionModel().select(newPosition);
-            this.playListSongs.getFocusModel().focus(newPosition);
-        }
+        MoveSongsController moveSongsController = new MoveSongsController(this, currentPlayList, selectedSong, operation, this.model.getCurrentPlayListSongs());
+        playListContainerInitializer.setListMoveFocusAndSelect(moveSongsController);
+        playListContainerInitializer.updateListFocus();
     }
 
     @Override
@@ -616,7 +594,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             this.model.reloadPlayListsFromDB();
         } catch (MyTunesException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage());
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
     }
 
@@ -625,16 +603,16 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         try {
             this.model.reloadPlayListSongs();
         } catch (MyTunesException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR,e.getMessage());
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
     }
 
     /**
-     *Enables the moving song up and down  buttons */
+     * Enables the moving song up and down  buttons
+     */
     @Override
     public void resetButtons() {
-        this.upButton.setDisable(false);
-        this.downButton.setDisable(false);
+        this.playListContainerInitializer.enableButtons();
     }
 
     @Override
@@ -645,14 +623,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     private PlayList getSelectedPlayList() {
         return this.allPlaylistTable.getSelectionModel().getSelectedItem();
-    }
-
-
-    /**
-     * Get the selected song from the playlist songs list view
-     */
-    private Song getSelectedSongFromPlayList() {
-        return this.playListSongs.getSelectionModel().getSelectedItem();
     }
 
 }

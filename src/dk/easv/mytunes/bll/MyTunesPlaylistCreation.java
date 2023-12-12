@@ -4,6 +4,7 @@ import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.dal.PlaylistDao;
 import dk.easv.mytunes.exceptions.MyTunesException;
+import dk.easv.mytunes.utility.InformationalMessages;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class MyTunesPlaylistCreation {
 
     public boolean deleteSongFromPLayList(Song songToDelete,List<Song> songsToDeleteFrom) throws MyTunesException {
         if(songsToDeleteFrom.size()==1){
-            throw new MyTunesException("List can not be empty");
+            throw new MyTunesException(InformationalMessages.NO_EMPTY_PLAYLIST.getValue());
         }
         return this.playlistDao.deleteSongFromPLayList(songToDelete.getSongId());
     }
