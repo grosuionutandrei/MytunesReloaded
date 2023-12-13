@@ -47,11 +47,14 @@ import java.util.ResourceBundle;
 public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, Reloadable, PlayListSelectionListener, PlaylistReloadable {
     private final int FIRST_INDEX = 0;
     private final int POPUP_WIDTH = 420;
-
     private Model model;
     private Player player;
     private ISearchGraphic searchGraphic;
     private VolumeControl volumeControl;
+
+
+    private Stage currentStage;
+
 
     @FXML
     private Label infoLabel;
@@ -118,7 +121,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         filterManager.applyFilter(event);
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         searchGraphic = new SearchGraphic();
@@ -127,14 +129,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         initializeDownButton();
         try {
             this.model = Model.getModel();
-        } catch (MyTunesException e) {
-
-            Platform.runLater(() -> {
-                ExceptionHandler.displayErrorAlert(e.getMessage());
-            });
-        }
-
-        if (this.model != null) {
             volumeControl = new VolumeControl(this);
             volumeControlContainer.getChildren().add(FIRST_INDEX, volumeControl.getButton());
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
@@ -148,8 +142,9 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             });
             this.player = Player.useMediaPlayer(this);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
+        } catch (MyTunesException e) {
+            ExceptionHandler.displayErrorAlert(e.getMessage() + InformationalMessages.FAIL_MESSAGE_INSTRUCTIONS.getValue());
         }
-
     }
 
 
@@ -545,7 +540,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
             }
         } catch (MyTunesException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
     }
 
@@ -569,7 +564,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
                 ExceptionHandler.displayErrorAlert(InformationalMessages.OPERATION_FAILED);
             }
         } catch (MyTunesException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
     }
 
@@ -625,4 +620,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         return this.allPlaylistTable.getSelectionModel().getSelectedItem();
     }
 
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
+    }
 }

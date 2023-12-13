@@ -19,7 +19,8 @@ public enum InformationalMessages implements Messages {
     NO_DUPLICATE("Please chose another file, this song is already in the list"),
     DELETE_SONG_PLAYLIST("Are you sure that you want to delete this song from the playlist " + "\n"),
     NO_EMPTY_PLAYLIST("List can not be empty"),
-    ORDERING_NOT_PERSISTED("Changes will not be saved into the database");
+    ORDERING_NOT_PERSISTED("Changes will not be saved into the database"),
+    FAIL_MESSAGE_INSTRUCTIONS(" Please check your internet connection or if the files on your computer are not corrupt!");
 
 
     private final String value;

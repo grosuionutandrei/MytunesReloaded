@@ -9,8 +9,6 @@ import java.io.IOException;
 public class VolumeControl {
     private final Slider volumeLevel = new Slider(0, 100, 100);
     private VolumeGraphic volumeGraphic;
-  //  private final Model model;
-   // private final Player player;
     private Button button = initializeButton();
     private final String VOLUME_ON = "volumeOn";
     private final String VOLUME_OFF = "volumeOff";
@@ -36,7 +34,6 @@ public class VolumeControl {
                 this.volumeGraphic = new VolumeOffGraphic();
                 button.setGraphic(volumeGraphic.getPane());
                 volumeBinder.setVolumeLevel(volumeLevel.getValue());
-                //model.setVolume(volumeLevel.getValue());
                 System.out.println(volumeBinder.getVolumeLevel() + "from button is on ");
                 volumeLevel.setValue(0.0);
                 volumeBinder.setIsMuteValue(true);
@@ -46,7 +43,6 @@ public class VolumeControl {
                 volumeLevel.setValue(volumeBinder.getVolumeLevel()*100);
                 volumeBinder.setIsMuteValue(false);
                 System.out.println(volumeBinder.getVolumeLevel() +" form buttton is off");
-//                volumeLevel.setValue(model.getVolume());
             }
         });
     }

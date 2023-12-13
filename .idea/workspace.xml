@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="Refactored song deletion included Deletion of song from local in the same transaction with the database deletion. If the local deletion fails the database rollback.">
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/PlaylistContainerController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/MoveFocusAndSelect.java" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="Refactored playlist songs view to a separate controller that will take care off all operations , added an interface that will change the focus and selection off the listview">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/PlaylistSongsView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/PlaylistSongsView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/volume/VolumeControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/volume/VolumeControl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/DeleteSongFromPlaylistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/DeleteSongFromPlaylistController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/MoveSongsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/songSelection/PlaySong.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/songSelection/PlaySong.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/ExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/ExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/InformationalMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/InformationalMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/Utility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/Utility.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +124,8 @@
       <workItem from="1701893482775" duration="6827000" />
       <workItem from="1701967217024" duration="41166000" />
       <workItem from="1702143480319" duration="13650000" />
-      <workItem from="1702205779339" duration="63681000" />
+      <workItem from="1702205779339" duration="64024000" />
+      <workItem from="1702458495412" duration="1998000" />
     </task>
     <task id="LOCAL-00001" summary="volume slider and ontroll fixed">
       <option name="closed" value="true" />
@@ -494,7 +495,23 @@
       <option name="project" value="LOCAL" />
       <updated>1702415581145</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="Refactored playlist songs view to a separate controller that will take care off all operations , added an interface that will change the focus and selection off the listview">
+      <option name="closed" value="true" />
+      <created>1702425579311</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1702425579311</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Refactored playlist songs view to a separate controller that will take care off all operations , added an interface that will change the focus and selection off the listview">
+      <option name="closed" value="true" />
+      <created>1702425672779</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1702425672779</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -512,7 +529,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Delete controller implemented" />
     <MESSAGE value="PlayList view and songs view implemented" />
     <MESSAGE value="playing from the selected plaulist implemented" />
     <MESSAGE value="implemented view for new playlist creation" />
@@ -537,7 +553,8 @@
     <MESSAGE value="Refactored" />
     <MESSAGE value="Refactored addNewSongController" />
     <MESSAGE value="Refactored song deletion included Deletion of song from local in the same transaction with the database deletion. If the local deletion fails the database rollback." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored song deletion included Deletion of song from local in the same transaction with the database deletion. If the local deletion fails the database rollback." />
+    <MESSAGE value="Refactored playlist songs view to a separate controller that will take care off all operations , added an interface that will change the focus and selection off the listview" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored playlist songs view to a separate controller that will take care off all operations , added an interface that will change the focus and selection off the listview" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,6 +1,8 @@
 package dk.easv.mytunes.utility;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
 
 public class ExceptionHandler {
     private static final Alert error = new Alert(Alert.AlertType.ERROR);
@@ -12,9 +14,9 @@ public class ExceptionHandler {
         error.show();
     }
 
-    public static  void displayErrorAlert(String message){
-     error.setContentText(message);
-     error.show();
+    public static void displayErrorAlert(String message) {
+        error.setContentText(message);
+        error.show();
     }
 
 
@@ -27,8 +29,20 @@ public class ExceptionHandler {
         info.setContentText(informationalMessages.getValue());
         info.show();
     }
+
     public static void displayInformationAlert(String message) {
         info.setContentText(message);
         info.show();
+    }
+
+    public static void displayErrorAndCloseProgram(Stage currentStage, Messages informationalMessages) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, informationalMessages.getValue(), ButtonType.OK);
+        alert.setTitle("Error");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                System.out.println("close");
+                currentStage.close();
+            }
+        });
     }
 }

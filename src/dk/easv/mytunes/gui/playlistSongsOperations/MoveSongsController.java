@@ -8,9 +8,7 @@ import dk.easv.mytunes.gui.newEditDeletePlaylist.PlayListModel;
 import dk.easv.mytunes.utility.ExceptionHandler;
 import dk.easv.mytunes.utility.GraphicIdValues;
 import dk.easv.mytunes.utility.InformationalMessages;
-import dk.easv.mytunes.utility.Utility;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class MoveSongsController implements MoveFocusAndSelect {
         try {
             this.playListModel = PlayListModel.getInstance();
         } catch (MyTunesException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
         this.playlistReloadable = playlistReloadable;
         this.currentPlayList = currentPlayList;
@@ -63,7 +61,7 @@ public class MoveSongsController implements MoveFocusAndSelect {
             playListModel.saveChange(currentPlayList);
             updateUiData(newIndex);
         } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(e.getMessage() +" "+ InformationalMessages.ORDERING_NOT_PERSISTED.getValue());
+            ExceptionHandler.displayErrorAlert(e.getMessage() + " " + InformationalMessages.ORDERING_NOT_PERSISTED.getValue());
             rollBackUiAndData(temporaryList);
         }
         return newIndex;

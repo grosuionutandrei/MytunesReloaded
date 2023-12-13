@@ -22,11 +22,6 @@ public class Utility {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
 
-    public static void displayInformation(Alert.AlertType alertType,String message){
-        Alert alert = new Alert(alertType);
-            alert.setContentText(message);
-            alert.show();
-    }
 
     public static double calculateMidPoint(double mainX,double mainW,double popW){
      return mainX+(mainW/2)-(popW/2);

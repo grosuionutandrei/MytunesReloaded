@@ -2,6 +2,7 @@ package dk.easv.mytunes.gui.songSelection;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.player.Player;
 import dk.easv.mytunes.gui.mainView.Model;
+import dk.easv.mytunes.utility.ExceptionHandler;
 import dk.easv.mytunes.utility.PlayButtonGraphic;
 import dk.easv.mytunes.utility.Utility;
 import javafx.scene.control.Alert;
@@ -30,7 +31,7 @@ public class PlaySong  {
             player.setSong(model.getCurrentSongToBePlayed(), model.isPlayMusic());
             changeButtonGraphic(button);
         } catch (MyTunesException e) {
-            Utility.displayInformation(Alert.AlertType.ERROR, e.getMessage());
+            ExceptionHandler.displayErrorAlert(e.getMessage());
         }
     }
 
