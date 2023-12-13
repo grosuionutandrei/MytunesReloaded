@@ -58,8 +58,9 @@ public class SongsDao implements ISongsDao {
                  PreparedStatement psmtFromJoin = connection.prepareStatement(sqlDeleteFromJoin)) {
                 psmtDelete.setInt(1, songId);
                 psmtFromJoin.setInt(1, songId);
-                psmtDelete.execute();
+
                 psmtFromJoin.execute();
+                psmtDelete.execute();
                 FileHandler fileHandler = FileHandler.getInstance();
                 if (!fileHandler.deleteSongLocal(path)) {
                     connection.rollback();
@@ -69,6 +70,7 @@ public class SongsDao implements ISongsDao {
                 return true;
             } catch (SQLException e) {
                 connection.rollback();
+                System.out.println(e.getMessage());
                 throw new MyTunesException(ExceptionsMessages.TRANSACTION_FAILED, e);
             }
         } catch (SQLException e) {

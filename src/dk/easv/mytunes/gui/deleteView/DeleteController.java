@@ -1,8 +1,10 @@
 package dk.easv.mytunes.gui.deleteView;
+
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.confirmationWindow.ConfirmationWindow;
 import dk.easv.mytunes.gui.listeners.ConfirmationController;
+import dk.easv.mytunes.gui.listeners.PlaylistReloadable;
 import dk.easv.mytunes.gui.listeners.Reloadable;
 import dk.easv.mytunes.utility.ExceptionHandler;
 import dk.easv.mytunes.utility.InformationalMessages;
@@ -16,31 +18,35 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DeleteController implements ConfirmationController,Initializable {
-
+public class DeleteController implements ConfirmationController, Initializable {
     private DeleteModel deleteModel;
     private VBox confirmationWindow;
     private Song songToDelete;
     private Reloadable reloadable;
+    private PlaylistReloadable playlistReloadable;
 
     @Override
     public void confirmationEventHandler(boolean confirmation) {
-        boolean deleted = false;
+
         if (confirmation) {
             try {
                 deleteModel.deleteSong(songToDelete.getSongId(), songToDelete.getSongPath());
-                deleted = true;
-            } catch (MyTunesException e) {
-                ExceptionHandler.displayErrorAlert(e.getMessage());
-            }
-            if (deleted) {
                 String message = songToDelete.getTitle() + " " + InformationalMessages.DELETE_SUCCEEDED.getValue();
                 Platform.runLater(() -> {
                     ExceptionHandler.displayInformationAlert(message);
                 });
-                reloadable.reloadSongsFromDB();
+                reloadSongs();
+
+            } catch (MyTunesException e) {
+                ExceptionHandler.displayErrorAlert(e.getMessage());
             }
         }
+    }
+
+    private void reloadSongs() {
+        reloadable.reloadSongsFromDB();
+        playlistReloadable.reloadPlaylistsFromDb();
+        playlistReloadable.reloadSongs();
     }
 
     @Override
@@ -51,10 +57,10 @@ public class DeleteController implements ConfirmationController,Initializable {
             ExceptionHandler.displayErrorAlert(e.getMessage());
         }
         if (deleteModel != null) {
-           ConfirmationWindow confirmationView = new ConfirmationWindow();
-           if(confirmationView.getConfirmationWindow()==null){
-               return;
-           }
+            ConfirmationWindow confirmationView = new ConfirmationWindow();
+            if (confirmationView.getConfirmationWindow() == null) {
+                return;
+            }
             confirmationWindow = confirmationView.getConfirmationWindow();
             initializeConfirmationWindow(confirmationView, this);
         }
@@ -74,6 +80,10 @@ public class DeleteController implements ConfirmationController,Initializable {
 
     public void setReloadable(Reloadable reloadable) {
         this.reloadable = reloadable;
+    }
+
+    public void setPlaylistReloadable(PlaylistReloadable playlistReloadable) {
+        this.playlistReloadable = playlistReloadable;
     }
 
     public VBox getConfirmationWindow() {

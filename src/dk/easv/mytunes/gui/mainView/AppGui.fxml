@@ -237,15 +237,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Button mnemonicParsing="false" prefWidth="50.0" style="-fx-background-color: a076f9;" text="Close">
-                                 <HBox.margin>
-                                    <Insets right="5.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
+                        <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" />
                      </children>
                   </HBox>
                </children>
