@@ -1,16 +1,11 @@
 package dk.easv.mytunes.gui.mainView;
-
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
-import dk.easv.mytunes.gui.components.movebutton.DownGraphic;
-import dk.easv.mytunes.gui.components.movebutton.MoveButton;
-import dk.easv.mytunes.gui.components.movebutton.UpGraphic;
 import dk.easv.mytunes.gui.components.playListSongView.PlaylistContainerController;
 import dk.easv.mytunes.gui.components.playListTable.PlaylistTable;
 import dk.easv.mytunes.gui.components.player.PlayerCommander;
 import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
-import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
 import dk.easv.mytunes.gui.deleteView.DeleteController;
@@ -27,7 +22,6 @@ import dk.easv.mytunes.gui.songSelection.PlaySong;
 import dk.easv.mytunes.utility.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,6 +43,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private final int POPUP_WIDTH = 420;
     private Model model;
     private PlayerCommander playerCommander;
+    private UIInitializer uiInitializer;
     private ISearchGraphic searchGraphic;
     private VolumeControl volumeControl;
     private Stage currentStage;
@@ -117,19 +112,18 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
         try {
             this.model = Model.getModel();
             volumeControl = new VolumeControl(this);
             volumeControlContainer.getChildren().add(FIRST_INDEX, volumeControl.getButton());
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
-            initializeSearchView();
-            initiateTableSong();
-            initiatePlaylistTable();
+            this.uiInitializer=UIInitializer.getInstance(this,this.model);
+            this.uiInitializer.initializeSearchView(searchGraphic,searchButton,searchValue,infoLabel);
+            this.uiInitializer.initiateTableSong(this.allSongsContainer);
+           this.uiInitializer.initiatePlaylistTable(playlistContainer);
             playListContainerInitializer = new PlaylistContainerController(this.playListSongsContainer, this, this.model.getCurrentPlayListSongs(), this.upButton, this.downButton);
-            initializeUpButton();
-            initializeDownButton();
+           this.uiInitializer.initializeMoveButton(upButton,GraphicIdValues.UP);
+           this.uiInitializer.initializeMoveButton(downButton,GraphicIdValues.DOWN);
             this.playerCommander = new PlayerCommander(this);
             this.playerCommander.bindMediaTimeToScreen(this.time);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
@@ -138,48 +132,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             ExceptionHandler.displayErrorAndWait(e.getMessage() + InformationalMessages.FAIL_MESSAGE_INSTRUCTIONS.getValue());
         }
     }
-
-   /**
-    * initializes the filter view*/
-    private void initializeSearchView() {
-        searchGraphic = new SearchGraphic();
-        searchButton.setGraphic(searchGraphic.getGraphic());
-        searchValue.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (infoLabel.isVisible()) {
-                infoLabel.setVisible(false);
-            }
-        });
-    }
-
-    private void initiateTableSong() {
-        allSongsTable = new SongsTable(this);
-        allSongsTable.setSongs(model.getAllSongsObjectsToDisplay());
-        allSongsContainer.getChildren().add(allSongsTable);
-    }
-
-    /**
-     * initiate the tableview of the playlist
-     */
-    private void initiatePlaylistTable() {
-        this.allPlaylistTable = new PlaylistTable(this);
-        try {
-            this.allPlaylistTable.setSongs(model.getAllPlaylists());
-        } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(e.getMessage());
-        }
-        playlistContainer.getChildren().add(this.allPlaylistTable);
-    }
-
-    private void initializeUpButton() {
-        MoveButton moveButton = new UpGraphic();
-        upButton.setGraphic(moveButton.getGraphic());
-    }
-
-    private void initializeDownButton() {
-        MoveButton moveButton = new DownGraphic();
-        downButton.setGraphic(moveButton.getGraphic());
-    }
-
 
     @FXML
     private void openNewSongWindow(ActionEvent event) {
