@@ -1,5 +1,4 @@
 package dk.easv.mytunes.gui.components.player;
-
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.listeners.DataSupplier;
 import dk.easv.mytunes.utility.Operations;
@@ -43,6 +42,5 @@ public class PlayerCommander {
     public void bindMediaTimeToScreen(Label label){
         playerControl.bindMediaTimeToScreen(label);
     }
-
 
 }

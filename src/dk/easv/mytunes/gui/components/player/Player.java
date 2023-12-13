@@ -155,5 +155,4 @@ public class Player implements PlayerControl {
         label.textProperty().bind(time);
     }
 
-
 }

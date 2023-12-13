@@ -528,7 +528,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         }
     }
 
-
     private PlayList getSelectedPlayList() {
         return this.allPlaylistTable.getSelectionModel().getSelectedItem();
     }
