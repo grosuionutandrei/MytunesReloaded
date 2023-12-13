@@ -22,7 +22,6 @@ public class Utility {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
 
-
     public static double calculateMidPoint(double mainX,double mainW,double popW){
      return mainX+(mainW/2)-(popW/2);
     }

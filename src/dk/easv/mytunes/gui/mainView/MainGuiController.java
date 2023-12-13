@@ -8,7 +8,7 @@ import dk.easv.mytunes.gui.components.movebutton.MoveButton;
 import dk.easv.mytunes.gui.components.movebutton.UpGraphic;
 import dk.easv.mytunes.gui.components.playListSongView.PlaylistContainerController;
 import dk.easv.mytunes.gui.components.playListTable.PlaylistTable;
-import dk.easv.mytunes.gui.components.player.Player;
+import dk.easv.mytunes.gui.components.player.PlayerCommander;
 import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
 import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
@@ -40,7 +40,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -49,7 +48,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private final int FIRST_INDEX = 0;
     private final int POPUP_WIDTH = 420;
     private Model model;
-    private Player player;
+    private PlayerCommander playerCommander;
     private ISearchGraphic searchGraphic;
     private VolumeControl volumeControl;
     private Stage currentStage;
@@ -87,26 +86,24 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
 
     public void playPreviousSong(ActionEvent event) {
-        player.playNextSong(this.getMedia(Operations.PLAY_PREVIOUS), this.isPlaying());
+        this.playerCommander.processOperation(Operations.PLAY_PREVIOUS);
     }
 
     public void playMusic(ActionEvent event) {
         if (this.playButton.getText().equals(PlayButtonGraphic.PLAY.getValue())) {
             this.model.setPlayMusic(true);
-            this.isPlaying();
-            this.player.getMediaPlayer().play();
+            this.playerCommander.processOperation(Operations.PLAY);
             this.playButton.setText(PlayButtonGraphic.STOP.getValue());
         } else {
             this.model.setPlayMusic(false);
-            this.isPlaying();
-            this.player.getMediaPlayer().pause();
+            this.playerCommander.processOperation(Operations.PAUSE);
             this.playButton.setText(PlayButtonGraphic.PLAY.getValue());
-            this.model.setCurrentTime(this.player.getMediaPlayer().getCurrentTime());
+            this.model.setCurrentTime(playerCommander.getCurrentTime());
         }
     }
 
     public void playNextSong(ActionEvent event) {
-        player.playNextSong(this.getMedia(Operations.PLAY_NEXT), this.isPlaying());
+        this.playerCommander.processOperation(Operations.PLAY_NEXT);
     }
 
     /**
@@ -133,7 +130,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             playListContainerInitializer = new PlaylistContainerController(this.playListSongsContainer, this, this.model.getCurrentPlayListSongs(), this.upButton, this.downButton);
             initializeUpButton();
             initializeDownButton();
-            this.player = Player.useMediaPlayer(this);
+            this.playerCommander = new PlayerCommander(this);
+            this.playerCommander.bindMediaTimeToScreen(this.time);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
         } catch (MyTunesException e) {
             errorOccurred = true;
@@ -502,7 +500,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
      */
     @Override
     public void onSongSelect(int rowIndex, String tableId, boolean play) {
-        PlaySong playSong = new PlaySong(this.model, this.player);
+        PlaySong playSong = new PlaySong(this.model,this.playerCommander);
         playSong.playSelectedSong(rowIndex, tableId, play, this.playButton);
     }
 
@@ -517,14 +515,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         PlayOperations playOperations = PlayOperationsHandler.getInstance();
         playOperations.setModel(this.model);
         return playOperations.getMedia(operation);
-    }
-
-    /**
-     * binds view label with the current time off the song
-     */
-    @Override
-    public void bindMediaTimeToScreen(StringProperty binder) {
-        this.time.textProperty().bind(binder);
     }
 
     /**

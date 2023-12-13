@@ -1,8 +1,9 @@
 package dk.easv.mytunes.utility;
 
 public enum Operations {
-    PLAY_NEXT(),PLAY_PREVIOUS(),INITIAL_SONG();
-
+    GET_NEXT(), GET_PREVIOUS(), GET_CURRENT_SONG(),
+    PLAY_NEXT(),PLAY_PREVIOUS(),PLAY(),PAUSE(),
+    GET_TIME(),PLAY_CURRENT();
     Operations() {
     }
 }

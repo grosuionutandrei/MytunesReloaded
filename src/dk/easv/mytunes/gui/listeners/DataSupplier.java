@@ -11,13 +11,12 @@ import javafx.scene.media.Media;
  * supplies Media data to the player
  */
 public interface DataSupplier {
-    public Media getMedia(Operations operation);
+    Media getMedia(Operations operation);
 
-    public boolean isPlaying();
+    boolean isPlaying();
 
-    public DoubleProperty getVolumeObservable();
+    DoubleProperty getVolumeObservable();
 
-    public BooleanProperty isMute();
+    BooleanProperty isMute();
 
-    public void bindMediaTimeToScreen(StringProperty binder);
 }

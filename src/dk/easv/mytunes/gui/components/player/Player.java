@@ -1,6 +1,5 @@
 package dk.easv.mytunes.gui.components.player;
 
-import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.listeners.DataSupplier;
 import dk.easv.mytunes.utility.ExceptionHandler;
@@ -10,12 +9,12 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import org.xml.sax.ErrorHandler;
 
-public class Player {
+public class Player implements PlayerControl {
     private MediaPlayer mediaPlayer;
     private static Player instance;
     private Media song;
@@ -25,15 +24,17 @@ public class Player {
 
     private Player(DataSupplier dataSupplier) throws MyTunesException {
         this.dataSupplier = dataSupplier;
-        checkMediaValid(dataSupplier.getMedia(Operations.INITIAL_SONG));
+        checkMediaValid(dataSupplier.getMedia(Operations.GET_CURRENT_SONG));
         playTrack(dataSupplier.isPlaying());
     }
+
     public static Player useMediaPlayer(DataSupplier dataSupplier) throws MyTunesException {
         if (instance == null) {
             instance = new Player(dataSupplier);
         }
         return instance;
     }
+
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
     }
@@ -55,8 +56,6 @@ public class Player {
                 .otherwise(dataSupplier.getVolumeObservable()));
 
         bindDurationToLabel(time);
-        dataSupplier.bindMediaTimeToScreen(time);
-
         mediaPlayer.setOnEndOfMedia(this::playContinuous);
         if (play) {
             mediaPlayer.play();
@@ -68,32 +67,9 @@ public class Player {
         this.mediaPlayer = playTrack(play);
     }
 
-    private void playPreviousTrack(boolean play)  {
-        this.mediaPlayer = playTrack(play);
-    }
-    public void playNextSong(Media media, boolean play)  {
-        try {
-            setSong(media);
-        } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(e.getMessage());
-            return;
-        }
-        playNextTrack(play);
-    }
-
-    public void playPreviousSong(Media media, boolean play)  {
-        try {
-            setSong(media);
-        } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(e.getMessage());
-            return;
-        }
-        playPreviousTrack(play);
-    }
 
     private void playContinuous() {
-        this.setSong(dataSupplier.getMedia(Operations.PLAY_NEXT), dataSupplier.isPlaying());
-
+        playCurrent(dataSupplier.getMedia(Operations.GET_NEXT),dataSupplier.isPlaying());
     }
 
     private void bindDurationToLabel(StringProperty stringToBind) {
@@ -108,23 +84,63 @@ public class Player {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
-    private  void checkMediaValid(Media media) throws MyTunesException {
-        if(media==null){
-            throw  new MyTunesException(ExceptionsMessages.READING_SONG_LOCAL);
-        }else{
-            this.song =media;
+    private void checkMediaValid(Media media) throws MyTunesException {
+        if (media == null) {
+            throw new MyTunesException(ExceptionsMessages.READING_SONG_LOCAL);
+        } else {
+            this.song = media;
         }
     }
 
 
-
-
     public void setSong(Media media) throws MyTunesException {
         checkMediaValid(media);
-//        this.song = media;
     }
 
-    public void setSong(Media media, boolean play) {
+    public void setDataSupplier(DataSupplier dataSupplier) {
+        this.dataSupplier = dataSupplier;
+    }
+
+
+    @Override
+    public void play() {
+        this.mediaPlayer.play();
+    }
+
+    @Override
+    public void pause() {
+        this.mediaPlayer.pause();
+    }
+
+    @Override
+    public void playNext(Media media, boolean play) {
+        try {
+            setSong(media);
+        } catch (MyTunesException e) {
+            ExceptionHandler.displayErrorAlert(e.getMessage());
+            return;
+        }
+        playNextTrack(play);
+    }
+
+    @Override
+    public void playPrevious(Media media, boolean play) {
+        try {
+            setSong(media);
+        } catch (MyTunesException e) {
+            ExceptionHandler.displayErrorAlert(e.getMessage());
+            return;
+        }
+        playNextTrack(play);
+    }
+
+    @Override
+    public Duration getCurrentTime() {
+        return getMediaPlayer().getCurrentTime();
+    }
+
+    @Override
+    public void playCurrent(Media media, boolean play) {
         try {
             checkMediaValid(media);
         } catch (MyTunesException e) {
@@ -134,8 +150,10 @@ public class Player {
         playTrack(play);
     }
 
-    public void setDataSupplier(DataSupplier dataSupplier) {
-        this.dataSupplier = dataSupplier;
+    @Override
+    public void bindMediaTimeToScreen(Label label) {
+        label.textProperty().bind(time);
     }
+
 
 }

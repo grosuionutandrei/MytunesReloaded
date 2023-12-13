@@ -1,22 +1,27 @@
 package dk.easv.mytunes.gui.songSelection;
+
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.player.Player;
+import dk.easv.mytunes.gui.components.player.PlayerCommander;
+import dk.easv.mytunes.gui.components.player.PlayerControl;
 import dk.easv.mytunes.gui.mainView.Model;
 import dk.easv.mytunes.utility.ExceptionHandler;
+import dk.easv.mytunes.utility.Operations;
 import dk.easv.mytunes.utility.PlayButtonGraphic;
 import dk.easv.mytunes.utility.Utility;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
-public class PlaySong  {
+public class PlaySong {
     private final Model model;
-    private final Player player;
+    private final PlayerCommander playerCommander;
 
-
-    public PlaySong(Model model, Player player) {
+    public PlaySong(Model model, PlayerCommander playerCommander) {
         this.model = model;
-        this.player = player;
+        this.playerCommander = playerCommander;
+
     }
+
     /**
      * Play the selected song when it is double-clicked.
      *
@@ -26,13 +31,10 @@ public class PlaySong  {
      * @param button   The button used for playback control.
      */
     public void playSelectedSong(int rowIndex, String tableId, boolean play, Button button) {
-        try {
-            setSongToPlay(rowIndex, tableId, play);
-            player.setSong(model.getCurrentSongToBePlayed(), model.isPlayMusic());
-            changeButtonGraphic(button);
-        } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(e.getMessage());
-        }
+        setSongToPlay(rowIndex, tableId, play);
+        playerCommander.processOperation(Operations.PLAY_CURRENT);
+        changeButtonGraphic(button);
+
     }
 
     private void setSongToPlay(int index, String tableId, boolean play) {

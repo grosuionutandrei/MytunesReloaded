@@ -40,10 +40,10 @@ public class PlayOperationsHandler implements PlayOperations {
     private Media getOperation(Operations operation) throws MyTunesException {
         Media media = null;
         switch (operation) {
-            case Operations.PLAY_NEXT:
+            case Operations.GET_NEXT:
                 media =model.getNextSong();
                 break;
-            case Operations.PLAY_PREVIOUS:
+            case Operations.GET_PREVIOUS:
                 media =model.getPreviousSong();
                 break;
             default:
