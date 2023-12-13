@@ -35,8 +35,8 @@ public class ExceptionHandler {
         info.show();
     }
 
-    public static void displayErrorAndCloseProgram(Stage currentStage, Messages informationalMessages) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, informationalMessages.getValue(), ButtonType.OK);
+    public static void displayErrorAndCloseProgram(Stage currentStage, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
         alert.setTitle("Error");
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
@@ -44,5 +44,10 @@ public class ExceptionHandler {
                 currentStage.close();
             }
         });
+    }
+
+    public static void displayErrorAndWait(String message){
+        error.setContentText(message);
+        error.showAndWait();
     }
 }

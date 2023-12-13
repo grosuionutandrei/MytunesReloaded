@@ -37,10 +37,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/mytunes/gui/mainView/AppGui.fxml"));
-        MainGuiController mainGuiController = loader.getController();
         Parent root = loader.load();
-        if(mainGuiController!=null){
-            mainGuiController.setCurrentStage(primaryStage);
+        MainGuiController mainGuiController = loader.getController();
+        mainGuiController.setCurrentStage(primaryStage);
+        if(!mainGuiController.isError()){
             Scene scene = new Scene(root);
             primaryStage.setX(100);
             primaryStage.setScene(scene);

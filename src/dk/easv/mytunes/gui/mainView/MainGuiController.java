@@ -19,11 +19,12 @@ import dk.easv.mytunes.gui.filterSongs.FilterManager;
 import dk.easv.mytunes.gui.listeners.*;
 import dk.easv.mytunes.gui.newEditDeletePlaylist.*;
 import dk.easv.mytunes.gui.newSongView.NewSongController;
+import dk.easv.mytunes.gui.playOperations.PlayOperations;
+import dk.easv.mytunes.gui.playOperations.PlayOperationsHandler;
 import dk.easv.mytunes.gui.playlistSongsOperations.DeleteSongFromPlaylistController;
 import dk.easv.mytunes.gui.playlistSongsOperations.MoveSongsController;
 import dk.easv.mytunes.gui.songSelection.PlaySong;
 import dk.easv.mytunes.utility.*;
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
@@ -39,7 +40,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -51,10 +51,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private Player player;
     private ISearchGraphic searchGraphic;
     private VolumeControl volumeControl;
-
-
     private Stage currentStage;
-
 
     @FXML
     private Label infoLabel;
@@ -77,7 +74,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private SongsTable allSongsTable;
     @FXML
     private PlaylistTable allPlaylistTable;
-
     @FXML
     private VBox playlistContainer;
     @FXML
@@ -87,10 +83,11 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private Button upButton;
     @FXML
     private Button downButton;
+    private boolean errorOccured = false;
 
 
     public void playPreviousSong(ActionEvent event) {
-        player.playNextSong(this.getPreviousSong(), this.isPlaying());
+        player.playNextSong(this.getMedia(Operations.PLAY_PREVIOUS), this.isPlaying());
     }
 
     public void playMusic(ActionEvent event) {
@@ -109,7 +106,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     public void playNextSong(ActionEvent event) {
-        player.playNextSong(this.getNextSong(), this.isPlaying());
+        player.playNextSong(this.getMedia(Operations.PLAY_NEXT), this.isPlaying());
     }
 
     /**
@@ -143,10 +140,10 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             this.player = Player.useMediaPlayer(this);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
         } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(e.getMessage() + InformationalMessages.FAIL_MESSAGE_INSTRUCTIONS.getValue());
+            errorOccured = true;
+            ExceptionHandler.displayErrorAndWait(e.getMessage() + InformationalMessages.FAIL_MESSAGE_INSTRUCTIONS.getValue());
         }
     }
-
 
     private void initiateTableSong() {
         allSongsTable = new SongsTable(this);
@@ -208,56 +205,15 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     /**
-     * provides the media that needs to be played by the player
-     */
-    @Override
-    public Media getMedia() {
-        Media media = null;
-        try {
-            media = model.getCurrentSongToBePlayed();
-        } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(e.getMessage());
-        }
-        return media;
-    }
+     * provides the media player with the necessary data
+     *
+     * @param operation  the operation that needs to be performed, play next, play previous , play initial song*/
 
-    /**
-     * provides the player the next song that needs to be played
-     */
     @Override
-    public Media getNextSong() {
-        Media media = null;
-        boolean retry = true;
-        int counter = 0;
-        while (retry && counter < 5) {
-            try {
-                media = model.getNextSong();
-                retry = false;
-            } catch (MyTunesException e) {
-                ExceptionHandler.displayErrorAlert(e.getMessage());
-
-            }
-            counter++;
-        }
-        return media;
-    }
-
-    /**
-     * provides the player with the previous song that needs to be played
-     */
-    @Override
-    public Media getPreviousSong() {
-        Media media = null;
-        boolean retry = true;
-        while (retry) {
-            try {
-                media = model.getPreviousSong();
-                retry = false;
-            } catch (MyTunesException e) {
-                ExceptionHandler.displayErrorAlert(e.getExceptionsMessages());
-            }
-        }
-        return media;
+    public Media getMedia(Operations operation) {
+        PlayOperations playOperations = PlayOperationsHandler.getInstance();
+        playOperations.setModel(this.model);
+        return playOperations.getMedia(operation);
     }
 
     /**
@@ -267,7 +223,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     public void bindMediaTimeToScreen(StringProperty binder) {
         this.time.textProperty().bind(binder);
     }
-
 
     /**
      * controls iff the song can be played or not
@@ -622,5 +577,9 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
 
     public void setCurrentStage(Stage currentStage) {
         this.currentStage = currentStage;
+    }
+
+    public boolean isError() {
+        return this.errorOccured;
     }
 }

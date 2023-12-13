@@ -1,7 +1,11 @@
 package dk.easv.mytunes.gui.components.player;
 
+import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.listeners.DataSupplier;
+import dk.easv.mytunes.utility.ExceptionHandler;
+import dk.easv.mytunes.utility.ExceptionsMessages;
+import dk.easv.mytunes.utility.Operations;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,6 +13,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+import org.xml.sax.ErrorHandler;
 
 public class Player {
     private MediaPlayer mediaPlayer;
@@ -18,12 +23,12 @@ public class Player {
     private final StringProperty time = new SimpleStringProperty();
 
 
-    private Player(DataSupplier dataSupplier){
+    private Player(DataSupplier dataSupplier) throws MyTunesException {
         this.dataSupplier = dataSupplier;
-        this.song = dataSupplier.getMedia();
+        checkMediaValid(dataSupplier.getMedia(Operations.INITIAL_SONG));
         playTrack(dataSupplier.isPlaying());
     }
-    public static Player useMediaPlayer(DataSupplier dataSupplier) {
+    public static Player useMediaPlayer(DataSupplier dataSupplier) throws MyTunesException {
         if (instance == null) {
             instance = new Player(dataSupplier);
         }
@@ -67,17 +72,27 @@ public class Player {
         this.mediaPlayer = playTrack(play);
     }
     public void playNextSong(Media media, boolean play)  {
-        setSong(media);
+        try {
+            setSong(media);
+        } catch (MyTunesException e) {
+            ExceptionHandler.displayErrorAlert(e.getMessage());
+            return;
+        }
         playNextTrack(play);
     }
 
     public void playPreviousSong(Media media, boolean play)  {
-        setSong(media);
+        try {
+            setSong(media);
+        } catch (MyTunesException e) {
+            ExceptionHandler.displayErrorAlert(e.getMessage());
+            return;
+        }
         playPreviousTrack(play);
     }
 
     private void playContinuous() {
-        this.setSong(dataSupplier.getNextSong(), dataSupplier.isPlaying());
+        this.setSong(dataSupplier.getMedia(Operations.PLAY_NEXT), dataSupplier.isPlaying());
 
     }
 
@@ -93,15 +108,29 @@ public class Player {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
+    private  void checkMediaValid(Media media) throws MyTunesException {
+        if(media==null){
+            throw  new MyTunesException(ExceptionsMessages.READING_SONG_LOCAL);
+        }else{
+            this.song =media;
+        }
+    }
 
 
 
-    public void setSong(Media media) {
-        this.song = media;
+
+    public void setSong(Media media) throws MyTunesException {
+        checkMediaValid(media);
+//        this.song = media;
     }
 
     public void setSong(Media media, boolean play) {
-        this.song = media;
+        try {
+            checkMediaValid(media);
+        } catch (MyTunesException e) {
+            ExceptionHandler.displayErrorAlert(e.getMessage());
+            return;
+        }
         playTrack(play);
     }
 
