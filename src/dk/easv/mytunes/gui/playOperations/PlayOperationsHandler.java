@@ -6,17 +6,16 @@ import dk.easv.mytunes.utility.Operations;
 import javafx.scene.media.Media;
 
 public class PlayOperationsHandler implements PlayOperations {
-    private static PlayOperationsHandler playOperationsHandler;
-    public static  PlayOperationsHandler  instance;
+    private static  PlayOperationsHandler  instance;
     private Model model;
 
-    private PlayOperationsHandler(){
-
+    private PlayOperationsHandler(Model model){
+        this.model=model;
     }
 
-    public static PlayOperationsHandler getInstance(){
+    public static PlayOperationsHandler getInstance(Model model){
         if (instance==null){
-            instance=new PlayOperationsHandler();
+            instance=new PlayOperationsHandler(model);
         }
         return instance;
     }

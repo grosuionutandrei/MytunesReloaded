@@ -90,8 +90,6 @@ public class MainGuiController implements Initializable{
     @FXML
     private Button downButton;
     private boolean errorOccurred = false;
-
-
     public void playPreviousSong(ActionEvent event) {
         this.playerCommander.processOperation(Operations.PLAY_PREVIOUS);
     }
@@ -137,7 +135,7 @@ public class MainGuiController implements Initializable{
             allPlaylistTable = this.uiInitializer.initiatePlaylistTable(playlistContainer,playListSelectionListener);
             this.uiInitializer.initializeMoveButton(upButton, GraphicIdValues.UP);
             this.uiInitializer.initializeMoveButton(downButton, GraphicIdValues.DOWN);
-            PlayOperations playOperations = PlayOperationsHandler.getInstance();
+            PlayOperations playOperations = PlayOperationsHandler.getInstance(this.model);
             this.dataSupplier = DataHandler.getInstance(this.model, playOperations);
             PlayerControl playerControl = Player.useMediaPlayer(dataSupplier);
             this.playerCommander = new PlayerCommander(dataSupplier, playerControl);

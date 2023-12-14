@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refatored the MainController  moved the PlayListReloadable functionality to a different class calles PlaylistOperationHandler">
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/ReloadableHandler.java" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refatored the MainController  moved the Reloadable functionality to a different class called ReloadableHandler">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playOperations/PlayOperationsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playOperations/PlayOperationsHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,15 +121,7 @@
       <workItem from="1702143480319" duration="13650000" />
       <workItem from="1702205779339" duration="64024000" />
       <workItem from="1702458495412" duration="26900000" />
-      <workItem from="1702500462251" duration="20921000" />
-    </task>
-    <task id="LOCAL-00012" summary="edit song implemented">
-      <option name="closed" value="true" />
-      <created>1701633034670</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1701633034670</updated>
+      <workItem from="1702500462251" duration="24324000" />
     </task>
     <task id="LOCAL-00013" summary="confirmation window implemented">
       <option name="closed" value="true" />
@@ -515,7 +507,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702587362515</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="refatored the MainController  moved the Reloadable functionality to a different class called ReloadableHandler">
+      <option name="closed" value="true" />
+      <created>1702588392362</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1702588392362</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -533,7 +533,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="finished add song to playlist" />
     <MESSAGE value="implemented delete song from playlist" />
     <MESSAGE value="start implementing move song view" />
     <MESSAGE value="implemented move song view" />
@@ -558,7 +557,8 @@
     <MESSAGE value="refatored the MainController . moved the SongSelectionListener functionality to a different class calles PlaySongHandler" />
     <MESSAGE value="refatored the MainController  moved the VolumeBinderListener functionality to a different class calles VolumeBinderHelper" />
     <MESSAGE value="refatored the MainController  moved the PlayListReloadable functionality to a different class calles PlaylistOperationHandler" />
-    <option name="LAST_COMMIT_MESSAGE" value="refatored the MainController  moved the PlayListReloadable functionality to a different class calles PlaylistOperationHandler" />
+    <MESSAGE value="refatored the MainController  moved the Reloadable functionality to a different class called ReloadableHandler" />
+    <option name="LAST_COMMIT_MESSAGE" value="refatored the MainController  moved the Reloadable functionality to a different class called ReloadableHandler" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
