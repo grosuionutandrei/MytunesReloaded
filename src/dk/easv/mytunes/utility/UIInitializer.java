@@ -8,6 +8,7 @@ import dk.easv.mytunes.gui.components.playListTable.PlaylistTable;
 import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
 import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
+import dk.easv.mytunes.gui.listeners.PlayListSelectionListener;
 import dk.easv.mytunes.gui.listeners.SongSelectionListener;
 import dk.easv.mytunes.gui.mainView.MainGuiController;
 import dk.easv.mytunes.gui.mainView.Model;
@@ -60,8 +61,8 @@ public class UIInitializer {
     /**
      * initiate the tableview of the playlist
      */
-    public PlaylistTable initiatePlaylistTable(VBox playlistContainer) throws MyTunesException {
-        PlaylistTable allPlaylistTable = new PlaylistTable(mainController);
+    public PlaylistTable initiatePlaylistTable(VBox playlistContainer, PlayListSelectionListener playListSelectionListener) throws MyTunesException {
+        PlaylistTable allPlaylistTable = new PlaylistTable(playListSelectionListener);
         allPlaylistTable.setSongs(model.getAllPlaylists());
         playlistContainer.getChildren().add(allPlaylistTable);
         return allPlaylistTable;

@@ -4,6 +4,7 @@ import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.playListSongView.PlaylistContainerController;
+import dk.easv.mytunes.gui.components.playListTable.PlayListSelectionHandler;
 import dk.easv.mytunes.gui.components.playListTable.PlaylistTable;
 import dk.easv.mytunes.gui.components.player.DataHandler;
 import dk.easv.mytunes.gui.components.player.Player;
@@ -23,6 +24,7 @@ import dk.easv.mytunes.gui.playOperations.PlayOperations;
 import dk.easv.mytunes.gui.playOperations.PlayOperationsHandler;
 import dk.easv.mytunes.gui.playlistSongsOperations.DeleteSongFromPlaylistController;
 import dk.easv.mytunes.gui.playlistSongsOperations.MoveSongsController;
+import dk.easv.mytunes.gui.playlistSongsOperations.PlaylistOperationHandler;
 import dk.easv.mytunes.gui.songSelection.PlaySongHandler;
 import dk.easv.mytunes.utility.*;
 import javafx.event.ActionEvent;
@@ -41,7 +43,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainGuiController implements Initializable, Reloadable, PlayListSelectionListener, PlaylistReloadable {
+public class MainGuiController implements Initializable, Reloadable{
     private final int FIRST_INDEX = 0;
     private final int POPUP_WIDTH = 420;
     private Model model;
@@ -53,6 +55,8 @@ public class MainGuiController implements Initializable, Reloadable, PlayListSel
     private DataSupplier dataSupplier;
     private SongSelectionListener songSelectionListener;
     private VolumeBinder volumeBinder;
+    private PlayListSelectionListener playListSelectionListener;
+    private PlaylistReloadable playlistReloadable;
 
     @FXML
     private Label infoLabel;
@@ -121,13 +125,15 @@ public class MainGuiController implements Initializable, Reloadable, PlayListSel
         try {
 
             this.model = Model.getModel();
+            this.playListSelectionListener=PlayListSelectionHandler.getInstance(this.model);
             this.volumeBinder = VolumeHandlerCommunication.getInstance(this.model);
+
             volumeControl = new VolumeControl(volumeBinder);
             volumeControlContainer.getChildren().add(FIRST_INDEX, volumeControl.getButton());
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
             this.uiInitializer = UIInitializer.getInstance(this, this.model);
             this.uiInitializer.initializeSearchView(searchGraphic, searchButton, searchValue, infoLabel);
-            allPlaylistTable = this.uiInitializer.initiatePlaylistTable(playlistContainer);
+            allPlaylistTable = this.uiInitializer.initiatePlaylistTable(playlistContainer,playListSelectionListener);
             this.uiInitializer.initializeMoveButton(upButton, GraphicIdValues.UP);
             this.uiInitializer.initializeMoveButton(downButton, GraphicIdValues.DOWN);
             PlayOperations playOperations = PlayOperationsHandler.getInstance();
@@ -138,6 +144,7 @@ public class MainGuiController implements Initializable, Reloadable, PlayListSel
             this.songSelectionListener = new PlaySongHandler(this.model, this.playerCommander, this.playButton);
             allSongsTable = this.uiInitializer.initiateTableSong(this.allSongsContainer, songSelectionListener);
             playListContainerInitializer = new PlaylistContainerController(this.playListSongsContainer, songSelectionListener, this.model.getCurrentPlayListSongs(), this.upButton, this.downButton);
+            this.playlistReloadable=PlaylistOperationHandler.getInstance(this.model, playListContainerInitializer);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
 
         } catch (MyTunesException e) {
@@ -196,7 +203,7 @@ public class MainGuiController implements Initializable, Reloadable, PlayListSel
         DeleteController del = new DeleteController();
         del.setSongToDelete(songToDelete);
         del.setReloadable(this);
-        del.setPlaylistReloadable(this);
+        del.setPlaylistReloadable(playlistReloadable);
         del.initialize(null, null);
         Stage mainStage = Utility.getCurrentStage(event);
         if (del.getConfirmationWindow() != null) {
@@ -225,7 +232,7 @@ public class MainGuiController implements Initializable, Reloadable, PlayListSel
         NewPlaylistController pc = new NewPlaylistController();
         loader.setController(pc);
         Parent root = loader.load();
-        pc.setReloadable(this);
+        pc.setReloadable(playlistReloadable);
         Scene scene = new Scene(root);
         Stage mainStage = Utility.getCurrentStage(event);
         Stage newPlayListStage = Utility.createPopupStage(mainStage, scene, Titles.CREATE_PLAYLIST.getValue(), POPUP_WIDTH);
@@ -249,7 +256,7 @@ public class MainGuiController implements Initializable, Reloadable, PlayListSel
             EditPlaylistController editController = new EditPlaylistController();
             loader.setController(editController);
             Parent root = loader.load();
-            editController.setReloadable(this);
+            editController.setReloadable(playlistReloadable);
             editController.setPlaylistToEdit(playListToUpdate);
             Scene scene = new Scene(root);
             Stage mainStage = Utility.getCurrentStage(event);
@@ -307,7 +314,7 @@ public class MainGuiController implements Initializable, Reloadable, PlayListSel
         DeletePlayListController deletePlayListController = new DeletePlayListController();
         deletePlayListController.getPlayListToDelete(playlistToDelete);
         deletePlayListController.initialize(null, null);
-        deletePlayListController.setReloadable(this);
+        deletePlayListController.setReloadable(playlistReloadable);
         return deletePlayListController;
     }
 
@@ -345,7 +352,7 @@ public class MainGuiController implements Initializable, Reloadable, PlayListSel
                 ExceptionHandler.displayWarningAlert(InformationalMessages.NO_PLAYLIST_SELECTED);
                 return;
             }
-            AddToPlayListController addToPlayListController = new AddToPlayListController(PlayListModel.getInstance(), playListToAdd, selectedSong, this);
+            AddToPlayListController addToPlayListController = new AddToPlayListController(PlayListModel.getInstance(), playListToAdd, selectedSong, playlistReloadable);
             if (addToPlayListController.getConfirmationWindow() != null) {
                 Stage mainStage = Utility.getCurrentStage(event);
                 Scene scene = new Scene(addToPlayListController.getConfirmationWindow());
@@ -371,7 +378,7 @@ public class MainGuiController implements Initializable, Reloadable, PlayListSel
             return;
         }
         try {
-            DeleteSongFromPlaylistController dsfpc = new DeleteSongFromPlaylistController(songToDelete, this.model.getCurrentPlayListSongs(), PlayListModel.getInstance(), this);
+            DeleteSongFromPlaylistController dsfpc = new DeleteSongFromPlaylistController(songToDelete, this.model.getCurrentPlayListSongs(), PlayListModel.getInstance(), playlistReloadable);
             if (dsfpc.getConfirmationWindow() != null) {
                 Scene scene = new Scene(dsfpc.getConfirmationWindow());
                 Stage stage = Utility.createPopupStage(Utility.getCurrentStage(event), scene, Titles.DELETE_SONG_PLAYLIST.getValue(), POPUP_WIDTH);
@@ -400,61 +407,9 @@ public class MainGuiController implements Initializable, Reloadable, PlayListSel
         } catch (MyTunesException e) {
             ExceptionHandler.displayErrorAlert(e.getMessage());
         }
-        MoveSongsController moveSongsController = new MoveSongsController(this, currentPlayList, selectedSong, operation, this.model.getCurrentPlayListSongs());
+        MoveSongsController moveSongsController = new MoveSongsController(playlistReloadable, currentPlayList, selectedSong, operation, this.model.getCurrentPlayListSongs());
         playListContainerInitializer.setListMoveFocusAndSelect(moveSongsController);
         playListContainerInitializer.updateListFocus();
-    }
-
-    /**
-     * reloads all the playlists from the database
-     */
-    @Override
-    public void reloadPlaylistsFromDb() {
-        try {
-            this.model.reloadPlayListsFromDB();
-        } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(e.getMessage());
-        }
-    }
-
-    /**
-     * reloads the playlist songs from the database
-     */
-    @Override
-    public void reloadSongs() {
-        try {
-            this.model.reloadPlayListSongs();
-        } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(e.getMessage());
-        }
-    }
-
-    /**
-     * Enables the moving song up and down  buttons
-     */
-    @Override
-    public void resetButtons() {
-        this.playListContainerInitializer.enableButtons();
-    }
-
-    /**
-     * Changes the current playing index
-     */
-    @Override
-    public void changePlayingIndex(int index) {
-        this.model.setCurrentIndexOffTheSong(index);
-    }
-
-    /**
-     * listen to the playlist table click events
-     */
-    @Override
-    public void onPlayListSelect(int selectedId) {
-        try {
-            model.setPlayingPlayList(selectedId);
-        } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(e.getMessage());
-        }
     }
 
     @Override
