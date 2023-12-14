@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refatored the MainController  moved the VolumeBinderListener functionality to a different class calles VolumeBinderHelper">
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListTable/PlayListSelectionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/PlaylistOperationHandler.java" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refatored the MainController  moved the PlayListReloadable functionality to a different class calles PlaylistOperationHandler">
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/playlistSongsOperations/ReloadableHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/UIInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/UIInitializer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,15 +121,7 @@
       <workItem from="1702143480319" duration="13650000" />
       <workItem from="1702205779339" duration="64024000" />
       <workItem from="1702458495412" duration="26900000" />
-      <workItem from="1702500462251" duration="19815000" />
-    </task>
-    <task id="LOCAL-00011" summary="edit song implemented">
-      <option name="closed" value="true" />
-      <created>1701630878119</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1701630878119</updated>
+      <workItem from="1702500462251" duration="20921000" />
     </task>
     <task id="LOCAL-00012" summary="edit song implemented">
       <option name="closed" value="true" />
@@ -517,7 +507,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702585588145</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="refatored the MainController  moved the PlayListReloadable functionality to a different class calles PlaylistOperationHandler">
+      <option name="closed" value="true" />
+      <created>1702587362515</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1702587362515</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -535,7 +533,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="implemented delete song from join table" />
     <MESSAGE value="finished add song to playlist" />
     <MESSAGE value="implemented delete song from playlist" />
     <MESSAGE value="start implementing move song view" />
@@ -560,7 +557,8 @@
     <MESSAGE value="refatored the MainController . moved the data supplier functionality to a different class calles DataHandler" />
     <MESSAGE value="refatored the MainController . moved the SongSelectionListener functionality to a different class calles PlaySongHandler" />
     <MESSAGE value="refatored the MainController  moved the VolumeBinderListener functionality to a different class calles VolumeBinderHelper" />
-    <option name="LAST_COMMIT_MESSAGE" value="refatored the MainController  moved the VolumeBinderListener functionality to a different class calles VolumeBinderHelper" />
+    <MESSAGE value="refatored the MainController  moved the PlayListReloadable functionality to a different class calles PlaylistOperationHandler" />
+    <option name="LAST_COMMIT_MESSAGE" value="refatored the MainController  moved the PlayListReloadable functionality to a different class calles PlaylistOperationHandler" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

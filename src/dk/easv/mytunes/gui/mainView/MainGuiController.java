@@ -25,6 +25,7 @@ import dk.easv.mytunes.gui.playOperations.PlayOperationsHandler;
 import dk.easv.mytunes.gui.playlistSongsOperations.DeleteSongFromPlaylistController;
 import dk.easv.mytunes.gui.playlistSongsOperations.MoveSongsController;
 import dk.easv.mytunes.gui.playlistSongsOperations.PlaylistOperationHandler;
+import dk.easv.mytunes.gui.playlistSongsOperations.ReloadableHandler;
 import dk.easv.mytunes.gui.songSelection.PlaySongHandler;
 import dk.easv.mytunes.utility.*;
 import javafx.event.ActionEvent;
@@ -43,7 +44,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainGuiController implements Initializable, Reloadable{
+public class MainGuiController implements Initializable{
     private final int FIRST_INDEX = 0;
     private final int POPUP_WIDTH = 420;
     private Model model;
@@ -57,6 +58,7 @@ public class MainGuiController implements Initializable, Reloadable{
     private VolumeBinder volumeBinder;
     private PlayListSelectionListener playListSelectionListener;
     private PlaylistReloadable playlistReloadable;
+    private Reloadable reloadable;
 
     @FXML
     private Label infoLabel;
@@ -123,11 +125,10 @@ public class MainGuiController implements Initializable, Reloadable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-
             this.model = Model.getModel();
             this.playListSelectionListener=PlayListSelectionHandler.getInstance(this.model);
             this.volumeBinder = VolumeHandlerCommunication.getInstance(this.model);
-
+            this.reloadable= ReloadableHandler.getInstance(this.model);
             volumeControl = new VolumeControl(volumeBinder);
             volumeControlContainer.getChildren().add(FIRST_INDEX, volumeControl.getButton());
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
@@ -153,6 +154,11 @@ public class MainGuiController implements Initializable, Reloadable{
         }
     }
 
+
+
+
+
+
     @FXML
     private void openNewSongWindow(ActionEvent event) {
         try {
@@ -160,7 +166,7 @@ public class MainGuiController implements Initializable, Reloadable{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../newSongView/NewSongView.fxml"));
             Parent parent = loader.load();
             NewSongController news = loader.getController();
-            news.setReloadableController(this);
+            news.setReloadableController(this.reloadable);
             Scene scene = new Scene(parent);
             Stage newSongStage = Utility.createPopupStage(mainStage, scene, Titles.ADD_NEW_SONG.getValue(), POPUP_WIDTH);
             newSongStage.show();
@@ -182,7 +188,7 @@ public class MainGuiController implements Initializable, Reloadable{
             Parent parent = loader.load();
             EditSongController esc = loader.getController();
             esc.initializeEditView(songToUpdate);
-            esc.setReloadableController(this);
+            esc.setReloadableController(this.reloadable);
             Scene scene = new Scene(parent);
             Stage newSongStage = Utility.createPopupStage(mainStage, scene, Titles.EDIT_SONG.getValue(), POPUP_WIDTH);
             newSongStage.show();
@@ -202,7 +208,7 @@ public class MainGuiController implements Initializable, Reloadable{
         }
         DeleteController del = new DeleteController();
         del.setSongToDelete(songToDelete);
-        del.setReloadable(this);
+        del.setReloadable(this.reloadable);
         del.setPlaylistReloadable(playlistReloadable);
         del.initialize(null, null);
         Stage mainStage = Utility.getCurrentStage(event);
@@ -410,15 +416,6 @@ public class MainGuiController implements Initializable, Reloadable{
         MoveSongsController moveSongsController = new MoveSongsController(playlistReloadable, currentPlayList, selectedSong, operation, this.model.getCurrentPlayListSongs());
         playListContainerInitializer.setListMoveFocusAndSelect(moveSongsController);
         playListContainerInitializer.updateListFocus();
-    }
-
-    @Override
-    public void reloadSongsFromDB() {
-        try {
-            model.reloadSongsFromDB();
-        } catch (MyTunesException e) {
-            ExceptionHandler.displayErrorAlert(ExceptionsMessages.READING_FROMDB_FAILED);
-        }
     }
 
     private PlayList getSelectedPlayList() {
