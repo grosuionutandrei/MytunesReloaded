@@ -12,6 +12,7 @@ import dk.easv.mytunes.gui.components.player.PlayerControl;
 import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
+import dk.easv.mytunes.gui.components.volume.VolumeHandlerCommunication;
 import dk.easv.mytunes.gui.deleteView.DeleteController;
 import dk.easv.mytunes.gui.editSongView.EditSongController;
 import dk.easv.mytunes.gui.filterSongs.FilterManager;
@@ -40,7 +41,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainGuiController implements Initializable, VolumeBinder, Reloadable, PlayListSelectionListener, PlaylistReloadable {
+public class MainGuiController implements Initializable, Reloadable, PlayListSelectionListener, PlaylistReloadable {
     private final int FIRST_INDEX = 0;
     private final int POPUP_WIDTH = 420;
     private Model model;
@@ -51,6 +52,7 @@ public class MainGuiController implements Initializable, VolumeBinder, Reloadabl
     private Stage currentStage;
     private DataSupplier dataSupplier;
     private SongSelectionListener songSelectionListener;
+    private VolumeBinder volumeBinder;
 
     @FXML
     private Label infoLabel;
@@ -117,8 +119,10 @@ public class MainGuiController implements Initializable, VolumeBinder, Reloadabl
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+
             this.model = Model.getModel();
-            volumeControl = new VolumeControl(this);
+            this.volumeBinder = VolumeHandlerCommunication.getInstance(this.model);
+            volumeControl = new VolumeControl(volumeBinder);
             volumeControlContainer.getChildren().add(FIRST_INDEX, volumeControl.getButton());
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
             this.uiInitializer = UIInitializer.getInstance(this, this.model);
@@ -131,10 +135,11 @@ public class MainGuiController implements Initializable, VolumeBinder, Reloadabl
             PlayerControl playerControl = Player.useMediaPlayer(dataSupplier);
             this.playerCommander = new PlayerCommander(dataSupplier, playerControl);
             this.playerCommander.bindMediaTimeToScreen(this.time);
-            this.songSelectionListener = new PlaySongHandler(this.model, this.playerCommander,this.playButton);
-            allSongsTable = this.uiInitializer.initiateTableSong(this.allSongsContainer,songSelectionListener);
+            this.songSelectionListener = new PlaySongHandler(this.model, this.playerCommander, this.playButton);
+            allSongsTable = this.uiInitializer.initiateTableSong(this.allSongsContainer, songSelectionListener);
             playListContainerInitializer = new PlaylistContainerController(this.playListSongsContainer, songSelectionListener, this.model.getCurrentPlayListSongs(), this.upButton, this.downButton);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
+
         } catch (MyTunesException e) {
             errorOccurred = true;
             ExceptionHandler.displayErrorAndWait(e.getMessage() + InformationalMessages.FAIL_MESSAGE_INSTRUCTIONS.getValue());
@@ -450,30 +455,6 @@ public class MainGuiController implements Initializable, VolumeBinder, Reloadabl
         } catch (MyTunesException e) {
             ExceptionHandler.displayErrorAlert(e.getMessage());
         }
-    }
-
-    /**
-     * sets the  model volume property according to the current slider value
-     */
-    @Override
-    public void setVolumeLevel(Double volumeLevel) {
-        this.model.volumeLevelProperty().set(volumeLevel / 100);
-    }
-
-    /**
-     * sets the value off the slider back to the previous value
-     */
-    @Override
-    public Double getVolumeLevel() {
-        return this.model.volumeLevelProperty().getValue();
-    }
-
-    /**
-     * sets the model isMute boolean propriety when the mute/unmute button is pressed
-     */
-    @Override
-    public void setIsMuteValue(boolean value) {
-        this.model.isMuteProperty().setValue(value);
     }
 
     @Override
