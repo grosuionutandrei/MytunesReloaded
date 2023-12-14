@@ -1,8 +1,6 @@
 package dk.easv.mytunes.gui.components.player;
 
-import dk.easv.mytunes.gui.listeners.DataSupplier;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
+
 import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.util.Duration;

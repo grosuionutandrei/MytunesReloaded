@@ -10,9 +10,9 @@ public class PlayerCommander {
     private final PlayerControl playerControl;
     private final DataSupplier dataSupplier;
 
-    public PlayerCommander(DataSupplier dataSupplier) throws MyTunesException {
+    public PlayerCommander(DataSupplier dataSupplier , PlayerControl playerControl) throws MyTunesException {
         this.dataSupplier = dataSupplier;
-        playerControl = Player.useMediaPlayer(dataSupplier);
+        this.playerControl = playerControl;
     }
 
     public void processOperation(Operations operation) {

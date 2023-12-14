@@ -1,10 +1,14 @@
 package dk.easv.mytunes.gui.mainView;
+
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.gui.components.playListSongView.PlaylistContainerController;
 import dk.easv.mytunes.gui.components.playListTable.PlaylistTable;
+import dk.easv.mytunes.gui.components.player.DataHandler;
+import dk.easv.mytunes.gui.components.player.Player;
 import dk.easv.mytunes.gui.components.player.PlayerCommander;
+import dk.easv.mytunes.gui.components.player.PlayerControl;
 import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
 import dk.easv.mytunes.gui.components.volume.VolumeControl;
@@ -34,11 +38,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainGuiController implements Initializable, SongSelectionListener, DataSupplier, VolumeBinder, Reloadable, PlayListSelectionListener, PlaylistReloadable {
+public class MainGuiController implements Initializable, SongSelectionListener, VolumeBinder, Reloadable, PlayListSelectionListener, PlaylistReloadable {
     private final int FIRST_INDEX = 0;
     private final int POPUP_WIDTH = 420;
     private Model model;
@@ -47,6 +52,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private ISearchGraphic searchGraphic;
     private VolumeControl volumeControl;
     private Stage currentStage;
+    private DataSupplier dataSupplier;
 
     @FXML
     private Label infoLabel;
@@ -117,14 +123,19 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             volumeControl = new VolumeControl(this);
             volumeControlContainer.getChildren().add(FIRST_INDEX, volumeControl.getButton());
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
-            this.uiInitializer=UIInitializer.getInstance(this,this.model);
-            this.uiInitializer.initializeSearchView(searchGraphic,searchButton,searchValue,infoLabel);
-            this.uiInitializer.initiateTableSong(this.allSongsContainer);
-           this.uiInitializer.initiatePlaylistTable(playlistContainer);
+            this.uiInitializer = UIInitializer.getInstance(this, this.model);
+            this.uiInitializer.initializeSearchView(searchGraphic, searchButton, searchValue, infoLabel);
+            allSongsTable = this.uiInitializer.initiateTableSong(this.allSongsContainer);
+            allPlaylistTable = this.uiInitializer.initiatePlaylistTable(playlistContainer);
             playListContainerInitializer = new PlaylistContainerController(this.playListSongsContainer, this, this.model.getCurrentPlayListSongs(), this.upButton, this.downButton);
-           this.uiInitializer.initializeMoveButton(upButton,GraphicIdValues.UP);
-           this.uiInitializer.initializeMoveButton(downButton,GraphicIdValues.DOWN);
-            this.playerCommander = new PlayerCommander(this);
+            this.uiInitializer.initializeMoveButton(upButton, GraphicIdValues.UP);
+            this.uiInitializer.initializeMoveButton(downButton, GraphicIdValues.DOWN);
+
+            PlayOperations playOperations = PlayOperationsHandler.getInstance();
+            this.dataSupplier = DataHandler.getInstance(this.model,playOperations);
+            PlayerControl playerControl = Player.useMediaPlayer(dataSupplier);
+
+            this.playerCommander = new PlayerCommander(dataSupplier, playerControl);
             this.playerCommander.bindMediaTimeToScreen(this.time);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
         } catch (MyTunesException e) {
@@ -194,6 +205,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             ExceptionHandler.displayErrorAlert(InformationalMessages.OPERATION_FAILED);
         }
     }
+
 
     private Song getSelectedSong(TableView<Song> table) {
         return table.getSelectionModel().getSelectedItem();
@@ -452,29 +464,8 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
      */
     @Override
     public void onSongSelect(int rowIndex, String tableId, boolean play) {
-        PlaySong playSong = new PlaySong(this.model,this.playerCommander);
+        PlaySong playSong = new PlaySong(this.model, this.playerCommander);
         playSong.playSelectedSong(rowIndex, tableId, play, this.playButton);
-    }
-
-    /**
-     * provides the media player with the necessary data
-     *
-     * @param operation the operation that needs to be performed, play next, play previous , play initial song
-     */
-
-    @Override
-    public Media getMedia(Operations operation) {
-        PlayOperations playOperations = PlayOperationsHandler.getInstance();
-        playOperations.setModel(this.model);
-        return playOperations.getMedia(operation);
-    }
-
-    /**
-     * controls iff the song can be played or not
-     */
-    @Override
-    public boolean isPlaying() {
-        return this.model.isPlayMusic();
     }
 
     /**
@@ -501,24 +492,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         this.model.isMuteProperty().setValue(value);
     }
 
-
-    /**
-     * binds the volume off the player with the volume level stored in the model
-     */
-    @Override
-    public DoubleProperty getVolumeObservable() {
-        return this.model.volumeLevelProperty();
-    }
-
-
-    /**
-     * supplies data to the player when the volume is mute
-     */
-    @Override
-    public BooleanProperty isMute() {
-        return this.model.isMuteProperty();
-    }
-
     @Override
     public void reloadSongsFromDB() {
         try {
@@ -529,6 +502,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     }
 
     private PlayList getSelectedPlayList() {
+
         return this.allPlaylistTable.getSelectionModel().getSelectedItem();
     }
 

@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refactored the UI initializatiuon to a separate class">
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refactored the UI initializatiuon to a separate classefw">
+      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/DataHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/PlayerCommander.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/PlayerCommander.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/PlayerControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/PlayerControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/ConfirmationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/ConfirmationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -122,31 +123,7 @@
       <workItem from="1702143480319" duration="13650000" />
       <workItem from="1702205779339" duration="64024000" />
       <workItem from="1702458495412" duration="26900000" />
-      <workItem from="1702500462251" duration="9197000" />
-    </task>
-    <task id="LOCAL-00005" summary="filter functionality completed, button graphic, reset functionality">
-      <option name="closed" value="true" />
-      <created>1701446136939</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1701446136939</updated>
-    </task>
-    <task id="LOCAL-00006" summary="new/edit stage added to the view">
-      <option name="closed" value="true" />
-      <created>1701468489122</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1701468489122</updated>
-    </task>
-    <task id="LOCAL-00007" summary="new/edit stage added to the view">
-      <option name="closed" value="true" />
-      <created>1701469013623</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1701469013623</updated>
+      <workItem from="1702500462251" duration="15052000" />
     </task>
     <task id="LOCAL-00008" summary="add new song functionality implemented">
       <option name="closed" value="true" />
@@ -516,7 +493,31 @@
       <option name="project" value="LOCAL" />
       <updated>1702493673145</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="refactored the UI initializatiuon to a separate class">
+      <option name="closed" value="true" />
+      <created>1702511110154</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1702511110154</updated>
+    </task>
+    <task id="LOCAL-00055" summary="refactored the UI initializatiuon to a separate classefw">
+      <option name="closed" value="true" />
+      <created>1702511131052</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1702511131052</updated>
+    </task>
+    <task id="LOCAL-00056" summary="refactored the UI initializatiuon to a separate classefw">
+      <option name="closed" value="true" />
+      <created>1702511147377</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1702511147377</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -534,7 +535,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="implemented edit PlayList functionality" />
     <MESSAGE value="implemented delete PlayList functionality" />
     <MESSAGE value="started  add song to  playList functionality" />
     <MESSAGE value="implemented edelete song from join table" />
@@ -559,7 +559,8 @@
     <MESSAGE value="refactored data supplier to a separate class" />
     <MESSAGE value="refactored the play functionality included the PlayerCommander that is responsible for the control off the media player" />
     <MESSAGE value="refactored the UI initializatiuon to a separate class" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactored the UI initializatiuon to a separate class" />
+    <MESSAGE value="refactored the UI initializatiuon to a separate classefw" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactored the UI initializatiuon to a separate classefw" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
