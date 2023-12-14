@@ -8,6 +8,7 @@ import dk.easv.mytunes.gui.components.playListTable.PlaylistTable;
 import dk.easv.mytunes.gui.components.searchButton.ISearchGraphic;
 import dk.easv.mytunes.gui.components.searchButton.SearchGraphic;
 import dk.easv.mytunes.gui.components.songsTable.SongsTable;
+import dk.easv.mytunes.gui.listeners.SongSelectionListener;
 import dk.easv.mytunes.gui.mainView.MainGuiController;
 import dk.easv.mytunes.gui.mainView.Model;
 import javafx.scene.control.Button;
@@ -49,8 +50,8 @@ public class UIInitializer {
     /**
      * initializes the song table view
      */
-    public SongsTable initiateTableSong(VBox allSongsContainer) {
-        SongsTable allSongsTable = new SongsTable(mainController);
+    public SongsTable initiateTableSong(VBox allSongsContainer, SongSelectionListener songSelectionListener) {
+        SongsTable allSongsTable = new SongsTable(songSelectionListener);
         allSongsTable.setSongs(model.getAllSongsObjectsToDisplay());
         allSongsContainer.getChildren().add(allSongsTable);
         return allSongsTable;

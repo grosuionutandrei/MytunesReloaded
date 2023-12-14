@@ -57,7 +57,7 @@ public class TitleCell<T extends Song> extends ListCell<T> {
     public void setOnMouseClick(SongSelectionListener listener,String tableId){
         this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             if (!this.isEmpty() && event.getClickCount() == 2) {
-                listener.onSongSelect(this.getIndex(),tableId,true);
+                listener.playSelectedSong(this.getIndex(),tableId,true);
             }
         });
 

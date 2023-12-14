@@ -22,10 +22,8 @@ import dk.easv.mytunes.gui.playOperations.PlayOperations;
 import dk.easv.mytunes.gui.playOperations.PlayOperationsHandler;
 import dk.easv.mytunes.gui.playlistSongsOperations.DeleteSongFromPlaylistController;
 import dk.easv.mytunes.gui.playlistSongsOperations.MoveSongsController;
-import dk.easv.mytunes.gui.songSelection.PlaySong;
+import dk.easv.mytunes.gui.songSelection.PlaySongHandler;
 import dk.easv.mytunes.utility.*;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,14 +34,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainGuiController implements Initializable, SongSelectionListener, VolumeBinder, Reloadable, PlayListSelectionListener, PlaylistReloadable {
+public class MainGuiController implements Initializable, VolumeBinder, Reloadable, PlayListSelectionListener, PlaylistReloadable {
     private final int FIRST_INDEX = 0;
     private final int POPUP_WIDTH = 420;
     private Model model;
@@ -53,6 +50,7 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
     private VolumeControl volumeControl;
     private Stage currentStage;
     private DataSupplier dataSupplier;
+    private SongSelectionListener songSelectionListener;
 
     @FXML
     private Label infoLabel;
@@ -125,18 +123,17 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
             this.uiInitializer = UIInitializer.getInstance(this, this.model);
             this.uiInitializer.initializeSearchView(searchGraphic, searchButton, searchValue, infoLabel);
-            allSongsTable = this.uiInitializer.initiateTableSong(this.allSongsContainer);
             allPlaylistTable = this.uiInitializer.initiatePlaylistTable(playlistContainer);
-            playListContainerInitializer = new PlaylistContainerController(this.playListSongsContainer, this, this.model.getCurrentPlayListSongs(), this.upButton, this.downButton);
             this.uiInitializer.initializeMoveButton(upButton, GraphicIdValues.UP);
             this.uiInitializer.initializeMoveButton(downButton, GraphicIdValues.DOWN);
-
             PlayOperations playOperations = PlayOperationsHandler.getInstance();
-            this.dataSupplier = DataHandler.getInstance(this.model,playOperations);
+            this.dataSupplier = DataHandler.getInstance(this.model, playOperations);
             PlayerControl playerControl = Player.useMediaPlayer(dataSupplier);
-
             this.playerCommander = new PlayerCommander(dataSupplier, playerControl);
             this.playerCommander.bindMediaTimeToScreen(this.time);
+            this.songSelectionListener = new PlaySongHandler(this.model, this.playerCommander,this.playButton);
+            allSongsTable = this.uiInitializer.initiateTableSong(this.allSongsContainer,songSelectionListener);
+            playListContainerInitializer = new PlaylistContainerController(this.playListSongsContainer, songSelectionListener, this.model.getCurrentPlayListSongs(), this.upButton, this.downButton);
             this.currentPlayingSongName.textProperty().bind(this.model.currentSongPlayingNameProperty());
         } catch (MyTunesException e) {
             errorOccurred = true;
@@ -453,19 +450,6 @@ public class MainGuiController implements Initializable, SongSelectionListener, 
         } catch (MyTunesException e) {
             ExceptionHandler.displayErrorAlert(e.getMessage());
         }
-    }
-
-    /**
-     * Play the selected song when it is double-clicked.
-     *
-     * @param rowIndex The index of the selected song.
-     * @param tableId  The ID of the table containing the song.
-     * @param play     Whether to play the song.
-     */
-    @Override
-    public void onSongSelect(int rowIndex, String tableId, boolean play) {
-        PlaySong playSong = new PlaySong(this.model, this.playerCommander);
-        playSong.playSelectedSong(rowIndex, tableId, play, this.playButton);
     }
 
     /**

@@ -1,40 +1,22 @@
 package dk.easv.mytunes.gui.songSelection;
-
-import dk.easv.mytunes.exceptions.MyTunesException;
-import dk.easv.mytunes.gui.components.player.Player;
 import dk.easv.mytunes.gui.components.player.PlayerCommander;
-import dk.easv.mytunes.gui.components.player.PlayerControl;
+import dk.easv.mytunes.gui.listeners.SongSelectionListener;
 import dk.easv.mytunes.gui.mainView.Model;
-import dk.easv.mytunes.utility.ExceptionHandler;
 import dk.easv.mytunes.utility.Operations;
 import dk.easv.mytunes.utility.PlayButtonGraphic;
-import dk.easv.mytunes.utility.Utility;
-import javafx.scene.control.Alert;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-public class PlaySong {
+public class PlaySongHandler implements SongSelectionListener {
     private final Model model;
     private final PlayerCommander playerCommander;
+    @FXML
+    private Button button;
 
-    public PlaySong(Model model, PlayerCommander playerCommander) {
+    public PlaySongHandler(Model model, PlayerCommander playerCommander, Button button) {
         this.model = model;
         this.playerCommander = playerCommander;
-
-    }
-
-    /**
-     * Play the selected song when it is double-clicked.
-     *
-     * @param rowIndex The index of the selected song.
-     * @param tableId  The ID of the table containing the song.
-     * @param play     Whether to play the song.
-     * @param button   The button used for playback control.
-     */
-    public void playSelectedSong(int rowIndex, String tableId, boolean play, Button button) {
-        setSongToPlay(rowIndex, tableId, play);
-        playerCommander.processOperation(Operations.PLAY_CURRENT);
-        changeButtonGraphic(button);
-
+        this.button = button;
     }
 
     private void setSongToPlay(int index, String tableId, boolean play) {
@@ -53,4 +35,17 @@ public class PlaySong {
         return button.getText().equals(PlayButtonGraphic.PLAY.getValue());
     }
 
+    /**
+     * Play the selected song when it is double-clicked.
+     *
+     * @param index   The index of the selected song.
+     * @param tableId The ID of the table containing the song.
+     * @param play    Whether to play the song.
+     */
+    @Override
+    public void playSelectedSong(int index, String tableId, boolean play) {
+        setSongToPlay(index, tableId, play);
+        playerCommander.processOperation(Operations.PLAY_CURRENT);
+        changeButtonGraphic(this.button);
+    }
 }

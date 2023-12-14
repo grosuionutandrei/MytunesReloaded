@@ -10,11 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
 public class SongsTable extends TableView<Song> {
-
     private SongSelectionListener songSelectionListener;
-
-
-
     public SongsTable(SongSelectionListener listener) {
          this.songSelectionListener= listener;
         setupColumns();
@@ -58,7 +54,8 @@ public class SongsTable extends TableView<Song> {
             TableRow<Song> row = new TableRow<>();
             row.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 if (!row.isEmpty() && event.getClickCount() == 2) {
-                 songSelectionListener.onSongSelect(row.getIndex(),this.getId(),true);
+//                 songSelectionListener.onSongSelect(row.getIndex(),this.getId(),true);
+                 songSelectionListener.playSelectedSong(row.getIndex(),this.getId(),true);
                 }else if(!row.isEmpty()&& event.getClickCount()==1){
                 }
             });

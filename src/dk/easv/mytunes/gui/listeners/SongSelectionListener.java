@@ -1,5 +1,7 @@
 package dk.easv.mytunes.gui.listeners;
 
+import javafx.scene.control.Button;
+
 public interface SongSelectionListener {
-    public void onSongSelect(int index,String tableId,boolean play);
+  void playSelectedSong(int index, String tableId, boolean play);
 }

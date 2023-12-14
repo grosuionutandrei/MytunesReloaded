@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refactored the UI initializatiuon to a separate classefw">
-      <change afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/DataHandler.java" afterDir="false" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refatored the MainController . moved the data supplier functionality to a different class calles DataHandler">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/PlayerCommander.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/PlayerCommander.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/PlayerControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/PlayerControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/ConfirmationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/ConfirmationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/TitleCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/playListSongView/TitleCell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/SongSelectionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/listeners/SongSelectionListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/songSelection/PlaySong.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/songSelection/PlaySong.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/UIInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/UIInitializer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,15 +124,7 @@
       <workItem from="1702143480319" duration="13650000" />
       <workItem from="1702205779339" duration="64024000" />
       <workItem from="1702458495412" duration="26900000" />
-      <workItem from="1702500462251" duration="15052000" />
-    </task>
-    <task id="LOCAL-00008" summary="add new song functionality implemented">
-      <option name="closed" value="true" />
-      <created>1701535922299</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1701535922300</updated>
+      <workItem from="1702500462251" duration="16350000" />
     </task>
     <task id="LOCAL-00009" summary="implemented reload songs from db after creating   a new one , plus refactor the palable list to change reference to the observable list off dispalying songs">
       <option name="closed" value="true" />
@@ -517,7 +510,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702511147377</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="refatored the MainController . moved the data supplier functionality to a different class calles DataHandler">
+      <option name="closed" value="true" />
+      <created>1702581090280</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1702581090280</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -535,7 +536,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="implemented delete PlayList functionality" />
     <MESSAGE value="started  add song to  playList functionality" />
     <MESSAGE value="implemented edelete song from join table" />
     <MESSAGE value="implemented delete song from join table" />
@@ -560,7 +560,8 @@
     <MESSAGE value="refactored the play functionality included the PlayerCommander that is responsible for the control off the media player" />
     <MESSAGE value="refactored the UI initializatiuon to a separate class" />
     <MESSAGE value="refactored the UI initializatiuon to a separate classefw" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactored the UI initializatiuon to a separate classefw" />
+    <MESSAGE value="refatored the MainController . moved the data supplier functionality to a different class calles DataHandler" />
+    <option name="LAST_COMMIT_MESSAGE" value="refatored the MainController . moved the data supplier functionality to a different class calles DataHandler" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
