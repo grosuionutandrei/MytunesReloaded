@@ -2,7 +2,7 @@ package dk.easv.mytunes.gui.editSongView;
 
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;
-import dk.easv.mytunes.gui.newSongView.NewEditController;
+import dk.easv.mytunes.gui.newSongView.NewEditSongController;
 import dk.easv.mytunes.utility.ExceptionHandler;
 import dk.easv.mytunes.utility.SongFormat;
 import javafx.application.Platform;
@@ -17,7 +17,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditSongController extends NewEditController implements Initializable {
+public class EditSongController extends NewEditSongController implements Initializable {
     public TextField songTitle;
     public TextField songArtist;
     public TextField songDuration;

@@ -20,18 +20,16 @@ import javafx.scene.layout.VBox;
 public class UIInitializer {
 
     private final Model model;
-    private final MainGuiController mainController;
     private static UIInitializer instance;
 
-    public static UIInitializer getInstance(MainGuiController mainController, Model model) {
+    public static UIInitializer getInstance( Model model) {
         if (instance == null) {
-            instance = new UIInitializer(mainController, model);
+            instance = new UIInitializer(model);
         }
         return instance;
     }
 
-    private UIInitializer(MainGuiController mainController, Model model) {
-        this.mainController = mainController;
+    private UIInitializer( Model model) {
         this.model = model;
     }
 

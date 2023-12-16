@@ -7,6 +7,8 @@ import dk.easv.mytunes.utility.ExceptionsMessages;
 import dk.easv.mytunes.utility.Operations;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Label;
@@ -20,6 +22,8 @@ public class Player implements PlayerControl {
     private Media song;
     private DataSupplier dataSupplier;
     private final StringProperty time = new SimpleStringProperty();
+
+    private BooleanProperty isMute;
 
 
     private Player(DataSupplier dataSupplier) throws MyTunesException {
@@ -55,6 +59,7 @@ public class Player implements PlayerControl {
                 .then(0.0)
                 .otherwise(dataSupplier.getVolumeObservable()));
 
+
         bindDurationToLabel(time);
         mediaPlayer.setOnEndOfMedia(this::playContinuous);
         if (play) {
@@ -69,7 +74,7 @@ public class Player implements PlayerControl {
 
 
     private void playContinuous() {
-        playCurrent(dataSupplier.getMedia(Operations.GET_NEXT),dataSupplier.isPlaying());
+        playCurrent(dataSupplier.getMedia(Operations.GET_NEXT), dataSupplier.isPlaying());
     }
 
     private void bindDurationToLabel(StringProperty stringToBind) {
@@ -154,5 +159,6 @@ public class Player implements PlayerControl {
     public void bindMediaTimeToScreen(Label label) {
         label.textProperty().bind(time);
     }
+
 
 }

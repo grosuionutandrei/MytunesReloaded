@@ -130,7 +130,7 @@ public class MainGuiController implements Initializable{
             volumeControl = new VolumeControl(volumeBinder);
             volumeControlContainer.getChildren().add(FIRST_INDEX, volumeControl.getButton());
             volumeControlContainer.getChildren().add(volumeControl.getVolumeValue());
-            this.uiInitializer = UIInitializer.getInstance(this, this.model);
+            this.uiInitializer = UIInitializer.getInstance( this.model);
             this.uiInitializer.initializeSearchView(searchGraphic, searchButton, searchValue, infoLabel);
             allPlaylistTable = this.uiInitializer.initiatePlaylistTable(playlistContainer,playListSelectionListener);
             this.uiInitializer.initializeMoveButton(upButton, GraphicIdValues.UP);
@@ -343,7 +343,6 @@ public class MainGuiController implements Initializable{
      */
     public void addSongToPlaylist(ActionEvent event) {
         Song selectedSong = getSelectedSong(allSongsTable);
-
         if (selectedSong == null) {
             ExceptionHandler.displayWarningAlert(InformationalMessages.NO_SONG_SELECTED);
             return;

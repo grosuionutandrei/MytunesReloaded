@@ -17,8 +17,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NewSongController extends NewEditController implements Initializable {
-    private NewEditModel editModel;
+public class NewSongController extends NewEditSongController implements Initializable {
+    private NewSongModel editModel;
     @FXML
     private ComboBox<String> genreDropDown;
     @FXML
@@ -109,7 +109,7 @@ public class NewSongController extends NewEditController implements Initializabl
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            this.editModel = NewEditModel.getInstance();
+            this.editModel = NewSongModel.getInstance();
         } catch (MyTunesException e) {
             Platform.runLater(() -> {
                 ExceptionHandler.displayErrorAlert(e.getMessage());

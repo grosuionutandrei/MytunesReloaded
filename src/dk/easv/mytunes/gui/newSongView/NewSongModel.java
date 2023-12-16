@@ -4,17 +4,17 @@ import dk.easv.mytunes.bll.MyTunesCreation;
 import dk.easv.mytunes.exceptions.MyTunesException;
 
 
-public class NewEditModel extends NewEditCommonModel {
-    private static NewEditModel instance;
+public class NewSongModel extends NewEditCommonModel {
+    private static NewSongModel instance;
 
 
-    private NewEditModel() throws MyTunesException {
+    private NewSongModel() throws MyTunesException {
         setMyTunesCreation(MyTunesCreation.getInstance());
     }
 
-    public static NewEditModel getInstance() throws MyTunesException {
+    public static NewSongModel getInstance() throws MyTunesException {
         if (instance == null) {
-            instance = new NewEditModel();
+            instance = new NewSongModel();
         }
         return instance;
     }

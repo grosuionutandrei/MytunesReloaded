@@ -34,7 +34,6 @@ public class VolumeControl {
                 this.volumeGraphic = new VolumeOffGraphic();
                 button.setGraphic(volumeGraphic.getPane());
                 volumeBinder.setVolumeLevel(volumeLevel.getValue());
-                System.out.println(volumeBinder.getVolumeLevel() + "from button is on ");
                 volumeLevel.setValue(0.0);
                 volumeBinder.setIsMuteValue(true);
             } else {
@@ -42,7 +41,6 @@ public class VolumeControl {
                 button.setGraphic(volumeGraphic.getPane());
                 volumeLevel.setValue(volumeBinder.getVolumeLevel()*100);
                 volumeBinder.setIsMuteValue(false);
-                System.out.println(volumeBinder.getVolumeLevel() +" form buttton is off");
             }
         });
     }
@@ -53,16 +51,11 @@ public class VolumeControl {
     private void setOActionVolumeLevel() {
         this.volumeLevel.valueProperty().addListener((observable, oldValue, newValue) -> {
             if ((Double) newValue == 0) {
-                System.out.println(oldValue);
                 volumeBinder.setVolumeLevel((Double) oldValue);
-                System.out.println(volumeBinder.getVolumeLevel()+" from slider is zero");
-               // model.setVolume((Double) oldValue);
             } else {
-                //model.setVolume((Double) newValue);
                 volumeBinder.setVolumeLevel((Double)newValue);
-                System.out.println(volumeBinder.getVolumeLevel() + " from slider is moving ");
             }
-          //  player.getMediaPlayer().setVolume((Double) newValue / 100);
+
             if ((Double) newValue > 0) {
                 volumeGraphic = new VolumeOnGraphic();
                 button.setGraphic(volumeGraphic.getPane());

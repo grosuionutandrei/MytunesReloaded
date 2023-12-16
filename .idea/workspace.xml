@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refatored the MainController  moved the Reloadable functionality to a different class called ReloadableHandler" />
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refatored the MainController  moved the Reloadable functionality to a different class called ReloadableHandler">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/PlayerControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/player/PlayerControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/editSongView/EditSongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/editSongView/EditSongController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newSongView/NewEditController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newSongView/NewEditModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newSongView/NewSongModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newSongView/NewSongController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/newSongView/NewSongController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/UIInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/utility/UIInitializer.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,15 +127,10 @@
       <workItem from="1702143480319" duration="13650000" />
       <workItem from="1702205779339" duration="64024000" />
       <workItem from="1702458495412" duration="26900000" />
-      <workItem from="1702500462251" duration="25097000" />
-    </task>
-    <task id="LOCAL-00014" summary="Delete controller implemented">
-      <option name="closed" value="true" />
-      <created>1701702422612</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1701702422612</updated>
+      <workItem from="1702500462251" duration="25643000" />
+      <workItem from="1702673568087" duration="2338000" />
+      <workItem from="1702712957520" duration="2234000" />
+      <workItem from="1702715565297" duration="7120000" />
     </task>
     <task id="LOCAL-00015" summary="Delete controller implemented">
       <option name="closed" value="true" />
@@ -511,7 +516,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702593363913</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="refatored the MainController  moved the Reloadable functionality to a different class called ReloadableHandler">
+      <option name="closed" value="true" />
+      <created>1702594899280</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1702594899280</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
