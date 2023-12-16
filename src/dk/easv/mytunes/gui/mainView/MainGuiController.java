@@ -1,5 +1,4 @@
 package dk.easv.mytunes.gui.mainView;
-
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.exceptions.MyTunesException;

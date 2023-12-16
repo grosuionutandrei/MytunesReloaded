@@ -33,7 +33,6 @@ public class DataHandler implements DataSupplier
      */
     @Override
     public Media getMedia(Operations operation) {
-        playOperations.setModel(this.model);
         return playOperations.getMedia(operation);
     }
 
