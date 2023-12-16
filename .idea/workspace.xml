@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refactured uiInitializer remove MainGuiCintroller field">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/bll/MyTunesPlaylistCreation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/songsTable/SongsTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/volume/VolumeGraphic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/components/volume/VolumeGraphic.java" afterDir="false" />
-    </list>
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refactured uiInitializer remove MainGuiCintroller field" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -126,30 +121,7 @@
       <workItem from="1702673568087" duration="2338000" />
       <workItem from="1702712957520" duration="2234000" />
       <workItem from="1702715565297" duration="14919000" />
-    </task>
-    <task id="LOCAL-00016" summary="PlayList view and songs view implemented">
-      <option name="closed" value="true" />
-      <created>1701733315352</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1701733315352</updated>
-    </task>
-    <task id="LOCAL-00017" summary="playing from the selected plaulist implemented">
-      <option name="closed" value="true" />
-      <created>1701796526208</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1701796526208</updated>
-    </task>
-    <task id="LOCAL-00018" summary="implemented view for new playlist creation">
-      <option name="closed" value="true" />
-      <created>1701805476425</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1701805476425</updated>
+      <workItem from="1702732650369" duration="219000" />
     </task>
     <task id="LOCAL-00019" summary="implemented add new PlayList functionality">
       <option name="closed" value="true" />
@@ -519,7 +491,31 @@
       <option name="project" value="LOCAL" />
       <updated>1702722959680</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="refactured uiInitializer remove MainGuiCintroller field">
+      <option name="closed" value="true" />
+      <created>1702732693963</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1702732693964</updated>
+    </task>
+    <task id="LOCAL-00066" summary="refactured uiInitializer remove MainGuiCintroller field">
+      <option name="closed" value="true" />
+      <created>1702732745656</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1702732745656</updated>
+    </task>
+    <task id="LOCAL-00067" summary="refactured uiInitializer remove MainGuiCintroller field">
+      <option name="closed" value="true" />
+      <created>1702732794340</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1702732794340</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -537,7 +533,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="start implementing move song view" />
     <MESSAGE value="implemented move song view" />
     <MESSAGE value="start to implement move song functionality" />
     <MESSAGE value="implemented move song functionality" />
@@ -561,6 +556,7 @@
     <MESSAGE value="refatored the MainController  moved the VolumeBinderListener functionality to a different class calles VolumeBinderHelper" />
     <MESSAGE value="refatored the MainController  moved the PlayListReloadable functionality to a different class calles PlaylistOperationHandler" />
     <MESSAGE value="refatored the MainController  moved the Reloadable functionality to a different class called ReloadableHandler" />
+    <MESSAGE value="refactured uiInitializer remove MainGuiCOntroller field" />
     <MESSAGE value="refactured uiInitializer remove MainGuiCintroller field" />
     <option name="LAST_COMMIT_MESSAGE" value="refactured uiInitializer remove MainGuiCintroller field" />
   </component>
