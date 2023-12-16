@@ -54,7 +54,6 @@ public class SongsTable extends TableView<Song> {
             TableRow<Song> row = new TableRow<>();
             row.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 if (!row.isEmpty() && event.getClickCount() == 2) {
-//                 songSelectionListener.onSongSelect(row.getIndex(),this.getId(),true);
                  songSelectionListener.playSelectedSong(row.getIndex(),this.getId(),true);
                 }else if(!row.isEmpty()&& event.getClickCount()==1){
                 }
@@ -66,39 +65,6 @@ public class SongsTable extends TableView<Song> {
     public void setSongs(ObservableList<Song> songs) {
         this.setItems(songs);
     }
-
-//    private void focusAndScrollToRow(int rowIndex) {
-//        if (rowIndex >= 0 && rowIndex < this.getItems().size()) {
-//            this.getSelectionModel().clearSelection();
-//            this.requestFocus();
-//            this.getSelectionModel().focus(rowIndex);
-//            this.scrollTo(rowIndex);
-//        }
-//    }
-//
-//
-//    /** i need to find a usage to this*/
-//    public void bindFocusToModel(Model model) {
-//        model.currentMediaPositionProperty().addListener((obs, oldRowIndex, newRowIndex) -> {
-//            if (newRowIndex != null) {
-//                focusAndScrollToRow(newRowIndex.intValue());
-//            }
-//        });
-//    }
-
-    /** play the selected song from the all songs list */
-//    public void bindModelToAllSongs(Model model, Player player, Button button) {
-//        this.getSelectionModel().selectedIndexProperty().addListener((obs, oldValue, newValue) -> {
-//            if (newValue.intValue() >= 0) {
-//                model.setCurrentListSelected(this.getId());
-//                model.setCurrentPlayingList();
-//                model.setCurrentMediaPosition(newValue.intValue());
-//                player.setSong(model.getCurrentSong(),model.getVolume(),model.isPlayMusic());
-//                button.setText(">");
-//                player.bindDurationToLabel(model.timePassedProperty());
-//            }
-//        });
-//    }
 
     public void setSongSelectionListener(SongSelectionListener songSelectionListener) {
         this.songSelectionListener = songSelectionListener;

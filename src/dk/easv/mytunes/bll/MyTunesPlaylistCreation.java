@@ -2,6 +2,7 @@ package dk.easv.mytunes.bll;
 
 import dk.easv.mytunes.be.PlayList;
 import dk.easv.mytunes.be.Song;
+import dk.easv.mytunes.dal.IPlaylistDao;
 import dk.easv.mytunes.dal.PlaylistDao;
 import dk.easv.mytunes.exceptions.MyTunesException;
 import dk.easv.mytunes.utility.InformationalMessages;
@@ -9,7 +10,7 @@ import dk.easv.mytunes.utility.InformationalMessages;
 import java.util.List;
 
 public class MyTunesPlaylistCreation {
-    private PlaylistDao playlistDao;
+    private IPlaylistDao playlistDao;
     private static MyTunesPlaylistCreation instance;
 
     private MyTunesPlaylistCreation() throws MyTunesException {

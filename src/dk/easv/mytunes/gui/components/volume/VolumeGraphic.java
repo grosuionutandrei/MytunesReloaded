@@ -5,6 +5,6 @@ import javafx.scene.layout.Pane;
 
 
 public interface VolumeGraphic {
-    public Pane  getPane();
+     Pane  getPane();
 
 }
