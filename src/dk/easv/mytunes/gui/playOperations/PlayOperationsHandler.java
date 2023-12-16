@@ -56,9 +56,4 @@ public class PlayOperationsHandler implements PlayOperations {
     public Media getMedia(Operations operation) {
        return performGetMedia(operation);
     }
-
-    @Override
-    public void setModel(Model model) {
-        this.model=model;
-    }
 }

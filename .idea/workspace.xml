@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="refactured uiInitializer remove MainGuiCintroller field">
+    <list default="true" id="1a3d1995-b70e-4e47-aeaa-cb04fe403b4e" name="Changes" comment="remanufactured dataHandler">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dk/easv/mytunes/gui/mainView/MainGuiController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,15 +124,7 @@
       <workItem from="1702712957520" duration="2234000" />
       <workItem from="1702715565297" duration="14919000" />
       <workItem from="1702732650369" duration="219000" />
-      <workItem from="1702732884192" duration="8446000" />
-    </task>
-    <task id="LOCAL-00020" summary="implemented edit PlayList functionality">
-      <option name="closed" value="true" />
-      <created>1701900208001</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1701900208001</updated>
+      <workItem from="1702732884192" duration="9582000" />
     </task>
     <task id="LOCAL-00021" summary="implemented delete PlayList functionality">
       <option name="closed" value="true" />
@@ -520,7 +510,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702732904418</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="remanufactured dataHandler">
+      <option name="closed" value="true" />
+      <created>1702760585160</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1702760585160</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -538,7 +536,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="implemented move song view" />
     <MESSAGE value="start to implement move song functionality" />
     <MESSAGE value="implemented move song functionality" />
     <MESSAGE value="modified the deletion operation if the plyList list is down to one song onlly the operation will not be allowed" />
@@ -563,7 +560,8 @@
     <MESSAGE value="refatored the MainController  moved the Reloadable functionality to a different class called ReloadableHandler" />
     <MESSAGE value="refactured uiInitializer remove MainGuiCOntroller field" />
     <MESSAGE value="refactured uiInitializer remove MainGuiCintroller field" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactured uiInitializer remove MainGuiCintroller field" />
+    <MESSAGE value="remanufactured dataHandler" />
+    <option name="LAST_COMMIT_MESSAGE" value="remanufactured dataHandler" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

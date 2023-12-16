@@ -6,5 +6,4 @@ import javafx.scene.media.Media;
 
 public interface PlayOperations {
     Media getMedia(Operations operation);
-    void setModel(Model model);
 }
