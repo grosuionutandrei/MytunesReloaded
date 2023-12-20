@@ -59,7 +59,6 @@ public class MyTunesLogic {
     }
 
     public ObservableList<Song> changeCurrentPlayingSongsList(String currentNameLocation, ObservableList<Song> playlist, ObservableList<Song> allSongs) {
-        System.out.println(currentNameLocation + "cu" + allSongs.size());
         if (currentNameLocation.equals(PlayingLocation.ALL_SONGS.getValue())) {
             return allSongs;
         }

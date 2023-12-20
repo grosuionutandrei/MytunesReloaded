@@ -47,7 +47,6 @@ public class Player implements PlayerControl {
      * controls the play functionality if the app just started , music will not play
      **/
     private MediaPlayer playTrack(boolean play) {
-
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.dispose();
@@ -58,8 +57,6 @@ public class Player implements PlayerControl {
         mediaPlayer.volumeProperty().bind(Bindings.when(dataSupplier.isMute())
                 .then(0.0)
                 .otherwise(dataSupplier.getVolumeObservable()));
-
-
         bindDurationToLabel(time);
         mediaPlayer.setOnEndOfMedia(this::playContinuous);
         if (play) {

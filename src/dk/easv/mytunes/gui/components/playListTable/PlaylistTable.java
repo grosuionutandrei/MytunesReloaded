@@ -61,10 +61,6 @@ public class PlaylistTable extends TableView<PlayList> {
             row.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 if (!row.isEmpty() && event.getClickCount() == 2) {
                     playListSelectionListener.onPlayListSelect(row.getIndex());
-
-                } else if (!row.isEmpty() && event.getClickCount() == 1) {
-                    System.out.println(this.getSelectionModel().getSelectedItem());
-
                 }
             });
             return row;

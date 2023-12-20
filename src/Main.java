@@ -23,6 +23,7 @@ public class Main extends Application {
         if (!mainGuiController.isError()) {
             Scene scene = new Scene(root);
             primaryStage.setX(100);
+            primaryStage.setTitle("MyTunes");
             primaryStage.setScene(scene);
             primaryStage.show();
         } else {

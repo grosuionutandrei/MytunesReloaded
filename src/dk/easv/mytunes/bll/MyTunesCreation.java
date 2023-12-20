@@ -50,7 +50,6 @@ public class MyTunesCreation {
         if (index > 0 && index < name.length() - 1) {
             format = name.substring(index + 1);
         }
-        System.out.println(format);
         SongFormat[] songFormats = SongFormat.values();
         for (SongFormat elem : songFormats) {
             if (elem.getValue().equalsIgnoreCase(format)) {
@@ -95,7 +94,6 @@ public class MyTunesCreation {
 
                 double durationInSeconds = microseconds / 1_000_000.0;
 
-                System.out.println(durationInSeconds);
                 time = durationInSeconds;
             } else {
                 throw new UnsupportedOperationException();

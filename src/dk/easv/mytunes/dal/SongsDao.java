@@ -70,7 +70,6 @@ public class SongsDao implements ISongsDao {
                 return true;
             } catch (SQLException e) {
                 connection.rollback();
-                System.out.println(e.getMessage());
                 throw new MyTunesException(ExceptionsMessages.TRANSACTION_FAILED, e);
             }
         } catch (SQLException e) {
